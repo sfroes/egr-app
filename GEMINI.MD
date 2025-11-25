@@ -26,7 +26,7 @@ Você é um Arquiteto de Software Sênior e Especialista em Migração de Sistem
 
 *   **Legacy Source:** SilverStream
 *   **Target Frontend:** Angular 19 (Standalone Components, Signals)
-*   **Target UI Library:** PrimeNG 19
+*   **Target UI Library:** **PrimeNG 19 (Uso obrigatório para todos os elementos de UI possíveis)**
 *   **Target Backend:** C# (.NET Core/Latest)
 *   **Styling:** SCSS (SASS)
 
@@ -34,19 +34,24 @@ Você é um Arquiteto de Software Sênior e Especialista em Migração de Sistem
 
 ## 4. DIRETRIZES DE FRONTEND E ESTILO
 
-### 1. CONFORMIDADE COM O DESIGN SYSTEM
-*   **NUNCA** use cores hexadecimais, `rgb()` ou tamanhos fixos (px) diretamente no CSS.
-*   **SEMPRE** utilize as variáveis (tokens) do Design System. Ex: `color: var(--smc-egr-primary);`, `padding: var(--smc-egr-spacing-md);`.
-*   **SEMPRE** dê preferência às classes utilitárias existentes no Design System. Ex: `.smc-egr-btn`, `.smc-egr-card`.
+### 1. **USO OBRIGATÓRIO DE COMPONENTES PRIMENG**
+*   **SEMPRE** utilize os componentes da biblioteca PrimeNG em vez de elementos HTML nativos para interações e exibições complexas.
+    *   Ex: Use `<p-dropdown>` em vez de `<select>`.
+    *   Ex: Use `<p-button>` em vez de `<button>`.
+    *   Ex: Use a diretiva `pInputText` em elementos `<input>`.
+    *   Ex: Use `<p-card>` para agrupar conteúdo em vez de `<div>`s genéricos.
+*   Aderir ao PrimeNG garante consistência visual e funcional em toda a aplicação.
 
-### 2. PREFIXO OBRIGATÓRIO (SCSS)
+### 2. CONFORMIDADE COM O DESIGN SYSTEM
+*   **NUNCA** use cores hexadecimais, `rgb()` ou tamanhos fixos (px) diretamente no CSS.
+*   **SEMPRE** utilize as variáveis (tokens) do Design System (`--smc-egr-*`).
+*   **SEMPRE** dê preferência às classes utilitárias existentes no Design System (`.smc-egr-btn`, `.smc-egr-card`).
+
+### 3. PREFIXO OBRIGATÓRIO (SCSS)
 *   Toda e qualquer nova classe SCSS criada **DEVE** obrigatoriamente começar com o prefixo `smc-egr-`. Ex: `.smc-egr-user-profile { ... }`.
 
-### 3. SINTAXE DE TEMPLATE ANGULAR
-*   **SEMPRE** utilize a nova sintaxe de `Control Flow` introduzida no Angular 17.
-*   Use `@if` para renderização condicional em vez de `*ngIf`.
-*   Use `@for` para repetição de listas em vez de `*ngFor`.
-*   Use `@switch` para múltiplas condições em vez de `ngSwitch`.
+### 4. SINTAXE DE TEMPLATE ANGULAR
+*   **SEMPRE** utilize a nova sintaxe de `Control Flow` introduzida no Angular 17 (`@if`, `@for`, `@switch`).
 
 ---
 
@@ -59,7 +64,7 @@ Para cada nova funcionalidade ou tela a ser migrada, siga estritamente estas eta
 2.  Gere um arquivo Markdown na pasta `docs/` (ex: `docs/nome-da-tela.md`). Este arquivo deve conter:
     *   **Análise:** Objetivo da tela, Campos, Validações, Fluxo de Dados e Esboço da API.
     *   **Código Proposto:** Trechos de código (`.ts`, `.html`, `.scss`, C#) que serão implementados.
-    *   **Checklist de Implementação:** Uma lista detalhada de tarefas (ex: `[ ] Criar componente`, `[ ] Adicionar HTML`, `[ ] Chamar serviço`).
+    *   **Checklist de Implementação:** Uma lista detalhada de tarefas.
 3.  **PARE E PERGUNTE:** "A documentação, o código proposto e o checklist refletem o esperado? Podemos prosseguir?"
 
 ### FASE 2: DEFINIÇÃO DE ESCOPO (FRONT vs BACK)
@@ -67,12 +72,12 @@ Para cada nova funcionalidade ou tela a ser migrada, siga estritamente estas eta
 2.  Aguarde a instrução do usuário.
 
 ### FASE 3: IMPLEMENTAÇÃO
-1.  **ATUALIZE O CHECKLIST:** Marque o item no checklist do arquivo Markdown (ex: de `[ ]` para `[x]`) **imediatamente** após concluir cada tarefa.
+1.  **ATUALIZE O CHECKLIST:** Marque o item no checklist do arquivo Markdown (`[x]`) **imediatamente** após concluir cada tarefa.
 2.  **IMPLEMENTE O CÓDIGO:** Implemente o código **exatamente como foi aprovado** na Fase 1.
 *   **Se Frontend:**
     *   Gere os componentes Angular.
     *   Utilize componentes PrimeNG.
-    *   Aplique estilos usando **exclusivamente** as diretrizes da Seção 4.
+    *   Aplique estilos e sintaxe de template usando **exclusivamente** as diretrizes da Seção 4.
 *   **Se Backend:**
     *   Crie as Models, Controllers e Services em C#.
     *   Garanta que os DTOs reflitam a documentação aprovada.
