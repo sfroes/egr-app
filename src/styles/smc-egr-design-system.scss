@@ -1,0 +1,999 @@
+/**
+ * SMC-EGR Design System
+ * Sistema de design completo baseado na especificação visual
+ */
+
+:root {
+  /* ===================================
+     TOKENS DE CORES - PALETA PRINCIPAL
+     =================================== */
+  
+  /* Verde - Primary */
+  --smc-egr-green-50: #e8f5e9;
+  --smc-egr-green-100: #c8e6c9;
+  --smc-egr-green-200: #a5d6a7;
+  --smc-egr-green-300: #81c784;
+  --smc-egr-green-400: #66bb6a;
+  --smc-egr-green-500: #4caf50;
+  --smc-egr-green-600: #43a047;
+  --smc-egr-green-700: #388e3c;
+  --smc-egr-green-800: #2e7d32;
+  --smc-egr-green-900: #1b5e20;
+
+  /* Azul - Secondary */
+  --smc-egr-blue-50: #e3f2fd;
+  --smc-egr-blue-100: #bbdefb;
+  --smc-egr-blue-200: #90caf9;
+  --smc-egr-blue-300: #64b5f6;
+  --smc-egr-blue-400: #42a5f5;
+  --smc-egr-blue-500: #2196f3;
+  --smc-egr-blue-600: #1e88e5;
+  --smc-egr-blue-700: #1976d2;
+  --smc-egr-blue-800: #1565c0;
+  --smc-egr-blue-900: #0d47a1;
+
+  /* Vermelho - Error/Danger */
+  --smc-egr-red-50: #ffebee;
+  --smc-egr-red-100: #ffcdd2;
+  --smc-egr-red-200: #ef9a9a;
+  --smc-egr-red-300: #e57373;
+  --smc-egr-red-400: #ef5350;
+  --smc-egr-red-500: #f44336;
+  --smc-egr-red-600: #e53935;
+  --smc-egr-red-700: #d32f2f;
+  --smc-egr-red-800: #c62828;
+  --smc-egr-red-900: #b71c1c;
+
+  /* Rosa - Accent */
+  --smc-egr-pink-50: #fce4ec;
+  --smc-egr-pink-100: #f8bbd0;
+  --smc-egr-pink-200: #f48fb1;
+  --smc-egr-pink-300: #f06292;
+  --smc-egr-pink-400: #ec407a;
+  --smc-egr-pink-500: #e91e63;
+  --smc-egr-pink-600: #d81b60;
+  --smc-egr-pink-700: #c2185b;
+  --smc-egr-pink-800: #ad1457;
+  --smc-egr-pink-900: #880e4f;
+
+  /* Cinza - Neutral */
+  --smc-egr-gray-50: #fafafa;
+  --smc-egr-gray-100: #f5f5f5;
+  --smc-egr-gray-200: #eeeeee;
+  --smc-egr-gray-300: #e0e0e0;
+  --smc-egr-gray-400: #bdbdbd;
+  --smc-egr-gray-500: #9e9e9e;
+  --smc-egr-gray-600: #757575;
+  --smc-egr-gray-700: #616161;
+  --smc-egr-gray-800: #424242;
+  --smc-egr-gray-900: #212121;
+
+  /* ===================================
+     TOKENS SEMÂNTICOS
+     =================================== */
+  
+  --smc-egr-primary: var(--smc-egr-green-600);
+  --smc-egr-primary-hover: var(--smc-egr-green-700);
+  --smc-egr-primary-active: var(--smc-egr-green-800);
+  --smc-egr-primary-light: var(--smc-egr-green-100);
+  --smc-egr-primary-dark: var(--smc-egr-green-900);
+
+  --smc-egr-secondary: var(--smc-egr-blue-600);
+  --smc-egr-secondary-hover: var(--smc-egr-blue-700);
+  --smc-egr-secondary-active: var(--smc-egr-blue-800);
+  --smc-egr-secondary-light: var(--smc-egr-blue-100);
+  --smc-egr-secondary-dark: var(--smc-egr-blue-900);
+
+  --smc-egr-danger: var(--smc-egr-red-600);
+  --smc-egr-danger-hover: var(--smc-egr-red-700);
+  --smc-egr-danger-active: var(--smc-egr-red-800);
+  --smc-egr-danger-light: var(--smc-egr-red-100);
+  --smc-egr-danger-dark: var(--smc-egr-red-900);
+
+  --smc-egr-accent: var(--smc-egr-pink-500);
+  --smc-egr-accent-hover: var(--smc-egr-pink-600);
+  --smc-egr-accent-active: var(--smc-egr-pink-700);
+  --smc-egr-accent-light: var(--smc-egr-pink-100);
+  --smc-egr-accent-dark: var(--smc-egr-pink-900);
+
+  /* ===================================
+     SPACING - SISTEMA DE ESPAÇAMENTO
+     =================================== */
+  
+  --smc-egr-spacing-xs: 0.25rem;    /* 4px */
+  --smc-egr-spacing-sm: 0.5rem;     /* 8px */
+  --smc-egr-spacing-md: 1rem;       /* 16px */
+  --smc-egr-spacing-lg: 1.5rem;     /* 24px */
+  --smc-egr-spacing-xl: 2rem;       /* 32px */
+  --smc-egr-spacing-2xl: 3rem;      /* 48px */
+  --smc-egr-spacing-3xl: 4rem;      /* 64px */
+  --smc-egr-spacing-4xl: 6rem;      /* 96px */
+
+  /* ===================================
+     BORDER RADIUS
+     =================================== */
+  
+  --smc-egr-radius-none: 0;
+  --smc-egr-radius-sm: 0.25rem;     /* 4px */
+  --smc-egr-radius-md: 0.5rem;      /* 8px */
+  --smc-egr-radius-lg: 0.75rem;     /* 12px */
+  --smc-egr-radius-xl: 1rem;        /* 16px */
+  --smc-egr-radius-full: 9999px;
+
+  /* ===================================
+     SHADOWS - ELEVAÇÕES
+     =================================== */
+  
+  --smc-egr-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --smc-egr-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --smc-egr-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --smc-egr-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --smc-egr-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* ===================================
+     TRANSITIONS
+     =================================== */
+  
+  --smc-egr-transition-fast: 150ms ease-in-out;
+  --smc-egr-transition-normal: 250ms ease-in-out;
+  --smc-egr-transition-slow: 350ms ease-in-out;
+
+  /* ===================================
+     Z-INDEX
+     =================================== */
+  
+  --smc-egr-z-dropdown: 1000;
+  --smc-egr-z-sticky: 1020;
+  --smc-egr-z-fixed: 1030;
+  --smc-egr-z-modal-backdrop: 1040;
+  --smc-egr-z-modal: 1050;
+  --smc-egr-z-popover: 1060;
+  --smc-egr-z-tooltip: 1070;
+
+  /* ===================================
+     TYPOGRAPHY
+     =================================== */
+  
+  --smc-egr-font-size-xs: 0.75rem;      /* 12px */
+  --smc-egr-font-size-sm: 0.875rem;     /* 14px */
+  --smc-egr-font-size-base: 1rem;       /* 16px */
+  --smc-egr-font-size-lg: 1.125rem;     /* 18px */
+  --smc-egr-font-size-xl: 1.25rem;      /* 20px */
+  --smc-egr-font-size-2xl: 1.5rem;      /* 24px */
+  --smc-egr-font-size-3xl: 1.875rem;    /* 30px */
+  --smc-egr-font-size-4xl: 2.25rem;     /* 36px */
+
+  --smc-egr-font-weight-light: 300;
+  --smc-egr-font-weight-normal: 400;
+  --smc-egr-font-weight-medium: 500;
+  --smc-egr-font-weight-semibold: 600;
+  --smc-egr-font-weight-bold: 700;
+
+  --smc-egr-line-height-tight: 1.25;
+  --smc-egr-line-height-normal: 1.5;
+  --smc-egr-line-height-relaxed: 1.75;
+
+  /* ===================================
+     BORDERS
+     =================================== */
+  
+  --smc-egr-border-width: 1px;
+  --smc-egr-border-width-md: 2px;
+  --smc-egr-border-width-lg: 4px;
+  
+  --smc-egr-border-color: var(--smc-egr-gray-300);
+  --smc-egr-border-color-light: var(--smc-egr-gray-200);
+  --smc-egr-border-color-dark: var(--smc-egr-gray-400);
+
+  /* ===================================
+     BREAKPOINTS RESPONSIVOS
+     =================================== */
+  
+  --smc-egr-breakpoint-sm: 640px;
+  --smc-egr-breakpoint-md: 768px;
+  --smc-egr-breakpoint-lg: 1024px;
+  --smc-egr-breakpoint-xl: 1280px;
+  --smc-egr-breakpoint-2xl: 1536px;
+}
+
+/* ===================================
+   BOTÕES - BUTTONS
+   =================================== */
+
+.smc-egr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--smc-egr-spacing-sm);
+  padding: var(--smc-egr-spacing-sm) var(--smc-egr-spacing-md);
+  border-radius: var(--smc-egr-radius-md);
+  font-weight: var(--smc-egr-font-weight-medium);
+  font-size: var(--smc-egr-font-size-base);
+  line-height: var(--smc-egr-line-height-normal);
+  transition: all var(--smc-egr-transition-fast);
+  cursor: pointer;
+  border: var(--smc-egr-border-width) solid transparent;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.smc-egr-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Variantes de Botão - Primary */
+.smc-egr-btn-primary {
+  background-color: var(--smc-egr-primary);
+  color: white;
+  border-color: var(--smc-egr-primary);
+}
+
+.smc-egr-btn-primary:hover:not(:disabled) {
+  background-color: var(--smc-egr-primary-hover);
+  border-color: var(--smc-egr-primary-hover);
+}
+
+.smc-egr-btn-primary:active:not(:disabled) {
+  background-color: var(--smc-egr-primary-active);
+  border-color: var(--smc-egr-primary-active);
+}
+
+/* Variantes de Botão - Secondary */
+.smc-egr-btn-secondary {
+  background-color: var(--smc-egr-secondary);
+  color: white;
+  border-color: var(--smc-egr-secondary);
+}
+
+.smc-egr-btn-secondary:hover:not(:disabled) {
+  background-color: var(--smc-egr-secondary-hover);
+  border-color: var(--smc-egr-secondary-hover);
+}
+
+.smc-egr-btn-secondary:active:not(:disabled) {
+  background-color: var(--smc-egr-secondary-active);
+  border-color: var(--smc-egr-secondary-active);
+}
+
+/* Variantes de Botão - Danger */
+.smc-egr-btn-danger {
+  background-color: var(--smc-egr-danger);
+  color: white;
+  border-color: var(--smc-egr-danger);
+}
+
+.smc-egr-btn-danger:hover:not(:disabled) {
+  background-color: var(--smc-egr-danger-hover);
+  border-color: var(--smc-egr-danger-hover);
+}
+
+.smc-egr-btn-danger:active:not(:disabled) {
+  background-color: var(--smc-egr-danger-active);
+  border-color: var(--smc-egr-danger-active);
+}
+
+/* Variantes de Botão - Outline */
+.smc-egr-btn-outline {
+  background-color: transparent;
+  color: var(--smc-egr-primary);
+  border-color: var(--smc-egr-primary);
+}
+
+.smc-egr-btn-outline:hover:not(:disabled) {
+  background-color: var(--smc-egr-primary-light);
+}
+
+.smc-egr-btn-outline-secondary {
+  background-color: transparent;
+  color: var(--smc-egr-secondary);
+  border-color: var(--smc-egr-secondary);
+}
+
+.smc-egr-btn-outline-secondary:hover:not(:disabled) {
+  background-color: var(--smc-egr-secondary-light);
+}
+
+.smc-egr-btn-outline-danger {
+  background-color: transparent;
+  color: var(--smc-egr-danger);
+  border-color: var(--smc-egr-danger);
+}
+
+.smc-egr-btn-outline-danger:hover:not(:disabled) {
+  background-color: var(--smc-egr-danger-light);
+}
+
+/* Variantes de Botão - Ghost */
+.smc-egr-btn-ghost {
+  background-color: transparent;
+  color: var(--smc-egr-gray-700);
+  border-color: transparent;
+}
+
+.smc-egr-btn-ghost:hover:not(:disabled) {
+  background-color: var(--smc-egr-gray-100);
+}
+
+/* Tamanhos de Botão */
+.smc-egr-btn-sm {
+  padding: var(--smc-egr-spacing-xs) var(--smc-egr-spacing-sm);
+  font-size: var(--smc-egr-font-size-sm);
+}
+
+.smc-egr-btn-lg {
+  padding: var(--smc-egr-spacing-md) var(--smc-egr-spacing-lg);
+  font-size: var(--smc-egr-font-size-lg);
+}
+
+.smc-egr-btn-xl {
+  padding: var(--smc-egr-spacing-lg) var(--smc-egr-spacing-xl);
+  font-size: var(--smc-egr-font-size-xl);
+}
+
+/* Botão Full Width */
+.smc-egr-btn-block {
+  width: 100%;
+}
+
+/* ===================================
+   INPUTS - CAMPOS DE TEXTO
+   =================================== */
+
+.smc-egr-input {
+  display: block;
+  width: 100%;
+  padding: var(--smc-egr-spacing-sm) var(--smc-egr-spacing-md);
+  font-size: var(--smc-egr-font-size-base);
+  line-height: var(--smc-egr-line-height-normal);
+  color: var(--smc-egr-gray-900);
+  background-color: white;
+  border: var(--smc-egr-border-width) solid var(--smc-egr-border-color);
+  border-radius: var(--smc-egr-radius-md);
+  transition: all var(--smc-egr-transition-fast);
+}
+
+.smc-egr-input:focus {
+  outline: none;
+  border-color: var(--smc-egr-primary);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.smc-egr-input:disabled {
+  background-color: var(--smc-egr-gray-100);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.smc-egr-input::placeholder {
+  color: var(--smc-egr-gray-400);
+}
+
+/* Input com erro */
+.smc-egr-input-error {
+  border-color: var(--smc-egr-danger);
+}
+
+.smc-egr-input-error:focus {
+  border-color: var(--smc-egr-danger);
+  box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.1);
+}
+
+/* Input com sucesso */
+.smc-egr-input-success {
+  border-color: var(--smc-egr-primary);
+}
+
+/* Tamanhos de Input */
+.smc-egr-input-sm {
+  padding: var(--smc-egr-spacing-xs) var(--smc-egr-spacing-sm);
+  font-size: var(--smc-egr-font-size-sm);
+}
+
+.smc-egr-input-lg {
+  padding: var(--smc-egr-spacing-md) var(--smc-egr-spacing-lg);
+  font-size: var(--smc-egr-font-size-lg);
+}
+
+/* ===================================
+   CARDS
+   =================================== */
+
+.smc-egr-card {
+  background-color: white;
+  border: var(--smc-egr-border-width) solid var(--smc-egr-border-color);
+  border-radius: var(--smc-egr-radius-lg);
+  box-shadow: var(--smc-egr-shadow-sm);
+  overflow: hidden;
+}
+
+.smc-egr-card-header {
+  padding: var(--smc-egr-spacing-lg);
+  border-bottom: var(--smc-egr-border-width) solid var(--smc-egr-border-color);
+}
+
+.smc-egr-card-body {
+  padding: var(--smc-egr-spacing-lg);
+}
+
+.smc-egr-card-footer {
+  padding: var(--smc-egr-spacing-lg);
+  border-top: var(--smc-egr-border-width) solid var(--smc-egr-border-color);
+  background-color: var(--smc-egr-gray-50);
+}
+
+.smc-egr-card-hover {
+  transition: all var(--smc-egr-transition-normal);
+  cursor: pointer;
+}
+
+.smc-egr-card-hover:hover {
+  box-shadow: var(--smc-egr-shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* ===================================
+   BADGES
+   =================================== */
+
+.smc-egr-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--smc-egr-spacing-xs) var(--smc-egr-spacing-sm);
+  font-size: var(--smc-egr-font-size-xs);
+  font-weight: var(--smc-egr-font-weight-medium);
+  line-height: 1;
+  border-radius: var(--smc-egr-radius-full);
+  white-space: nowrap;
+}
+
+.smc-egr-badge-primary {
+  background-color: var(--smc-egr-primary-light);
+  color: var(--smc-egr-primary-dark);
+}
+
+.smc-egr-badge-secondary {
+  background-color: var(--smc-egr-secondary-light);
+  color: var(--smc-egr-secondary-dark);
+}
+
+.smc-egr-badge-danger {
+  background-color: var(--smc-egr-danger-light);
+  color: var(--smc-egr-danger-dark);
+}
+
+.smc-egr-badge-accent {
+  background-color: var(--smc-egr-accent-light);
+  color: var(--smc-egr-accent-dark);
+}
+
+.smc-egr-badge-neutral {
+  background-color: var(--smc-egr-gray-200);
+  color: var(--smc-egr-gray-800);
+}
+
+/* ===================================
+   ALERTS
+   =================================== */
+
+.smc-egr-alert {
+  padding: var(--smc-egr-spacing-md);
+  border-radius: var(--smc-egr-radius-md);
+  border: var(--smc-egr-border-width) solid transparent;
+}
+
+.smc-egr-alert-success {
+  background-color: var(--smc-egr-green-50);
+  border-color: var(--smc-egr-green-200);
+  color: var(--smc-egr-green-900);
+}
+
+.smc-egr-alert-info {
+  background-color: var(--smc-egr-blue-50);
+  border-color: var(--smc-egr-blue-200);
+  color: var(--smc-egr-blue-900);
+}
+
+.smc-egr-alert-warning {
+  background-color: #fff8e1;
+  border-color: #ffe082;
+  color: #f57f17;
+}
+
+.smc-egr-alert-danger {
+  background-color: var(--smc-egr-red-50);
+  border-color: var(--smc-egr-red-200);
+  color: var(--smc-egr-red-900);
+}
+
+/* ===================================
+   TABLES
+   =================================== */
+
+.smc-egr-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.smc-egr-table thead {
+  background-color: var(--smc-egr-gray-50);
+  border-bottom: var(--smc-egr-border-width-md) solid var(--smc-egr-border-color);
+}
+
+.smc-egr-table th {
+  padding: var(--smc-egr-spacing-md);
+  text-align: left;
+  font-weight: var(--smc-egr-font-weight-semibold);
+  color: var(--smc-egr-gray-700);
+  font-size: var(--smc-egr-font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.smc-egr-table td {
+  padding: var(--smc-egr-spacing-md);
+  border-bottom: var(--smc-egr-border-width) solid var(--smc-egr-border-color-light);
+}
+
+.smc-egr-table tbody tr:hover {
+  background-color: var(--smc-egr-gray-50);
+}
+
+.smc-egr-table-striped tbody tr:nth-child(even) {
+  background-color: var(--smc-egr-gray-50);
+}
+
+/* ===================================
+   LABELS E FORMULÁRIOS
+   =================================== */
+
+.smc-egr-label {
+  display: block;
+  margin-bottom: var(--smc-egr-spacing-xs);
+  font-size: var(--smc-egr-font-size-sm);
+  font-weight: var(--smc-egr-font-weight-medium);
+  color: var(--smc-egr-gray-700);
+}
+
+.smc-egr-label-required::after {
+  content: ' *';
+  color: var(--smc-egr-danger);
+}
+
+.smc-egr-form-group {
+  margin-bottom: var(--smc-egr-spacing-lg);
+}
+
+.smc-egr-form-help {
+  display: block;
+  margin-top: var(--smc-egr-spacing-xs);
+  font-size: var(--smc-egr-font-size-sm);
+  color: var(--smc-egr-gray-600);
+}
+
+.smc-egr-form-error {
+  display: block;
+  margin-top: var(--smc-egr-spacing-xs);
+  font-size: var(--smc-egr-font-size-sm);
+  color: var(--smc-egr-danger);
+}
+
+/* ===================================
+   CHECKBOXES E RADIO BUTTONS
+   =================================== */
+
+.smc-egr-checkbox,
+.smc-egr-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--smc-egr-spacing-sm);
+  cursor: pointer;
+}
+
+.smc-egr-checkbox input[type="checkbox"],
+.smc-egr-radio input[type="radio"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  cursor: pointer;
+  accent-color: var(--smc-egr-primary);
+}
+
+/* ===================================
+   GRIDS E LAYOUTS
+   =================================== */
+
+.smc-egr-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--smc-egr-spacing-md);
+}
+
+.smc-egr-container-sm {
+  max-width: 640px;
+}
+
+.smc-egr-container-lg {
+  max-width: 1536px;
+}
+
+.smc-egr-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--smc-egr-spacing-md);
+}
+
+.smc-egr-col {
+  flex: 1;
+  min-width: 0;
+}
+
+.smc-egr-col-auto {
+  flex: 0 0 auto;
+}
+
+.smc-egr-grid {
+  display: grid;
+  gap: var(--smc-egr-spacing-md);
+}
+
+.smc-egr-grid-cols-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.smc-egr-grid-cols-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.smc-egr-grid-cols-4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.smc-egr-grid-cols-6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+/* ===================================
+   SPACING UTILITIES
+   =================================== */
+
+.smc-egr-m-0 { margin: 0; }
+.smc-egr-m-xs { margin: var(--smc-egr-spacing-xs); }
+.smc-egr-m-sm { margin: var(--smc-egr-spacing-sm); }
+.smc-egr-m-md { margin: var(--smc-egr-spacing-md); }
+.smc-egr-m-lg { margin: var(--smc-egr-spacing-lg); }
+.smc-egr-m-xl { margin: var(--smc-egr-spacing-xl); }
+
+.smc-egr-mt-0 { margin-top: 0; }
+.smc-egr-mt-xs { margin-top: var(--smc-egr-spacing-xs); }
+.smc-egr-mt-sm { margin-top: var(--smc-egr-spacing-sm); }
+.smc-egr-mt-md { margin-top: var(--smc-egr-spacing-md); }
+.smc-egr-mt-lg { margin-top: var(--smc-egr-spacing-lg); }
+.smc-egr-mt-xl { margin-top: var(--smc-egr-spacing-xl); }
+
+.smc-egr-mb-0 { margin-bottom: 0; }
+.smc-egr-mb-xs { margin-bottom: var(--smc-egr-spacing-xs); }
+.smc-egr-mb-sm { margin-bottom: var(--smc-egr-spacing-sm); }
+.smc-egr-mb-md { margin-bottom: var(--smc-egr-spacing-md); }
+.smc-egr-mb-lg { margin-bottom: var(--smc-egr-spacing-lg); }
+.smc-egr-mb-xl { margin-bottom: var(--smc-egr-spacing-xl); }
+
+.smc-egr-ml-0 { margin-left: 0; }
+.smc-egr-ml-xs { margin-left: var(--smc-egr-spacing-xs); }
+.smc-egr-ml-sm { margin-left: var(--smc-egr-spacing-sm); }
+.smc-egr-ml-md { margin-left: var(--smc-egr-spacing-md); }
+.smc-egr-ml-lg { margin-left: var(--smc-egr-spacing-lg); }
+.smc-egr-ml-xl { margin-left: var(--smc-egr-spacing-xl); }
+
+.smc-egr-mr-0 { margin-right: 0; }
+.smc-egr-mr-xs { margin-right: var(--smc-egr-spacing-xs); }
+.smc-egr-mr-sm { margin-right: var(--smc-egr-spacing-sm); }
+.smc-egr-mr-md { margin-right: var(--smc-egr-spacing-md); }
+.smc-egr-mr-lg { margin-right: var(--smc-egr-spacing-lg); }
+.smc-egr-mr-xl { margin-right: var(--smc-egr-spacing-xl); }
+
+.smc-egr-p-0 { padding: 0; }
+.smc-egr-p-xs { padding: var(--smc-egr-spacing-xs); }
+.smc-egr-p-sm { padding: var(--smc-egr-spacing-sm); }
+.smc-egr-p-md { padding: var(--smc-egr-spacing-md); }
+.smc-egr-p-lg { padding: var(--smc-egr-spacing-lg); }
+.smc-egr-p-xl { padding: var(--smc-egr-spacing-xl); }
+
+.smc-egr-pt-0 { padding-top: 0; }
+.smc-egr-pt-xs { padding-top: var(--smc-egr-spacing-xs); }
+.smc-egr-pt-sm { padding-top: var(--smc-egr-spacing-sm); }
+.smc-egr-pt-md { padding-top: var(--smc-egr-spacing-md); }
+.smc-egr-pt-lg { padding-top: var(--smc-egr-spacing-lg); }
+.smc-egr-pt-xl { padding-top: var(--smc-egr-spacing-xl); }
+
+.smc-egr-pb-0 { padding-bottom: 0; }
+.smc-egr-pb-xs { padding-bottom: var(--smc-egr-spacing-xs); }
+.smc-egr-pb-sm { padding-bottom: var(--smc-egr-spacing-sm); }
+.smc-egr-pb-md { padding-bottom: var(--smc-egr-spacing-md); }
+.smc-egr-pb-lg { padding-bottom: var(--smc-egr-spacing-lg); }
+.smc-egr-pb-xl { padding-bottom: var(--smc-egr-spacing-xl); }
+
+.smc-egr-pl-0 { padding-left: 0; }
+.smc-egr-pl-xs { padding-left: var(--smc-egr-spacing-xs); }
+.smc-egr-pl-sm { padding-left: var(--smc-egr-spacing-sm); }
+.smc-egr-pl-md { padding-left: var(--smc-egr-spacing-md); }
+.smc-egr-pl-lg { padding-left: var(--smc-egr-spacing-lg); }
+.smc-egr-pl-xl { padding-left: var(--smc-egr-spacing-xl); }
+
+.smc-egr-pr-0 { padding-right: 0; }
+.smc-egr-pr-xs { padding-right: var(--smc-egr-spacing-xs); }
+.smc-egr-pr-sm { padding-right: var(--smc-egr-spacing-sm); }
+.smc-egr-pr-md { padding-right: var(--smc-egr-spacing-md); }
+.smc-egr-pr-lg { padding-right: var(--smc-egr-spacing-lg); }
+.smc-egr-pr-xl { padding-right: var(--smc-egr-spacing-xl); }
+
+/* ===================================
+   TEXT UTILITIES
+   =================================== */
+
+.smc-egr-text-xs { font-size: var(--smc-egr-font-size-xs); }
+.smc-egr-text-sm { font-size: var(--smc-egr-font-size-sm); }
+.smc-egr-text-base { font-size: var(--smc-egr-font-size-base); }
+.smc-egr-text-lg { font-size: var(--smc-egr-font-size-lg); }
+.smc-egr-text-xl { font-size: var(--smc-egr-font-size-xl); }
+.smc-egr-text-2xl { font-size: var(--smc-egr-font-size-2xl); }
+.smc-egr-text-3xl { font-size: var(--smc-egr-font-size-3xl); }
+.smc-egr-text-4xl { font-size: var(--smc-egr-font-size-4xl); }
+
+.smc-egr-text-light { font-weight: var(--smc-egr-font-weight-light); }
+.smc-egr-text-normal { font-weight: var(--smc-egr-font-weight-normal); }
+.smc-egr-text-medium { font-weight: var(--smc-egr-font-weight-medium); }
+.smc-egr-text-semibold { font-weight: var(--smc-egr-font-weight-semibold); }
+.smc-egr-text-bold { font-weight: var(--smc-egr-font-weight-bold); }
+
+.smc-egr-text-left { text-align: left; }
+.smc-egr-text-center { text-align: center; }
+.smc-egr-text-right { text-align: right; }
+
+.smc-egr-text-primary { color: var(--smc-egr-primary); }
+.smc-egr-text-secondary { color: var(--smc-egr-secondary); }
+.smc-egr-text-danger { color: var(--smc-egr-danger); }
+.smc-egr-text-accent { color: var(--smc-egr-accent); }
+.smc-egr-text-muted { color: var(--smc-egr-gray-600); }
+
+/* ===================================
+   BACKGROUND UTILITIES
+   =================================== */
+
+.smc-egr-bg-primary { background-color: var(--smc-egr-primary); }
+.smc-egr-bg-secondary { background-color: var(--smc-egr-secondary); }
+.smc-egr-bg-danger { background-color: var(--smc-egr-danger); }
+.smc-egr-bg-accent { background-color: var(--smc-egr-accent); }
+.smc-egr-bg-light { background-color: var(--smc-egr-gray-50); }
+.smc-egr-bg-white { background-color: white; }
+
+/* ===================================
+   DISPLAY UTILITIES
+   =================================== */
+
+.smc-egr-d-none { display: none; }
+.smc-egr-d-block { display: block; }
+.smc-egr-d-inline { display: inline; }
+.smc-egr-d-inline-block { display: inline-block; }
+.smc-egr-d-flex { display: flex; }
+.smc-egr-d-inline-flex { display: inline-flex; }
+.smc-egr-d-grid { display: grid; }
+
+/* ===================================
+   FLEX UTILITIES
+   =================================== */
+
+.smc-egr-flex-row { flex-direction: row; }
+.smc-egr-flex-column { flex-direction: column; }
+.smc-egr-flex-wrap { flex-wrap: wrap; }
+.smc-egr-flex-nowrap { flex-wrap: nowrap; }
+
+.smc-egr-justify-start { justify-content: flex-start; }
+.smc-egr-justify-center { justify-content: center; }
+.smc-egr-justify-end { justify-content: flex-end; }
+.smc-egr-justify-between { justify-content: space-between; }
+.smc-egr-justify-around { justify-content: space-around; }
+
+.smc-egr-items-start { align-items: flex-start; }
+.smc-egr-items-center { align-items: center; }
+.smc-egr-items-end { align-items: flex-end; }
+.smc-egr-items-stretch { align-items: stretch; }
+
+.smc-egr-gap-xs { gap: var(--smc-egr-spacing-xs); }
+.smc-egr-gap-sm { gap: var(--smc-egr-spacing-sm); }
+.smc-egr-gap-md { gap: var(--smc-egr-spacing-md); }
+.smc-egr-gap-lg { gap: var(--smc-egr-spacing-lg); }
+.smc-egr-gap-xl { gap: var(--smc-egr-spacing-xl); }
+
+/* ===================================
+   BORDER UTILITIES
+   =================================== */
+
+.smc-egr-border { border: var(--smc-egr-border-width) solid var(--smc-egr-border-color); }
+.smc-egr-border-top { border-top: var(--smc-egr-border-width) solid var(--smc-egr-border-color); }
+.smc-egr-border-right { border-right: var(--smc-egr-border-width) solid var(--smc-egr-border-color); }
+.smc-egr-border-bottom { border-bottom: var(--smc-egr-border-width) solid var(--smc-egr-border-color); }
+.smc-egr-border-left { border-left: var(--smc-egr-border-width) solid var(--smc-egr-border-color); }
+
+.smc-egr-rounded-none { border-radius: var(--smc-egr-radius-none); }
+.smc-egr-rounded-sm { border-radius: var(--smc-egr-radius-sm); }
+.smc-egr-rounded-md { border-radius: var(--smc-egr-radius-md); }
+.smc-egr-rounded-lg { border-radius: var(--smc-egr-radius-lg); }
+.smc-egr-rounded-xl { border-radius: var(--smc-egr-radius-xl); }
+.smc-egr-rounded-full { border-radius: var(--smc-egr-radius-full); }
+
+/* ===================================
+   SHADOW UTILITIES
+   =================================== */
+
+.smc-egr-shadow-sm { box-shadow: var(--smc-egr-shadow-sm); }
+.smc-egr-shadow-md { box-shadow: var(--smc-egr-shadow-md); }
+.smc-egr-shadow-lg { box-shadow: var(--smc-egr-shadow-lg); }
+.smc-egr-shadow-xl { box-shadow: var(--smc-egr-shadow-xl); }
+.smc-egr-shadow-2xl { box-shadow: var(--smc-egr-shadow-2xl); }
+.smc-egr-shadow-none { box-shadow: none; }
+
+/* ===================================
+   DIVIDER
+   =================================== */
+
+.smc-egr-divider {
+  height: var(--smc-egr-border-width);
+  background-color: var(--smc-egr-border-color);
+  border: none;
+  margin: var(--smc-egr-spacing-md) 0;
+}
+
+.smc-egr-divider-vertical {
+  width: var(--smc-egr-border-width);
+  height: 100%;
+  background-color: var(--smc-egr-border-color);
+  margin: 0 var(--smc-egr-spacing-md);
+}
+
+/* ===================================
+   RESPONSIVE UTILITIES - MEDIA QUERIES
+   =================================== */
+
+/* Mobile First - Classes base são para mobile */
+
+/* Tablet e acima (768px+) */
+@media (min-width: 768px) {
+  .smc-egr-grid-md-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .smc-egr-grid-md-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .smc-egr-grid-md-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .smc-egr-grid-md-cols-6 { grid-template-columns: repeat(6, 1fr); }
+  
+  .smc-egr-d-md-none { display: none; }
+  .smc-egr-d-md-block { display: block; }
+  .smc-egr-d-md-flex { display: flex; }
+  .smc-egr-d-md-grid { display: grid; }
+  
+  .smc-egr-flex-md-row { flex-direction: row; }
+  .smc-egr-flex-md-column { flex-direction: column; }
+  
+  .smc-egr-text-md-left { text-align: left; }
+  .smc-egr-text-md-center { text-align: center; }
+  .smc-egr-text-md-right { text-align: right; }
+}
+
+/* Desktop e acima (1024px+) */
+@media (min-width: 1024px) {
+  .smc-egr-grid-lg-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .smc-egr-grid-lg-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .smc-egr-grid-lg-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .smc-egr-grid-lg-cols-6 { grid-template-columns: repeat(6, 1fr); }
+  
+  .smc-egr-d-lg-none { display: none; }
+  .smc-egr-d-lg-block { display: block; }
+  .smc-egr-d-lg-flex { display: flex; }
+  .smc-egr-d-lg-grid { display: grid; }
+  
+  .smc-egr-flex-lg-row { flex-direction: row; }
+  .smc-egr-flex-lg-column { flex-direction: column; }
+  
+  .smc-egr-text-lg-left { text-align: left; }
+  .smc-egr-text-lg-center { text-align: center; }
+  .smc-egr-text-lg-right { text-align: right; }
+}
+
+/* Large Desktop (1280px+) */
+@media (min-width: 1280px) {
+  .smc-egr-grid-xl-cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .smc-egr-grid-xl-cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .smc-egr-grid-xl-cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .smc-egr-grid-xl-cols-6 { grid-template-columns: repeat(6, 1fr); }
+  
+  .smc-egr-d-xl-none { display: none; }
+  .smc-egr-d-xl-block { display: block; }
+  .smc-egr-d-xl-flex { display: flex; }
+  .smc-egr-d-xl-grid { display: grid; }
+}
+
+/* Responsive Grid - Adapta automaticamente */
+.smc-egr-grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--smc-egr-spacing-md);
+}
+
+.smc-egr-grid-responsive-sm {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--smc-egr-spacing-sm);
+}
+
+.smc-egr-grid-responsive-lg {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--smc-egr-spacing-lg);
+}
+
+/* Container responsivo com padding adaptativo */
+@media (max-width: 640px) {
+  .smc-egr-container {
+    padding: 0 var(--smc-egr-spacing-sm);
+  }
+  
+  .smc-egr-grid-cols-2,
+  .smc-egr-grid-cols-3,
+  .smc-egr-grid-cols-4,
+  .smc-egr-grid-cols-6 {
+    grid-template-columns: 1fr;
+  }
+  
+  .smc-egr-card-header,
+  .smc-egr-card-body,
+  .smc-egr-card-footer {
+    padding: var(--smc-egr-spacing-md);
+  }
+}
+
+/* Tabelas responsivas */
+@media (max-width: 768px) {
+  .smc-egr-table-responsive {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .smc-egr-table-responsive .smc-egr-table {
+    min-width: 600px;
+  }
+}
+
+/* Hide/Show em mobile */
+.smc-egr-d-mobile-none {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .smc-egr-d-mobile-none {
+    display: block;
+  }
+  
+  .smc-egr-d-desktop-none {
+    display: none;
+  }
+}
+
+/* Espaçamento responsivo */
+@media (max-width: 640px) {
+  .smc-egr-m-responsive { margin: var(--smc-egr-spacing-sm); }
+  .smc-egr-p-responsive { padding: var(--smc-egr-spacing-sm); }
+  .smc-egr-gap-responsive { gap: var(--smc-egr-spacing-sm); }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .smc-egr-m-responsive { margin: var(--smc-egr-spacing-md); }
+  .smc-egr-p-responsive { padding: var(--smc-egr-spacing-md); }
+  .smc-egr-gap-responsive { gap: var(--smc-egr-spacing-md); }
+}
+
+@media (min-width: 1025px) {
+  .smc-egr-m-responsive { margin: var(--smc-egr-spacing-lg); }
+  .smc-egr-p-responsive { padding: var(--smc-egr-spacing-lg); }
+  .smc-egr-gap-responsive { gap: var(--smc-egr-spacing-lg); }
+}
