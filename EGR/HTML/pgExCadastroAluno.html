@@ -1,0 +1,1000 @@
+<HTML>
+<HEAD>
+<SCRIPT $AG><!--
+method handle_btnPsqEndereco_onClick()
+{
+	if (Page.fldCEP.value != '') 
+	{
+		if (isNaN(Page.fldCEP.value)) 
+		{ 
+			alert("O campo 'CEP' só aceita números.");
+			Page.fldCEP.focus();
+			Page.fldCEP.select();
+			return;
+		}
+		if (Page.fldCEP.value.length < 8) 
+		{
+			alert("O campo 'CEP' deve ter 8 dígitos.");
+			Page.fldCEP.focus();
+			Page.fldCEP.select();
+			return;
+		}
+		
+		Page.fldEvento.value = "ENDERECO";
+//		Page.submit(Page.btnPsqEndereco.name);
+		Page.submit();
+	}
+	else 
+	{
+		alert("Preencha o CEP.");
+		Page.fldCEP.focus();
+	}
+
+}
+
+
+
+method handle_btnEnviar_onClick()
+{
+	if (dadosValidos()) 
+	{
+		Page.fldEvento.value = "ENVIAR";
+		Page.submit();
+	}
+}
+
+
+
+function dadosValidos() 
+{
+	// NOME ***************************************************
+	if (Page.fldNome.value == '')
+	{
+		alert("Preencha o campo 'NOME'.");
+		Page.fldNome.focus();
+		return false;
+	}
+	else
+	{
+		sCH = validaNomes(Page.fldNome.value.toUpperCase());
+		if (sCH != "") 
+		{
+			alert ("O caracter     " + sCH + "     é inválido no campo 'NOME'.");
+			Page.fldNome.focus();	
+			Page.fldNome.select();	
+			return false;
+		}
+	}
+
+
+	// DATA DE NASCIMENTO ******************************************************
+	if (Page.fldDataNasc.value == "") 
+	{	
+    	alert("Informe a DATA DE NASCIMENTO.");
+    	Page.fldDataNasc.focus();
+		return(false);
+	}
+	else if (!checaData("fldDataNasc", Page.fldDataNasc.value))
+	{
+		Page.fldDataNasc.select();
+		return false;
+	}
+
+
+
+	// UNIDADE ***************************************************
+	if (Page.chOrigem.value == 0)
+	{
+		alert("Selecione o campo 'ORIGEM'.");
+		Page.chOrigem.focus();
+		return false;
+	}
+
+
+	// CURSO ***************************************************
+	if (Page.chCurso.value == 0)
+	{
+		alert("Selecione o campo 'CURSO'.");
+		Page.chCurso.focus();
+		return false;
+	}
+
+
+	// ANO DE FORMATURA ****************************************
+	if (Page.fldAnoFormado.value == '')
+	{
+		alert("Preencha o campo 'ANO DE FORMATURA'.");
+		Page.fldAnoFormado.focus();
+		return false;
+	}
+	else if (isNaN(Page.fldAnoFormado.value)) 
+	{ 
+		alert("O campo 'ANO DE FORMATURA' só aceita números.");
+		Page.fldAnoFormado.focus();
+		Page.fldAnoFormado.select();
+		return false;
+	}
+	if (Page.fldAnoFormado.value.length < 4) 
+	{
+		alert("O campo 'ANO DE FORMATURA' deve ter 4 dígitos.");
+		Page.fldAnoFormado.focus();
+		Page.fldAnoFormado.select();
+		return;
+	}
+
+
+	// E-MAIL
+	if (Page.fldEmail.value == '')
+	{
+		alert("Preencha o campo 'E-MAIL'.");
+		Page.fldEmail.focus();
+		return false;
+	}
+	else if (Page.fldEmail.value != '' && !checaEmail(Page.fldEmail.value)) 
+	{
+		Page.fldEmail.focus();
+		Page.fldEmail.select();
+		return false;
+	}
+
+
+
+	// TELEFONE CONTATO *****************************************************
+	if (Page.fldDDDContato.value == '')
+	{
+		alert("Preencha o 'DDD' do telefone de contato.");
+		Page.fldDDDContato.focus();
+		return false;
+	}
+	else if (isNaN(Page.fldDDDContato.value)) 
+	{ 
+		alert("O campo 'DDD' telefone de contato só aceita números.");
+		Page.fldDDDContato.focus();
+		Page.fldDDDContato.select();
+		return false;
+	}
+	
+	if (Page.fldTelContato.value == '')
+	{
+		alert("Preencha o 'NÚMERO' do telefone de contato.");
+		Page.fldTelContato.focus();
+		return false;
+	}
+//	else if (isNaN(Page.fldTelContato.value)) 
+//	{ 
+//		alert("O campo 'TELEFONE DE CONTATO' só aceita númeroS.");
+//		Page.fldTelContato.focus();
+//		Page.fldTelContato.select();
+//		return false;
+//	}
+
+	if ((Page.fldDDDContato.value == '') && (Page.fldTelContato.value != ''))
+	{
+		alert("Telefone de contato informado sem o DDD.");
+		Page.fldDDDContato.focus();
+		return false;
+	}
+	else if ((Page.fldDDDContato.value != '') && (Page.fldTelContato.value == ''))
+	{
+		alert("DDD do telefone de contato informado sem o número.");
+		Page.fldTelContato.focus();
+		return false;
+	}
+
+
+
+
+	// TELEFONE CELULAR ************************************************
+	if ((Page.fldDDDCelular.value == '') && (Page.fldTelCelular.value != ''))
+	{
+		alert("Telefone celular informado sem o DDD.");
+		Page.fldDDDCelular.focus();
+		return false;
+	}
+	else if ((Page.fldDDDCelular.value != '') && (Page.fldTelCelular.value == ''))
+	{
+		alert("DDD do celular informado sem o número.");
+		Page.fldTelCelular.focus();
+		return false;
+	}
+	else if (isNaN(Page.fldDDDCelular.value)) 
+	{ 
+		alert("O campo 'DDD' do relefone celular só aceita números.");
+		Page.fldDDDCelular.focus();
+		Page.fldDDDCelular.select();
+		return false;
+	}
+//	else if (isNaN(Page.fldTelCelular.value)) 
+//	{ 
+//		alert("O campo 'TELEFONE CELULAR' só aceita números.");
+//		Page.fldTelCelular.focus();
+//		Page.fldTelCelular.select();
+//		return false;
+//	}
+
+
+
+
+
+	// CEP ***********************************************************
+	if (isNaN(Page.fldCEP.value)) 
+	{ 
+		alert("\"CEP\" inválido.");
+		Page.fldCEP.focus();
+		Page.fldCEP.select();
+		return false;
+	}
+	if (Page.fldCEP.value.length < 8) 
+	{
+		alert("Preencha o campo \"CEP\" com 8 dígitos.");
+		Page.fldCEP.focus();
+		Page.fldCEP.select();
+		return false;
+	}
+
+	// LOGRADOURO **********************************************************
+	if (Page.fldLogradouro.value == '')
+	{
+		alert("Preencha o campo 'RUA/AVENIDA'");
+		Page.fldLogradouro.focus();
+		Page.fldLogradouro.select();
+		return false;
+	}
+
+	// NÚMERO **************************************************************
+	if (Page.fldNumero.value == '') 
+	{
+		alert("Preencha o campo 'NÚMERO' do endereço.");
+		Page.fldNumero.focus();
+		Page.fldNumero.select();
+		return false;
+	}
+//	else 
+//	{
+//		if (isNaN(Page.fldNumero.value)) 
+//		{ 
+//			alert("Campo 'NÚMERO' inválido.");
+//			Page.fldNumero.focus();
+//			Page.fldNumero.select();
+//			return false;
+//		}
+//	}
+
+
+	return true;
+}
+
+
+
+
+
+function validaNomes(sNome)
+{
+  	var i, j;
+	var checkNum = "0123456789";
+	var checkStr = sNome;
+	var bNumero = false;
+	var bCaracter = false;
+	var ch = "";
+
+  	for (i = 0;  i < checkStr.length;  i++)
+  	{
+    	ch = checkStr.charAt(i);
+    	for (j = 0;  j < checkNum.length;  j++)
+		{
+      		if (ch == checkNum.charAt(j))
+			{
+				bNumero = true;
+        		break;
+			}
+			if ((ch == ".") || (ch == ",") || (ch == "!") || (ch == "@") || (ch == "#") || (ch == "$") || (ch == "%") || (ch == "¨") || (ch == "&") || (ch == "*") || (ch == "(") || (ch == ")") || (ch == "+") || (ch == "/") || (ch == "<") || (ch == ">") || (ch == ";") || (ch == "?") || (ch == "[") || (ch == "]") || (ch == "{") || (ch == "}") || (ch == "§") || (ch == "£") || (ch == "¢") || (ch == "|") )
+			{
+				bCaracter = true;
+				break;
+			}
+		}
+
+		if ((bNumero) || (bCaracter))
+			break;
+  	}
+
+  	if ((bNumero) || (bCaracter))
+		return (ch);
+	else
+		return ("");
+}
+
+
+
+
+function checaEmail(email) 
+{
+	if (email == "") 
+	{
+		alert("Informe seu e-mail.");
+		return false;
+	}
+	else 
+	{
+		prim = email.indexOf("@")
+
+		if(prim < 0) 
+		{
+			alert("Endereço de e-mail inválido. Falta o símbolo \"@\".");
+			return false;
+		}
+		if(prim == 0) 
+		{
+			alert("O endereço de e-mail não pode iniciar com o símbolo \"@\".");
+			return false;
+		}
+		if((prim + 1) == email.length) 
+		{
+			alert("O endereço de e-mail não pode terminar com o símbolo \"@\".");
+			return false;
+		}
+		if(email.indexOf("@",prim + 1) != -1) 
+		{
+			alert("Endereço de e-mail inválido. Não pode haver mais de um símbolo \"@\".");
+			return false;
+		}
+		if(email.indexOf(".",prim + 1) < 0) 
+		{
+			alert("Endereço de e-mail inválido. Deve haver ao menos um PONTO após o símbolo \"@\".");
+			return false;
+		}
+		if(email.indexOf(".") == 0) 
+		{
+			alert("O endereço de e-mail não pode iniciar com  \"PONTO\".");
+			return false;
+		}
+		if(email.indexOf(" ") != -1) 
+		{
+			alert("O endereço de e-mail não pode conter espaços em branco.");
+			return false;
+		}
+		if(email.indexOf("zipmeil.com") > 0) 
+		{
+			alert("Endereço de e-mail inválido. (zipmeil)");
+			return false;
+		}
+		if(email.indexOf("hotmeil.com") > 0) 
+		{
+			alert("Endereço de e-mail inválido. (hotmeil)");
+			return false;
+		}
+		if(email.indexOf(".@") > 0) 
+		{
+			alert("Endereço de e-mail inválido. (.@)");
+			return false;
+		}
+		if(email.indexOf("@.") > 0) 
+		{
+			alert("Endereço de e-mail inválido. (@.)");
+			return false;
+		}
+		if(email.indexOf(".com.br.") > 0) 
+		{
+			alert("Endereço de e-mail inválido. (.com.br.)");
+			return false;
+		}
+		if(email.indexOf("..") > 0) 
+		{
+			alert("O endereço incorreto. Verifica a ocorrência de \"..\"");
+			return false;
+		}
+
+
+		var CaracteresValidos = /[^ a-z0123456789.@_-]/;	
+		
+		if (CaracteresValidos.test(email))
+		{
+			alert ("Endereço de e-mail inválido.\n\nSó são aceitos caracteres alfanuméricos não acenturados e os símbolos\n\nARROBA ( @ ) \nPONTO ( . ) \nHÍFEM ( - ) \nUNDERLINE ( _ ) ");
+			return false;
+		}
+	
+		// tudo que esta dentro desta lista, ou seja, apos o ^ e antes do ],
+		// eh aceito e nao sera substituido.
+		// tudo o que nao esta nesta lista sera eliminado da string
+		// obs: 1) /xxxxx/ define a expressao regular
+		//		2) [xxxxx] define a lista
+		//		3) ^ nega a lista
+		//		4) !-} compreende o intervalo de ! a } na tabela ASCII, ou seja,
+		//		   aeibkldajslASD45.,<642 etc, etc, estao incluidos
+		//		5) \n\r\f sao escapes (como em C)
+	
+//		var rexp = /[^ !-}áÁàÀâÂãÃéÉêÊíÍóÓôÔõÕúÚüÜçÇ´`ªº¹²³£¢§°\n\r\f]/;	
+//		while (rexp.test(email)) 
+//		{
+//			email = email.replace(rexp, "");
+//		}
+			
+
+	}
+
+	return true;
+}
+method handle_btnCancelar_onClick()
+{
+		Page.fldEvento.value = "CANCELAR";
+		Page.submit();
+}
+
+method handle_btnSalvar_onClick()
+{
+		Page.fldEvento.value = "SALVAR";
+		Page.submit();
+}
+
+function selCurso()
+{
+	Page.fldEvento.value = "SelCurso";
+	Page.submit();
+}
+
+
+
+function checaData(nomeobjeto,meuvalor) 
+{
+	var mnomes="JanFevMarAbrMaiJunJulAgoSetOutNovDez"
+   	var mvalores="312831303130313130313031"
+   	var mensagemalerta=""
+   	var parafoco="this."+nomeobjeto+".focus()"
+   	var datainvalida=true
+
+   	if ((meuvalor.length<10)||(meuvalor.length>10)) 
+	{
+     	alert ("DATA DE NASCIMENTO inválida. \nUtilize o formato     dd/mm/aaaa")
+     	return (false)
+   	}
+   	if ((meuvalor.substring(2,3)!="/")||(meuvalor.substring(5,6)!="/")) 
+	{
+    	alert ("DATA DE NASCIMENTO inválida. \nUtilize o formato     dd/mm/aaaa")
+     	return (false)
+   	}
+
+	var bNumero = checaInt(meuvalor.substring(0,2));
+	if (!bNumero)
+	{
+    	alert ("DATA DE NASCIMENTO inválida. \nO DIA só pode conter caracteres numéricos.")
+     	return (false)
+	}
+	bNumero = checaInt(meuvalor.substring(3,5));
+	if (!bNumero)
+	{
+    	alert ("DATA DE NASCIMENTO inválida. \nO MÊS só pode conter caracteres numéricos.")
+     	return (false)
+	}
+	bNumero = checaInt(meuvalor.substring(6,10));
+	if (!bNumero)
+	{
+    	alert ("DATA DE NASCIMENTO inválida. \nO ANO só pode conter caracteres numéricos.")
+     	return (false)
+	}
+
+
+   	dia = parseInt(meuvalor.substring(0,2),10);
+   	mes = parseInt(meuvalor.substring(3,5),10);
+   	ano = parseInt(meuvalor.substring(6,10),10);
+
+   	if ( isNaN(dia)||isNaN(mes)||isNaN(ano) ) 
+	{
+    	alert("DATA DE NASCIMENTO inválida")
+     	return (false)
+   	}
+   	if ((mes>12)||(mes<0)) 
+	{
+    	alert("Mês inválido")
+     	return (false)
+   	}
+   	var  ultimodia=0
+   	if (mes==2) 
+	{
+    	if (ebissexto(ano)) 
+		{
+       		ultimodia=29
+     	}
+     	else 
+		{
+       		ultimodia=28
+     	}
+   	}
+   	else 
+	{
+    	ultimodia=mvalores.substring((mes - 1)*2,(mes -1)*2+2)
+   	}
+   	if ((dia>ultimodia)||(dia<=0)) 
+	{
+    	alert(" DATA DE NASCIMENTO inválida")
+    	return (false)
+   	}
+
+   	var novovalor = "";
+
+   	if (dia<10) 
+    	dia = "0"+dia
+   	if (mes<10) 
+    	mes = "0"+mes
+
+   	novovalor = dia+"/"+mes+"/"+ano                
+
+   	var valor ="this."+nomeobjeto+".value="+novovalor
+
+   	return (true)
+}
+
+function checaInt(Numero)
+{
+  	var i, j;
+	var checkOK = "0123456789";
+	var checkStr = Numero;
+	var allValid = true;
+  	var allNum = "";
+
+  	for (i = 0;  i < checkStr.length;  i++)
+  	{
+    	ch = checkStr.charAt(i);
+    	for (j = 0;  j < checkOK.length;  j++)
+      		if (ch == checkOK.charAt(j))
+        		break;
+    	if (j == checkOK.length)
+    	{
+      		allValid = false;
+      		break;
+    	}
+    	allNum += ch;
+  	}
+  	if (!allValid)
+  	{
+		return false;
+  	}
+	else
+	{
+		return true;
+	}
+}
+
+method handle_fldLogradouro_onFocus()
+{
+	if ((Page.fldLogradouro.value == "") && (Page.fldCEP.value == ""))
+		Page.fldCEP.focus();
+}
+
+method handle_btnSair_onClick()
+{
+//	window.open("http://www.pucminas.br", "_top", "");
+	window.open("pgExLogout.html", "_top", "");
+}
+method handle_fldEmail_onBlur()
+{
+	Page.fldEmail.value = Page.fldEmail.value.toLowerCase();	
+}
+
+method handle_fldCEP_onBlur()
+{
+	Page.btnPsqEndereco.focus();
+}
+
+function ebissexto(ano) 
+{
+  	if (((ano%4)==0) && ((ano%100)!=0) || ((ano%400)==0)) 
+	{
+    	return (true)
+  	}
+  	else 
+	{
+    	return (false)
+  	}
+}
+//-->
+</SCRIPT>
+<LINK REL="stylesheet" TYPE="text/css" HREF="./../Objectstore/General/estilo_ex_aluno.css">
+</HEAD>
+<BODY BGCOLOR="#F9A61A" LEFTMARGON="0" TOPMARGIN="0" RIGHTMARGIN="0" LEFTMARGIN="0" $FORMTYPE=THIS>
+<TABLE ALIGN=LEFT BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=570>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 COLOR="#FFFFFF" FACE="Verdana"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=fldEvento></SPAN></FONT></B></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tabCadastro" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR>
+<TD VALIGN=BOTTOM WIDTH=80>
+<P><B><FONT SIZE=2 COLOR="#FFFFFF" FACE="Verdana"><SPAN STYLE="font-size:12;">Cadastro </SPAN></FONT></B></TD>
+<TD ALIGN=RIGHT VALIGN=BOTTOM>
+<P><B><FONT SIZE=1 FACE="Verdana"><SPAN STYLE="font-size:9;">Os campos com &nbsp;* &nbsp;são de preenchimento 
+obrigatório</SPAN></FONT></B></TD>
+</TR>
+</TABLE></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P><TABLE BGCOLOR="#FEBA59" BORDER=0 BORDERCOLOR="#F9A61A" CELLPADDING=1 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#000000">
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP WIDTH=70%>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">* Nome <BR><AGCONTROL $NAME=fldNome></SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:10;">* Data de Nascimento<BR><AGCONTROL $NAME=fldDataNasc></SPAN></FONT></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR>* Origem </SPAN></FONT><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR><AGCONTROL $NAME=chOrigem></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR>* Curso / </SPAN></FONT><I><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">Campus 
+</SPAN></FONT></I><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">ou Unidade </SPAN></FONT><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"> em 
+que se formou <BR><AGCONTROL $NAME=chCurso></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR>* Ano e semestre em que concluiu o curso 
+<BR><AGCONTROL $NAME=fldAnoFormado> &nbsp;<AGCONTROL $NAME=chSemestreFormado></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><BR></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP WIDTH=8>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">*</SPAN></FONT></TD>
+<TD VALIGN=TOP NOWRAP WIDTH=135>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"> E-mail&nbsp;para Contato </SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><AGCONTROL $NAME=fldEmail></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP WIDTH=8>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">*</SPAN></FONT></TD>
+<TD VALIGN=TOP NOWRAP WIDTH=135>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"> Telefone para Contato </SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><AGCONTROL $NAME=fldDDDContato> <AGCONTROL $NAME=fldTelContato></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP WIDTH=8>
+<P></TD>
+<TD VALIGN=TOP NOWRAP WIDTH=135>
+<P><FONT SIZE=2 COLOR="#000000" FACE="Verdana"><SPAN STYLE="font-size:11;">Telefone </SPAN></FONT><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"> Celular 
+</SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><AGCONTROL $NAME=fldDDDCelular> <AGCONTROL $NAME=fldTelCelular></SPAN></FONT></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#CB8106">
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD ALIGN=CENTER VALIGN=MIDDLE WIDTH=155>
+<P><FONT SIZE=2 COLOR="#910F0F" FACE="Helvetica"><SPAN STYLE="font-size:10;">Informe o CEP no campo abaixo e clique 
+em &quot;Buscar Endereço&quot; para pesquisar</SPAN></FONT></TD>
+<TD VALIGN=TOP WIDTH=10>
+<P></TD>
+<TD VALIGN=TOP BGCOLOR="#000000" ROWSPAN=3 WIDTH=1>
+<P></TD>
+<TD VALIGN=TOP WIDTH=10>
+<P></TD>
+<TD VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP WIDTH=75%>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">* Rua / Avenida<BR><AGCONTROL $NAME=fldLogradouro></SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">* Número<BR><AGCONTROL $NAME=fldNumero></SPAN></FONT></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=MIDDLE WIDTH=155>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=fldCEP></SPAN></FONT></TD>
+<TD VALIGN=TOP WIDTH=10>
+<P></TD>
+<TD VALIGN=TOP WIDTH=10>
+<P></TD>
+<TD VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP WIDTH=75%>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">* Bairro<BR><AGCONTROL $NAME=fldBairro></SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">Complemento<BR><AGCONTROL $NAME=fldCompl></SPAN></FONT></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=MIDDLE WIDTH=155>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=btnPsqEndereco></SPAN></FONT></TD>
+<TD VALIGN=TOP WIDTH=10>
+<P></TD>
+<TD VALIGN=TOP WIDTH=10>
+<P></TD>
+<TD VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1>
+<TR>
+<TD VALIGN=TOP WIDTH=55>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">* Estado<BR><AGCONTROL $NAME=fldUF></SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">* Cidade<BR><AGCONTROL $NAME=fldCidade><AGCONTROL $NAME=fldCodCidade></SPAN></FONT></TD>
+</TR>
+</TABLE></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#CB8106">
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP NOWRAP WIDTH=120>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">Ocupação Atual</SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><AGCONTROL $NAME=fldOcupacao></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP NOWRAP WIDTH=120>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">Nome da Empresa</SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><AGCONTROL $NAME=fldEmpresa></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP NOWRAP WIDTH=120>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">Telefone Comercial</SPAN></FONT></TD>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><AGCONTROL $NAME=fldDDDComercial> <AGCONTROL $NAME=fldTelcomercial></SPAN></FONT></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#CB8106">
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><BR></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=TOP>
+<P ALIGN=CENTER><AGCONTROL $NAME=btnEnviar><BR><BR></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+</TABLE></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><AGCONTROL $NAME=agpDataEnderecoCorreio><AGCONTROL $NAME=agpDataCidadeCEP><AGCONTROL $NAME=agpDataAluno><AGCONTROL $NAME=agpCurso></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><CENTER AGIGNORE><TABLE $CLASS=TABLE $NAME="tabConfere" $PROGRAMMABLE ALIGN=CENTER BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE ALIGN=CENTER VALIGN=TOP>
+<P><B><FONT SIZE=2 COLOR="#FFFFFF" FACE="Verdana"><SPAN STYLE="font-size:12;">CONFIRA SEUS DADOS</SPAN></FONT></B></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P><TABLE BGCOLOR="#FEBA59" BORDER=0 BORDERCOLOR="#808080" CELLPADDING=3 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#000000">
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Nome:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfNome></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Origem:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfUnidade></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Curso em que se formou: </SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfCurso></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Ano e semestre em que concluiu o curso: 
+</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; <AGCONTROL $NAME=lblConfAnoSem></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">E-mail para Contato:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfEmail></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Telefone para Contato: </SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfTelcontato></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tabConfCelular" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Telefone Celular:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfTelCelular></SPAN></FONT></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><BR><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><U><FONT SIZE=2 COLOR="#CB8106" FACE="Verdana"><SPAN STYLE="font-size:12;">Endereço </SPAN></FONT></U></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Rua / Avenida:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"> <AGCONTROL $NAME=lblConfLogradouro><AGCONTROL $NAME=lblConfNumero><AGCONTROL $NAME=lblConfComplemento></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Bairro:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"> <AGCONTROL $NAME=lblConfBairro>&nbsp;&nbsp; 
+</SPAN></FONT><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">CEP: </SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfCEP></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tabConfOcupacao" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><BR>Ocupação Atual:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfOcupacao></SPAN></FONT></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tabConfEmpresa" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Nome da Empresa:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfEmpresa></SPAN></FONT></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tabConfTelComercial" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">Telefone Comercial:</SPAN></FONT></B><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;">&nbsp; 
+<AGCONTROL $NAME=lblConfTelComercial></SPAN></FONT></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><BR></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#CB8106">
+<P></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=TOP>
+<P><BR><AGCONTROL $NAME=btnSalvar> &nbsp;&nbsp;<AGCONTROL $NAME=btnCancelar></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><BR></TD>
+</TR>
+</TABLE></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></CENTER AGIGNORE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tabMsg" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE ALIGN=CENTER VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><BR><BR><BR><BR></SPAN></FONT></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE ALIGN=CENTER VALIGN=TOP>
+<P><B><FONT SIZE=3 COLOR="#FFFFFF" FACE="Verdana"><SPAN STYLE="font-size:16;"><AGCONTROL $NAME=lblMsg></SPAN></FONT></B></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE ALIGN=CENTER VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><BR><BR></SPAN></FONT></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE ALIGN=CENTER VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=btnSair></SPAN></FONT></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE ALIGN=CENTER VALIGN=TOP>
+<P></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

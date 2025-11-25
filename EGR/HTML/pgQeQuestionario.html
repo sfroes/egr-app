@@ -1,0 +1,312 @@
+<HTML>
+<HEAD>
+<SCRIPT $AG><!--
+var msg;
+
+method handle_brnsalvar_onClick()
+{
+	var sNome = "";
+	var bQuestaoRespondidaOK = true;
+	var bAux1 = true;
+
+	var sValor01 = "";
+	var sValor = "";
+
+
+	// Percorrendo os elementos da page
+	for (var i = 0; ((i < document.forms[0].elements.length) && (bQuestaoRespondidaOK) ); i++) 
+	{
+		// Somente elementos do tipo RadioButon e CheckBox serão validados
+		if ((document.forms[0].elements[i].type == "radio") || (document.forms[0].elements[i].type == "checkbox"))
+		{
+			sNome = document.forms[0].elements[i].name;
+			var iCodPergunta;
+
+			if (document.forms[0].elements[i].type == "checkbox")
+			{
+				iCodPergunta = document.forms[0].elements[i+1].value;
+				sNome = "" + (document.forms[0].elements[i].name).substring(0,2) + iCodPergunta;
+			}
+
+			bAux1 = ValidaQuestao (sNome);
+			if (!bAux1)
+				bQuestaoRespondidaOK = false;
+
+//			bQuestaoRespondidaOK = bAux1;
+		}
+
+		else if (document.forms[0].elements[i].type == "textarea")
+		{
+			sValor01 = "" + document.forms[0].elements[i].value;
+			sValor = RetiraEspacos(sValor01);
+
+			if ((sValor.length == 0) ||(sValor = ""))
+			{
+				bQuestaoRespondidaOK = false;
+			}
+		}
+
+
+/*		if (document.forms[0].elements[i].type == "textarea")
+		{
+			sValor01 = "" + document.forms[0].elements[i].name;
+			sValor = RetiraEspacos("" + document.forms[0].elements[i].value);
+
+			if (((sValor01 == "TX4") && (sValor == "")) ||
+				((sValor01 == "TX6") && (sValor == "")) ||
+				((sValor01 == "TX7") && (sValor == "")) ||
+				((sValor01 == "TX8") && (sValor == "")) ||
+				((sValor01 == "TX14") && (sValor == "")) ||
+				((sValor01 == "TX15") && (sValor == "")) ||
+				((sValor01 == "TX16") && (sValor == "")) ||
+				((sValor01 == "TX17") && (sValor == "")) ||
+				((sValor01 == "TX18") && (sValor == "")))
+			{
+				bQuestaoRespondidaOK = false;
+			}
+		}
+*/
+	} // for...
+
+
+
+	if (!bQuestaoRespondidaOK) // Se hover questões sem resposta...
+	{
+//		alert ("Responda a todas as questões antes de Salvar.");
+		alert(msg);
+	}
+	else
+	{
+		Page.submit(this.brnsalvar.name);
+	}
+
+}
+
+
+
+
+
+
+function ValidaQuestao(sQuestao)
+{
+	var sElemento = "";
+	var sRetorno = false;
+	var iCodPergunta = 0;
+
+	for (var j = 0; j < document.forms[0].elements.length; j++)
+	{
+		sElemento = document.forms[0].elements[j].name;
+		msg = "Responda a todas as questões antes de Salvar.";
+
+		if (document.forms[0].elements[j].type == "checkbox")
+		{
+			iCodPergunta = document.forms[0].elements[j+1].value;
+			sElemento = "" + sElemento.substring(0,2) + iCodPergunta;
+		}
+
+
+
+		if (sElemento == sQuestao) {
+		   	if (document.forms[0].elements[j].checked != false) {
+				sRetorno = true;
+
+				// se tem um fld associado ao checkbox, deve preencher o fld
+				componenteFld = "fld" + document.forms[0].elements[j].name.substring(2, document.forms[0].elements[j].name.length);
+				if (document.forms[0].elements[componenteFld] != null) {
+					if (document.forms[0].elements[componenteFld].value == null ||
+						document.forms[0].elements[componenteFld].value == "") {
+//						alert("Preencha o campo descritivo das opções marcadas.");
+						msg = "Preencha o campo descritivo das opções marcadas antes de salvar.";
+						sRetorno = false;
+						break;
+					}
+				}
+			}
+		}
+
+	} // for...
+
+	return sRetorno;
+}
+
+
+
+function RetiraEspacos(sString)
+{
+	var sAux = "";
+	var sSaida = "";
+  	var i;
+	
+  	sAux = sString;
+
+  	for (i = 0; i < sAux.length; i++) 
+  	{
+    	if (sAux.substring(i-1,i) != " ")
+    	{
+			sSaida = sSaida + sAux.substring(i-1,i);
+    	}
+	}
+
+	return sSaida;
+
+}
+//-->
+</SCRIPT>
+<STYLE TYPE="text/css"><!--
+
+-->
+</STYLE>
+<LINK REL="stylesheet" TYPE="text/css" HREF="./../Objectstore/General/detalhes.css">
+</HEAD>
+<BODY BACKGROUND="./../Objectstore/Images/bg_cinza.gif" LEFTMARGON="0" TOPMARGIN="0" LEFTMARGIN="0" RIGHTMARGIN="0" BGPROPERTIES="FIXED" $FORMTYPE=THIS>
+<TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP COLSPAN=2 WIDTH=100%>
+<P><AGOBJECT $CLASS=SUBPAGE $NAME="pgPadraoCabecalho" SRC="pgPadraoCabecalho.html" $EMBEDINTABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP WIDTH=2%>
+<P></TD>
+<TD VALIGN=TOP WIDTH=98%>
+<P><BR>
+<P><TABLE $CLASS=TABLE $NAME="tabMolduraCentral" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#8F8F8F" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP WIDTH=100%>
+<P><TABLE BGCOLOR="#FFFFFF" BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#D2D2D2">
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100% HEIGHT=24>
+<TR>
+<TD ALIGN=CENTER VALIGN=MIDDLE BGCOLOR="#666699" WIDTH=20>
+<P><IMG SRC="./../Objectstore/Images/setinha.gif" WIDTH=19 HEIGHT=18 BORDER=0></TD>
+<TD VALIGN=MIDDLE BGCOLOR="#D2D2D2" WIDTH=550>
+<P><B><FONT SIZE=2 COLOR="#D2D2D2" FACE="Arial"><SPAN STYLE="font-size:12;">.</SPAN></FONT></B><B><FONT SIZE=2 COLOR="#666699" FACE="Arial"><SPAN STYLE="font-size:12;"> <AGCONTROL $NAME=lblNome></SPAN></FONT></B></TD>
+<TD ALIGN=RIGHT VALIGN=MIDDLE BGCOLOR="#D2D2D2" WIDTH=15>
+<P><IMG SRC="./../Objectstore/Images/detalhe2.gif" WIDTH=15 HEIGHT=12 BORDER=0></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tabQuestRespondido" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE ALIGN=CENTER VALIGN=TOP>
+<P><CENTER AGIGNORE><TABLE $CLASS=VIEW $NAME="dvQuestRespondidoPerguntas" $PROGRAMMABLE ALIGN=CENTER BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100% HEIGHT=97 $PAGEROWCOUNT=1 $SCROLLING>
+<TR $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP BGCOLOR="#5F5F5F">
+<P><B><FONT SIZE=3 COLOR="#FFFFFF" FACE="Helvetica"><SPAN STYLE="font-size:16;">Questionário </SPAN></FONT></B><BR></TD $CLASS=VIEW>
+</TR $CLASS=VIEW>
+<TR $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP>
+<P><CENTER AGIGNORE><TABLE ALIGN=CENTER BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP>
+<P><BR></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#E1E1E1">
+<P><B><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=lblQR_SeqPer00> </SPAN></FONT></B>- 
+<B><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"> <AGCONTROL $NAME=lblQR_SeqQuest><AGCONTROL $NAME=lblQR_DscPergunta><AGCONTROL $NAME=lblQResp_QtdResp></SPAN></FONT></B></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=VIEW $NAME="dvQuestRespondidoRespostas" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100% HEIGHT=0 $PAGEROWCOUNT=0 $SCROLLING>
+<TR $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP WIDTH=25>
+<P></TD $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP WIDTH=736>
+<P></TD $CLASS=VIEW>
+</TR $CLASS=VIEW>
+<TR $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP WIDTH=25>
+<P><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=lblQR_Op><AGCONTROL $NAME=fldQrCodPer></SPAN></FONT></TD $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP WIDTH=736>
+<P><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=lblQR_DscResp><AGCONTROL $NAME=lblQR_SeqResp><AGCONTROL $NAME=lblQR_Aberta><AGCONTROL $NAME=lblQRTxt><AGCONTROL $NAME=lblQR_QtdResp><AGCONTROL $NAME=lblQR_SeqPer><AGCONTROL $NAME=lblQR_SeqResp01><AGCONTROL $NAME=lblQR_CodQuestionario><AGCONTROL $NAME=lbQR_CodAluno><AGCONTROL $NAME=lblQuestaoMultiploCampoAbertoPreenchido></SPAN></FONT></TD $CLASS=VIEW>
+</TR $CLASS=VIEW>
+</TABLE $CLASS=VIEW></TD>
+</TR>
+</TABLE></CENTER AGIGNORE></TD $CLASS=VIEW>
+</TR $CLASS=VIEW>
+</TABLE $CLASS=VIEW></CENTER AGIGNORE></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tabQuestNMaoRespondido" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE ALIGN=CENTER VALIGN=TOP>
+<P><CENTER AGIGNORE><TABLE $CLASS=VIEW $NAME="dvQuestNaoRespondidoPerguntas" $PROGRAMMABLE ALIGN=CENTER BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100% HEIGHT=0 $PAGEROWCOUNT=0 $SCROLLING>
+<TR $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP BGCOLOR="#5F5F5F">
+<P><B><FONT SIZE=3 COLOR="#FFFFFF" FACE="Helvetica"><SPAN STYLE="font-size:16;">Questionário </SPAN></FONT></B><BR></TD $CLASS=VIEW>
+</TR $CLASS=VIEW>
+<TR $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#EFEFEF">
+<P><B><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=lblQnR_SeqPer00> -&nbsp; 
+<AGCONTROL $NAME=lblQnR_SeqQuest><AGCONTROL $NAME=lblQnR_DscPergunta><AGCONTROL $NAME=lblQnResp_QtdResp></SPAN></FONT></B></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=VIEW $NAME="dvQuestNaoRespondidoRespostas" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100% HEIGHT=82 $PAGEROWCOUNT=2 $SCROLLING>
+<TR $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP WIDTH=25>
+<P></TD $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP>
+<P></TD $CLASS=VIEW>
+</TR $CLASS=VIEW>
+<TR $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP NOWRAP WIDTH=25>
+<P><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=lblQnR_Op><AGCONTROL $NAME=fldQnrCodPer></SPAN></FONT></TD $CLASS=VIEW>
+<TD $CLASS=VIEW VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=lblQnR_DscResp><AGCONTROL $NAME=lblQnR_SeqResp><AGCONTROL $NAME=lblQnR_Aberta><AGCONTROL $NAME=lblQnRTxt><AGCONTROL $NAME=lblQnR_QtdResp><AGCONTROL $NAME=lblQnR_SeqPer><AGCONTROL $NAME=Label8><AGCONTROL $NAME=lblQnR_SeqResp01><AGCONTROL $NAME=lblQnR_CodQuestionario><AGCONTROL $NAME=lbQnR_CodAluno><AGCONTROL $NAME=lblQuestaoMultiploCampoAberto></SPAN></FONT></TD $CLASS=VIEW>
+</TR $CLASS=VIEW>
+</TABLE $CLASS=VIEW></TD>
+</TR>
+</TABLE></TD $CLASS=VIEW>
+</TR $CLASS=VIEW>
+</TABLE $CLASS=VIEW></CENTER AGIGNORE></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=TOP>
+<P><B><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><BR><BR><AGCONTROL $NAME=brnsalvar><BR><BR></SPAN></FONT></B></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><AGCONTROL $NAME=agpPergunta><AGCONTROL $NAME=agpRespostas><AGCONTROL $NAME=agpPerguntaResposta></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><AGCONTROL $NAME=agpDataPerguntaRespostaAux></TD>
+</TR>
+</TABLE></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP WIDTH=2%>
+<P></TD>
+<TD VALIGN=TOP WIDTH=98%>
+<P></TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

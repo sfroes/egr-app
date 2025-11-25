@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<SCRIPT $AG><!--
+
+//-->
+</SCRIPT>
+
+</HEAD>
+<BODY $FORMTYPE=THIS>
+<P><SCRIPT LANGUAGE="javascript1.2" SRC="/BDP/SilverStream/Objectstore/General/MenuMetodos.js"></SCRIPT>
+<SCRIPT LANGUAGE="javascript">
+function fwLoadMenus()
+{
+	if (window.fw_menu_0)
+		return;
+
+	window.fw_menu_1 = new Menu('root',202,18,'arial',11,'#FFFFFF','#666699','#666699','#FFFFFF');
+		fw_menu_1.addMenuItem('Autor',"window.open('pg_ConsAutor.html','_top');");
+		fw_menu_1.addMenuItem('Título',"window.open('pg_ConsTitulo.html','_top');");
+	        fw_menu_1.addMenuItem('Orientador',"window.open('pg_ConsOrientador.html','_top');");
+	        fw_menu_1.addMenuItem('Programa de Pós-Graduação',"window.open('pg_ConsAreaConcentracao.html','_top');");
+	        fw_menu_1.addMenuItem('Área de Conhecimento',"window.open('pg_ConsAreaConhecimento.html','_top');");
+	        fw_menu_1.addMenuItem('Data de Defesa',"window.open('pg_ConsData.html','_top');");
+	        fw_menu_1.addMenuItem('Palavras-Chave',"window.open('pg_ConsPalavrasChave.html','_top');");
+	        fw_menu_1.addMenuItem('Resumo',"window.open('link.html','_top');");
+	        fw_menu_1.addMenuItem('Texto Completo',"window.open('link.html','_top');");
+	        fw_menu_1.fontWeight='bold';
+	        fw_menu_1.hideOnMouseOut=true;
+	        fw_menu_1.childMenuIcon='imgs/arrows.gif';
+
+	window.fw_menu_2 = new Menu('root',202,30,'arial',11,'#FFFFFF','#666699','#666699','#FFFFFF');
+        	fw_menu_2.addMenuItem('Instruções para Publicação',"window.open('pg_CadInstrucoesPublicacao.html','_top');");
+	        fw_menu_2.addMenuItem('Formulário de Cadastramento',"window.open('pg_CadLogin.html','_top');");
+	        fw_menu_2.fontWeight='bold';
+	        fw_menu_2.hideOnMouseOut=true;
+        	fw_menu_2.childMenuIcon='imgs/arrows.gif';
+	        fw_menu_2.fontWeight='bold';
+
+	window.fw_menu_3 = new Menu('root',202,18,'arial',11,'#FFFFFF','#666699','#666699','#FFFFFF');
+	        fw_menu_3.addMenuItem('Estatísticas',"window.open('link.html','_top');");
+        	fw_menu_3.addMenuItem('Links',"window.open('pg_Links.html','_top');");
+	        fw_menu_3.addMenuItem('Fale Conosco',"window.open('mailto:biblioteca_digital@pucminas.br','_top');");
+        	fw_menu_3.addMenuItem('Sobre a Biblioteca Digital',"window.open('pg_Sobre.html','_top');");
+	        fw_menu_3.fontWeight='bold';
+        	fw_menu_3.hideOnMouseOut=true;
+	        fw_menu_3.childMenuIcon='imgs/arrows.gif';
+		fw_menu_3.writeMenus();
+}
+fwLoadMenus();
+</SCRIPT>
+<BR><AGCONTROL $NAME=Label3>
+<P>
+<P>
+<P>
+<P>
+</BODY>
+</HTML>

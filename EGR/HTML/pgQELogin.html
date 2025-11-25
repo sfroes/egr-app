@@ -1,0 +1,362 @@
+<HTML>
+<HEAD>
+<SCRIPT $AG><!--
+//valida se o field so possui espacos em  brancos -------------
+function validaEspaco(string){
+    var str = string; 
+    for(i=1 ; i < str.length ; i++){ 
+    if( str.substring(i-1,i) != " ") 
+            return true;    //Correta 
+    }//for
+    return false;   // Errada
+}
+//--------------------------------------------------------------
+
+function validaCampos ()
+{
+    if( !validaEspaco(Page.fldNome.value))
+    {
+	   alert("Preencha o Nome ");
+        Page.fldNome.focus();
+        Page.fldNome.select();
+        return (false);	
+    }
+
+   if( !validaEspaco(Page.fldDataNasc.value))
+   {       
+        alert("Preencha a data de nascimento.");
+        Page.fldDataNasc.focus();
+        Page.fldDataNasc.select();
+        return (false);	
+   }
+
+/*
+   if( !validaEspaco(Page.fldAno.value))
+   {       
+        alert("Preencha o ano ");
+        Page.fldAno.focus();
+        Page.fldAno.select();
+        return (false);	
+   }
+*/
+
+    if(Page.cbCursos.options[0].selected == true){
+        alert("Informe o Curso ");
+        Page.cbCursos.focus();
+        return (false);	
+     }
+   
+/*
+   if(Page.chcSemeste.options[0].selected == true){
+        alert("Informe o Semestre de sua última matricula");
+        Page.chcSemeste.focus();
+        return (false);	
+     }
+*/
+
+return (true)
+}
+
+method handle_fldDataConclusao_onBlur()
+{
+	if (!checadata("fldDataConclusao",Page.fldDataConclusao.value))
+	{
+	    Page.fldDataConclusao.focus();
+   	    Page.fldDataConclusao.select();
+	}
+}
+
+
+method handle_btnOK_onClick()
+{	
+	if(validaCampos()){
+	    Page.submit(this.btnOK.name);
+	}  
+}
+
+
+method handle_fldDataNasc_onBlur()
+{
+	if (Page.fldDataNasc.value != "")
+	{
+		if (!checadata("fldDataNasc",Page.fldDataNasc.value))
+		{
+	    	Page.fldDataNasc.focus();
+	    	Page.fldDataNasc.select();
+		}
+	}
+}
+
+
+function checadata(nomeobjeto,meuvalor) 
+{
+	var mnomes="JanFevMarAbrMaiJunJulAgoSetOutNovDez"
+   	var mvalores="312831303130313130313031"
+   	var mensagemalerta=""
+   	var parafoco="this."+nomeobjeto+".focus()"
+   	var datainvalida=true
+
+   	if ((meuvalor.length<10)||(meuvalor.length>10)) 
+	{
+     	alert ("DATA inválida. \nUtilize o formato     dd/mm/aaaa");
+     	return (false);
+   	}
+   	if ((meuvalor.substring(2,3)!="/")||(meuvalor.substring(5,6)!="/")) 
+	{
+    	alert ("DATA inválida. \nUtilize o formato     dd/mm/aaaa");
+     	return (false);
+   	}
+
+	var bNumero = checaInt(meuvalor.substring(0,2));
+	if (!bNumero)
+	{
+    	alert ("DATA inválida. \nO DIA só pode conter números arábicos.");
+     	return (false);
+	}
+	bNumero = checaInt(meuvalor.substring(3,5));
+	if (!bNumero)
+	{
+    	alert ("DATA inválida. \nO MÊS só pode conter números arábicos.");
+     	return (false);
+	}
+	bNumero = checaInt(meuvalor.substring(6,10));
+	if (!bNumero)
+	{
+    	alert ("DATA inválida. \nO ANO só pode conter números arábicos.");
+     	return (false);
+	}
+
+
+   	dia = parseInt(meuvalor.substring(0,2),10);
+   	mes = parseInt(meuvalor.substring(3,5),10);
+   	ano = parseInt(meuvalor.substring(6,10),10);
+
+   	if ( isNaN(dia)||isNaN(mes)||isNaN(ano) ) 
+	{
+    	alert("DATA invalida");
+     	return (false);
+   	}
+   	if ((mes>12)||(mes<0)) 
+	{
+    	alert("Mês invalido");
+     	return (false);
+   	}
+   	var  ultimodia=0;
+   	if (mes==2) 
+	{
+    	if (ebissexto(ano)) 
+		{
+       		ultimodia=29;
+     	}
+     	else 
+		{
+       		ultimodia=28;
+     	}
+   	}
+   	else 
+	{
+    	ultimodia=mvalores.substring((mes - 1)*2,(mes -1)*2+2);
+   	}
+   	if ((dia>ultimodia)||(dia<=0)) 
+	{
+    	alert(" DATA inválida");
+    	return (false);
+   	}
+   	var novovalor=""
+   	if (dia<10) 
+	{
+    	dia = "0"+dia;
+   	}
+   	if (mes<10) 
+	{
+    	mes = "0"+mes;
+   	}
+   	novovalor = dia+"/"+mes+"/"+ano ;               
+   	var valor ="this."+nomeobjeto+".value="+novovalor;
+   	return (true);
+}
+
+function checaInt(Numero)
+{
+  	var i, j;
+	var checkOK = "0123456789";
+	var checkStr = Numero;
+	var allValid = true;
+  	var allNum = "";
+
+  	for (i = 0;  i < checkStr.length;  i++)
+  	{
+    	ch = checkStr.charAt(i);
+    	for (j = 0;  j < checkOK.length;  j++)
+      		if (ch == checkOK.charAt(j))
+        		break;
+    	if (j == checkOK.length)
+    	{
+      		allValid = false;
+      		break;
+    	}
+    	allNum += ch;
+  	}
+  	if (!allValid)
+  	{
+		return false;
+  	}
+	else
+	{
+		return true;
+	}
+}
+
+function ebissexto(ano) 
+{
+  	if (((ano%4)==0) && ((ano%100)!=0) || ((ano%400)==0)) 
+	{
+    	return (true)
+  	}
+  	else 
+	{
+    	return (false)
+  	}
+}
+//-->
+</SCRIPT>
+<STYLE TYPE="text/css"><!--
+A:link {color: #666699;}
+A:visited {color: #666699;}
+A:active {color: #C0C0C0; }
+A:hover {text-decoration: none; color: #570909;}
+-->
+</STYLE>
+<LINK REL="stylesheet" TYPE="text/css" HREF="./../Objectstore/General/detalhes.css">
+</HEAD>
+<BODY BACKGROUND="./../Objectstore/Images/bg_cinza.gif" LEFTMARGON="0" TOPMARGIN="0" LEFTMARGIN="0" RIGHTMARGIN="0" BGPROPERTIES="FIXED" $FORMTYPE=THIS>
+<TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP COLSPAN=2>
+<P><AGOBJECT $CLASS=SUBPAGE $NAME="pgPadraoCabecalho" SRC="pgPadraoCabecalho.html" $EMBEDINTABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP WIDTH=0%>
+<P></TD>
+<TD ALIGN=CENTER VALIGN=TOP>
+<P><BR><TABLE $CLASS=TABLE $NAME="tabMolduraCentral" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#8F8F8F" CELLPADDING=0 CELLSPACING=0 WIDTH=95%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP>
+<P><TABLE BGCOLOR="#FFFFFF" BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP COLSPAN=3>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100% HEIGHT=24>
+<TR>
+<TD ALIGN=CENTER VALIGN=MIDDLE BGCOLOR="#666699" WIDTH=20>
+<P><IMG SRC="./../Objectstore/Images/setinha.gif" WIDTH=19 HEIGHT=18 BORDER=0></TD>
+<TD VALIGN=MIDDLE BGCOLOR="#D2D2D2">
+<P><B><FONT SIZE=2 COLOR="#D2D2D2" FACE="Arial"><SPAN STYLE="font-size:12;">.</SPAN></FONT></B><B><FONT SIZE=2 COLOR="#666699" FACE="Arial"><SPAN STYLE="font-size:12;"> Questionário 
+-&nbsp;Login</SPAN></FONT></B></TD>
+<TD ALIGN=RIGHT VALIGN=MIDDLE BGCOLOR="#D2D2D2" WIDTH=25>
+<P><IMG SRC="./../Objectstore/Images/detalhe2.gif" WIDTH=15 HEIGHT=12 BORDER=0></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#000000" COLSPAN=3>
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#FFFFFF" COLSPAN=3>
+<P><CENTER AGIGNORE><TABLE ALIGN=CENTER BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR>
+<TD ALIGN=CENTER VALIGN=TOP WIDTH=100%>
+<P><CENTER AGIGNORE><TABLE ALIGN=CENTER BORDER=0 BORDERCOLOR="#808080" CELLPADDING=1 CELLSPACING=2 WIDTH=100%>
+<TR>
+<TD ALIGN=CENTER VALIGN=MIDDLE COLSPAN=2 WIDTH=100%>
+<P><B><FONT SIZE=4 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:18;">Preencha os campos abaixo e clique 
+em OK para continuar</SPAN></FONT></B><BR><BR><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;">Os 
+campos em </SPAN></FONT><B><FONT SIZE=2 COLOR="#910F0F" FACE="Helvetica"><SPAN STYLE="font-size:12;">vermelho 
+</SPAN></FONT></B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"> são de preenchimento 
+obrigatório<BR><BR><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=MIDDLE WIDTH=22%>
+<P><B><FONT SIZE=2 COLOR="#910F0F" FACE="Helvetica"><SPAN STYLE="font-size:12;">Nome </SPAN></FONT></B></TD>
+<TD VALIGN=MIDDLE WIDTH=78%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=fldNome></SPAN></FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=MIDDLE WIDTH=22%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;">Nº Acadêmico </SPAN></FONT></B></TD>
+<TD VALIGN=MIDDLE WIDTH=78%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=fldCod_aluno></SPAN></FONT></B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"> (opcional) 
+</SPAN></FONT></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=MIDDLE WIDTH=22%>
+<P><B><FONT SIZE=2 COLOR="#910F0F" FACE="Helvetica"><SPAN STYLE="font-size:12;">Data de Nascimento</SPAN></FONT></B></TD>
+<TD VALIGN=MIDDLE WIDTH=78%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=fldDataNasc></SPAN></FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=MIDDLE WIDTH=22%>
+<P><B><FONT SIZE=2 COLOR="#910F0F" FACE="Helvetica"><SPAN STYLE="font-size:12;">Curso </SPAN></FONT></B><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"> </SPAN></FONT></B></TD>
+<TD VALIGN=MIDDLE WIDTH=78%>
+<P><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=cbCursos></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=MIDDLE WIDTH=22%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;">Ano da Última Matrícula</SPAN></FONT></B></TD>
+<TD VALIGN=MIDDLE WIDTH=78%>
+<P><TABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=1 CELLSPACING=0 WIDTH=100%>
+<TR>
+<TD VALIGN=MIDDLE WIDTH=15%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=fldAno></SPAN></FONT></B></TD>
+<TD ALIGN=RIGHT VALIGN=MIDDLE NOWRAP WIDTH=33%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;">Semestre da Última Matrícula</SPAN></FONT></B></TD>
+<TD VALIGN=MIDDLE NOWRAP WIDTH=20%>
+<P><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=chcSemeste></SPAN></FONT></TD>
+<TD ALIGN=RIGHT VALIGN=MIDDLE WIDTH=13%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;">Turno </SPAN></FONT></B></TD>
+<TD VALIGN=TOP WIDTH=19%>
+<P><B><FONT SIZE=2 COLOR="#666699" FACE="Helvetica"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=chcTurno></SPAN></FONT></B></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP WIDTH=22%>
+<P></TD>
+<TD VALIGN=TOP WIDTH=78%>
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP WIDTH=22%>
+<P></TD>
+<TD VALIGN=TOP WIDTH=78%>
+<P></TD>
+</TR>
+</TABLE></CENTER AGIGNORE></TD>
+</TR>
+</TABLE></CENTER AGIGNORE></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=MIDDLE BGCOLOR="#FFFFFF" COLSPAN=3>
+<P><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><BR></SPAN></FONT><FONT SIZE=2 FACE="Helvetica"><SPAN STYLE="font-size:12;"><BR><AGCONTROL $NAME=btnOK><BR><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+<TD VALIGN=TOP>
+<P></TD>
+<TD VALIGN=TOP>
+<P><AGCONTROL $NAME=agpCurso><AGCONTROL $NAME=agpData1></TD>
+</TR>
+</TABLE></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP WIDTH=0%>
+<P></TD>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

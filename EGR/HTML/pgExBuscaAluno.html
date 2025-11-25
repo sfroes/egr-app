@@ -1,0 +1,172 @@
+<HTML>
+<HEAD>
+<SCRIPT $AG><!--
+function selCurso()
+{
+	Page.evento.value = "selCurso";
+	Page.submit();
+}
+
+function eStringVazio(s)
+{
+	for (i=0; i < s.length; i++) {
+		if (s.charAt(i) != " ") {
+			return false;
+			break;
+		}
+	}
+	return true;
+}
+
+method handle_btnBuscar_onClick()
+{
+	// Valida os dados
+	if (eStringVazio(Page.fldNome.value)) {
+		alert("Informe o nome.");
+		Page.fldNome.focus();
+		return;	
+	}
+	if (Page.chOrigem.selectedIndex == 0){
+		alert("Informe a origem.");
+		Page.chOrigem.focus();
+		return;	
+	}
+	if (Page.chCurso.selectedIndex == 0){
+		alert("Informe o curso em que se formou.");
+		Page.chCurso.focus();
+		return;	
+	}
+	if (eStringVazio(Page.fldDataNascimento.value)) {
+		alert("Informe a data de nascimento.");
+		Page.fldDataNascimento.focus();
+		return;	
+	}
+
+	Page.evento.value = "buscarAluno";
+	Page.submit();
+}
+
+method handle_fldDataNascimento_onBlur()
+{
+	if (!eStringVazio(Page.fldDataNascimento.value)) {
+		if (!checadata(Page.fldDataNascimento.value)) {
+			Page.fldDataNascimento.value = "";
+			Page.fldDataNascimento.focus();
+		}
+	}
+}
+
+function ebissexto(ano) 
+{
+	if (((ano%4)==0) && ((ano%100)!=0) || ((ano%400)==0))
+		return (true);
+	else 
+		return (false);
+}
+
+function checadata(meuvalor) 
+{
+	var mvalores="312831303130313130313031";
+	if ((meuvalor.length != 10) || (meuvalor.substring(2,3) != "/") || (meuvalor.substring(5,6)!="/")) {
+		alert ("Data inválida. \nUtilize o formato dd/mm/aaaa.");
+		return (false);
+	}
+	dia = parseInt(meuvalor.substring(0,2),10);
+	mes = parseInt(meuvalor.substring(3,5),10);
+	ano = parseInt(meuvalor.substring(6,10),10);
+	if (isNaN(dia) || isNaN(mes) || isNaN(ano)) {
+		alert("Data invalida \nUtilize o formato dd/mm/aaaa.");
+		return (false);
+	}
+	if ((mes>12) || (mes<0)){
+		alert("\"" + mes + "\" não é um valor de mês valido. \nInforme um valor de mês entre 1 e 12.");
+		return (false);
+	}
+	var  ultimodia = 0;
+	if (mes==2){
+		if (ebissexto(ano)) 
+			ultimodia = 29;
+		else 
+			ultimodia = 28;
+	}
+	else {
+		ultimodia = mvalores.substring((mes - 1)*2,(mes -1)*2+2);
+	}
+	if ((dia>ultimodia) || (dia<=0)){
+		alert("\"" + dia + "\" não é um valor de dia valido para o mês informado. \nInforme um valor de dia entre 1 e " + ultimodia + ".");
+		return (false);
+	}
+	return (true);
+}
+//-->
+</SCRIPT>
+<LINK REL="stylesheet" TYPE="text/css" HREF="./../Objectstore/General/estilo_ex_aluno.css">
+</HEAD>
+<BODY BGCOLOR="#F9A61A" LEFTMARGON="0" TOPMARGIN="0" RIGHTMARGIN="0" LEFTMARGIN="0" $FORMTYPE=THIS>
+<TABLE ALIGN=LEFT BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=570>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><B><FONT SIZE=2 COLOR="#FFFFFF" FACE="Verdana"><SPAN STYLE="font-size:12;">Cadastro <AGCONTROL $NAME=agpAluno></SPAN></FONT></B></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=TOP>
+<P><TABLE BGCOLOR="#FEBA59" BORDER=0 BORDERCOLOR="#808080" CELLPADDING=1 CELLSPACING=1 WIDTH=100%>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#000000">
+<P><AGCONTROL $NAME=evento></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">* Nome <BR><AGCONTROL $NAME=fldNome></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR>* Origem<BR><AGCONTROL $NAME=chOrigem></SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><TABLE $CLASS=TABLE $NAME="tblCurso" $PROGRAMMABLE BORDER=0 BORDERCOLOR="#808080" CELLPADDING=0 CELLSPACING=0 WIDTH=100%>
+<TR $CLASS=TABLE>
+<TD $CLASS=TABLE VALIGN=TOP WIDTH=100%>
+<P><BR><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;">* Curso em que se formou <BR><AGCONTROL $NAME=chCurso></SPAN></FONT></TD $CLASS=TABLE>
+</TR $CLASS=TABLE>
+</TABLE $CLASS=TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:11;"><BR>* Data de nascimento<BR><AGCONTROL $NAME=fldDataNascimento> &nbsp; 
+</SPAN></FONT><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:10;">(dd/mm/aaaa) </SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><BR><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:10;">* campos de preenchimento obrigatório</SPAN></FONT></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP BGCOLOR="#CB8106">
+<P></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P><BR></TD>
+</TR>
+<TR>
+<TD ALIGN=CENTER VALIGN=TOP>
+<P><FONT SIZE=2 FACE="Verdana"><SPAN STYLE="font-size:12;"><AGCONTROL $NAME=btnBuscar><BR><BR></SPAN></FONT></TD>
+</TR>
+</TABLE></TD>
+</TR>
+<TR>
+<TD VALIGN=TOP>
+<P></TD>
+</TR>
+</TABLE>
+</BODY>
+</HTML>

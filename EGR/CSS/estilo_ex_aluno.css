@@ -1,0 +1,29 @@
+INPUT.texto {
+	border : 1px solid #000000;
+	background-color : #FFE5C2;
+	font-family : Verdana, Tahoma, Arial, Helvetica;
+	font-size : 11px;
+	color : #000000;
+}
+
+INPUT.botao {
+
+	border-color     : black;
+	background-color : #BB7704;
+	border-style     : solid;
+	font-family      : Verdana, Tahoma, Arial, Helvetica;
+	font-size        : 8pt;
+	color            : white;
+	font-weight      : bold;
+	border-width     : 1px;
+	text-align 	 : center;
+	vertical-align 	 : middle;
+}
+
+select{
+	border : 1px solid #000000;
+	background-color : #FFE5C2;
+	font-family : Verdana, Tahoma, Arial, Helvetica;
+	font-size : 11px;
+	color : #000000;
+}
