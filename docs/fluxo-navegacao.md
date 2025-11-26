@@ -46,7 +46,7 @@ graph TD
 
 ## Código Proposto (Angular Routes - `app.routes.ts`)
 
-Considerando a estrutura, as rotas iniciais para o Angular poderiam ser:
+Com base na nova arquitetura que centraliza um `LayoutComponent`, as rotas foram redefinidas da seguinte forma:
 
 ```typescript
 import { Routes } from '@angular/router';
@@ -54,60 +54,39 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
-  {
-    path: 'login',
-    loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent)
-  },
-  {
-    path: 'app', // Main application shell route
-    loadComponent: ()s => import('./layout/app-layout/app-layout.component').then(m => m.AppLayoutComponent),
+    loadComponent: () =>
+      import('./layout/layout.component').then((m) => m.LayoutComponent),
     children: [
       {
         path: '',
-        redirectTo: 'busca-aluno', // Default main content
-        pathMatch: 'full'
+        redirectTo: 'login',
+        pathMatch: 'full',
       },
       {
-        path: 'busca-aluno',
-        loadComponent: () => import('./features/aluno/busca-aluno/busca-aluno.component').then(m => m.BuscaAlunoComponent)
+        path: 'login',
+        loadComponent: () =>
+          import('./features/auth/login/login.component').then(
+            (m) => m.LoginComponent
+          ),
       },
-      {
-        path: 'cadastro-aluno',
-        loadComponent: () => import('./features/aluno/cadastro-aluno/cadastro-aluno.component').then(m => m.CadastroAlunoComponent)
-      },
-      {
-        path: 'cadastro-aluno/:id', // For editing existing alumni
-        loadComponent: () => import('./features/aluno/cadastro-aluno/cadastro-aluno.component').then(m => m.CadastroAlunoComponent)
-      },
-      // Potentially a results page, if distinct from search form
-      {
-        path: 'resultados-busca',
-        loadComponent: () => import('./features/aluno/resultados-busca/resultados-busca.component').then(m => m.ResultadosBuscaComponent)
-      }
-    ]
+      // Outras rotas da aplicação serão adicionadas aqui como filhas do LayoutComponent
+    ],
   },
   {
-    path: 'logout',
-    loadComponent: () => import('./features/auth/logout/logout.component').then(m => m.LogoutComponent)
+    path: '**',
+    redirectTo: '', // Redireciona para a rota padrão (login)
   },
-  {
-    path: '**', // Wildcard for any unmatched routes
-    redirectTo: 'app/busca-aluno' // Redirect to a default app page or 404
-  }
 ];
 ```
 
 ## Checklist de Implementação (Navegação Inicial)
 
 *   [ ] Criar componente `LoginComponent` para `pgQELogin.html`.
-*   [ ] Criar componente `AppLayoutComponent` para simular o `fsExAluno.html` (com slots para top, lateral e main).
+*   [x] Criar componente `LayoutComponent` para ser o shell principal da aplicação.
 *   [ ] Criar componente `BuscaAlunoComponent` para `pgExBuscaAluno.html`.
 *   [ ] Criar componente `CadastroAlunoComponent` para `pgExCadastroAluno.html`.
 *   [ ] Criar componente `ResultadosBuscaComponent` (se distinto de BuscaAlunoComponent).
 *   [ ] Criar componente `LogoutComponent`.
-*   [ ] Configurar as rotas iniciais em `app.routes.ts` conforme proposto.
+*   [x] Configurar as rotas iniciais em `app.routes.ts` conforme proposto.
 *   [ ] Implementar redirecionamento de `/` para `/login`.
 *   [ ] Testar navegação básica entre `login`, `busca-aluno` e `cadastro-aluno`.
