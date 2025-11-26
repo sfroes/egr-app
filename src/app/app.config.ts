@@ -17,8 +17,8 @@ export const appConfig: ApplicationConfig = {
         preset: Aura,
         options: {
           prefix: 'p',
-          darkModeSelector: 'system', // ou '.my-app-dark'
           cssLayer: false,
+          darkModeSelector: false, // Força o tema light e ignora a preferência do sistema
         },
       },
     }),

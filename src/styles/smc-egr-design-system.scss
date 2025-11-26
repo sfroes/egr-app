@@ -196,6 +196,9 @@
   --smc-egr-breakpoint-2xl: 1536px;
 }
 
+body{
+    font-family: "Montserrat", sans-serif;
+}
 /* ===================================
    BOTÕES - BUTTONS
    =================================== */
@@ -996,4 +999,11 @@
   .smc-egr-m-responsive { margin: var(--smc-egr-spacing-lg); }
   .smc-egr-p-responsive { padding: var(--smc-egr-spacing-lg); }
   .smc-egr-gap-responsive { gap: var(--smc-egr-spacing-lg); }
+}
+
+
+.montserrat {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
 }
