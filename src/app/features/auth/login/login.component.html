@@ -1,1 +1,58 @@
-<p>login works!</p>
+<p-card header="Questionário - Login" styleClass="smc-egr-card">
+  <p class="smc-egr-text-sm smc-egr-mb-md">Preencha os campos abaixo e clique em OK para continuar.
+    Os campos em <span class="smc-egr-text-danger">vermelho</span> são de preenchimento obrigatório.</p>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="smc-egr-form-group">
+      <label for="nome" class="smc-egr-label smc-egr-label-required">Nome</label>
+      <input type="text" id="nome" pInputText formControlName="nome" 
+             [ngClass]="{'ng-invalid ng-dirty': loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched}" />
+      @if (loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched) {
+        <small class="smc-egr-form-error">Nome é obrigatório.</small>
+      }
+    </div>
+
+    <div class="smc-egr-form-group">
+      <label for="numeroAcademico" class="smc-egr-label">Nº Acadêmico (opcional)</label>
+      <input type="text" id="numeroAcademico" pInputText formControlName="numeroAcademico" />
+    </div>
+
+    <div class="smc-egr-form-group">
+      <label for="dataNascimento" class="smc-egr-label smc-egr-label-required">Data de Nascimento</label>
+      <p-inputMask id="dataNascimento" mask="99/99/9999" formControlName="dataNascimento" placeholder="dd/mm/aaaa"
+                   [ngClass]="{'ng-invalid ng-dirty': loginForm.get('dataNascimento')?.invalid && loginForm.get('dataNascimento')?.touched}"></p-inputMask>
+      @if (loginForm.get('dataNascimento')?.invalid && loginForm.get('dataNascimento')?.touched) {
+        <small class="smc-egr-form-error">Data de Nascimento é obrigatória.</small>
+      }
+    </div>
+
+    <div class="smc-egr-form-group">
+      <label for="curso" class="smc-egr-label smc-egr-label-required">Curso</label>
+      <p-dropdown id="curso" [options]="cursos" formControlName="cursoId" optionLabel="nome" optionValue="id" placeholder="Selecione um Curso"
+                  [ngClass]="{'ng-invalid ng-dirty': loginForm.get('cursoId')?.invalid && loginForm.get('cursoId')?.touched}"></p-dropdown>
+      @if (loginForm.get('cursoId')?.invalid && loginForm.get('cursoId')?.touched) {
+        <small class="smc-egr-form-error">Curso é obrigatório.</small>
+      }
+    </div>
+
+    <!-- Campos Opcionais -->
+    <div class="smc-egr-form-group">
+      <label for="anoUltimaMatricula" class="smc-egr-label">Ano da Última Matrícula</label>
+      <input type="text" id="anoUltimaMatricula" pInputText formControlName="anoUltimaMatricula" />
+    </div>
+
+    <div class="smc-egr-form-group">
+      <label for="semestreUltimaMatricula" class="smc-egr-label">Semestre da Última Matrícula</label>
+      <p-dropdown id="semestreUltimaMatricula" [options]="semestres" formControlName="semestreUltimaMatriculaId" optionLabel="nome" optionValue="id" placeholder="Selecione um Semestre"></p-dropdown>
+    </div>
+
+    <div class="smc-egr-form-group">
+      <label for="turno" class="smc-egr-label">Turno</label>
+      <p-dropdown id="turno" [options]="turnos" formControlName="turnoId" optionLabel="nome" optionValue="id" placeholder="Selecione um Turno"></p-dropdown>
+    </div>
+
+    <div class="smc-egr-flex smc-egr-justify-center smc-egr-mt-lg">
+      <p-button label="OK" type="submit" [disabled]="loginForm.invalid"></p-button>
+    </div>
+  </form>
+</p-card>

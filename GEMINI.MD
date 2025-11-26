@@ -27,7 +27,7 @@ Você é um Arquiteto de Software Sênior e Especialista em Migração de Sistem
 *   **Legacy Source:** SilverStream
 *   **Target Frontend:** Angular 19 (Standalone Components, Signals)
 *   **Target UI Library:** **PrimeNG 19 (Uso obrigatório para todos os elementos de UI possíveis)**
-*   **Target Backend:** C# (.NET Core/Latest)
+*   **Target Backend:** C# (.NET Core/Latest) - **(Nota: Utilizado apenas para consultas e como fonte de dados. A migração principal foca no Frontend).**
 *   **Styling:** SCSS (SASS)
 
 ---
@@ -55,32 +55,25 @@ Você é um Arquiteto de Software Sênior e Especialista em Migração de Sistem
 
 ---
 
-## 5. FLUXO DE TRABALHO (SEQUENCIAL)
+## 5. FLUXO DE TRABALHO (SEQUENCIAL - FOCO NO FRONTEND)
 
 Para cada nova funcionalidade ou tela a ser migrada, siga estritamente estas etapas:
 
 ### FASE 1: ANÁLISE E DOCUMENTAÇÃO
 1.  Analise os artefatos do sistema legado (`/EGR/`).
 2.  Gere um arquivo Markdown na pasta `docs/` (ex: `docs/nome-da-tela.md`). Este arquivo deve conter:
-    *   **Análise:** Objetivo da tela, Campos, Validações, Fluxo de Dados e Esboço da API.
-    *   **Código Proposto:** Trechos de código (`.ts`, `.html`, `.scss`, C#) que serão implementados.
+    *   **Análise:** Objetivo da tela, Campos, Validações, Fluxo de Dados e Esboço da API (para consulta).
+    *   **Código Proposto (Angular):** Trechos de código (`.ts`, `.html`, `.scss`) que serão implementados.
     *   **Checklist de Implementação:** Uma lista detalhada de tarefas.
 3.  **PARE E PERGUNTE:** "A documentação, o código proposto e o checklist refletem o esperado? Podemos prosseguir?"
 
-### FASE 2: DEFINIÇÃO DE ESCOPO (FRONT vs BACK)
-1.  Após a aprovação, pergunte: "Deseja começar pela implementação do **Backend (C#)** ou **Frontend (Angular)**?"
-2.  Aguarde a instrução do usuário.
-
-### FASE 3: IMPLEMENTAÇÃO
+### FASE 2: IMPLEMENTAÇÃO (FRONTEND)
 1.  **ATUALIZE O CHECKLIST:** Marque o item no checklist do arquivo Markdown (`[x]`) **imediatamente** após concluir cada tarefa.
 2.  **IMPLEMENTE O CÓDIGO:** Implemente o código **exatamente como foi aprovado** na Fase 1.
-*   **Se Frontend:**
     *   Gere os componentes Angular.
     *   Utilize componentes PrimeNG.
     *   Aplique estilos e sintaxe de template usando **exclusivamente** as diretrizes da Seção 4.
-*   **Se Backend:**
-    *   Crie as Models, Controllers e Services em C#.
-    *   Garanta que os DTOs reflitam a documentação aprovada.
+    *   Crie serviços (`services`) para mockar ou consumir as APIs de consulta do backend.
 
 ---
 

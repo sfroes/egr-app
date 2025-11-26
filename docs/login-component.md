@@ -217,13 +217,13 @@ export class LoginComponent implements OnInit {
 
 ## Checklist de Implementação (LoginComponent)
 
-*   [ ] Implementar estrutura do `LoginComponent` (`.ts`, `.html`, `.scss`).
-*   [ ] Integrar `ReactiveFormsModule` e módulos PrimeNG (`CardModule`, `InputTextModule`, `DropdownModule`, `ButtonModule`, `InputMaskModule`).
-*   [ ] Adicionar campos de formulário e validações básicas conforme `pgQELogin.html`.
-*   [ ] Desenvolver validador de data customizado (`dateValidator`) com a lógica do legado (`checadata`).
-*   [ ] Criar e integrar serviço de autenticação (`AuthService`) para chamar a API de login.
-*   [ ] Implementar lógica de submissão do formulário (`onSubmit`).
-*   [ ] Adicionar o `LoginComponent` às rotas em `app.routes.ts`.
-*   [ ] Estilizar o formulário utilizando as classes do `smc-egr-design-system.scss`.
-*   [ ] Testar validações de formulário.
-*   [ ] Testar chamada da API de login e redirecionamento.
+*   [x] Implementar estrutura do `LoginComponent` (`.ts`, `.html`, `.scss`).
+*   [x] Integrar `ReactiveFormsModule` e módulos PrimeNG (`CardModule`, `InputTextModule`, `DropdownModule`, `ButtonModule`, `InputMaskModule`).
+*   [x] Adicionar campos de formulário e validações básicas conforme `pgQELogin.html`.
+*   [x] Desenvolver validador de data customizado (`dateValidator`) com a lógica do legado (`checadata`).
+*   [x] Criar e integrar serviço de autenticação (`AuthService`) para chamar a API de login.
+*   [x] Implementar lógica de submissão do formulário (`onSubmit`).
+*   [x] Adicionar o `LoginComponent` às rotas em `app.routes.ts`.
+*   [x] Estilizar o formulário utilizando as classes do `smc-egr-design-system.scss`.
+*   [x] Testar validações de formulário.
+*   [x] Testar chamada da API de login e redirecionamento.
