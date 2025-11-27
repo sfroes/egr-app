@@ -1,75 +1,84 @@
-# Componente de Login (LoginComponent)
+# Componente de Login (LoginComponent) - Fase de Análise
 
-## Objetivo
-Este documento detalha o componente de login do sistema legado (`pgQELogin.html`) para servir como base para a implementação do `LoginComponent` no Angular 19.
+## 1. Objetivo
+Analisar o componente `pgQELogin.html` do sistema legado e propor uma implementação moderna em Angular 19, utilizando `json-server` para mock de dados e serviços.
 
-## Campos do Formulário e Validações
+## 2. Análise do Legado
+O formulário de login (`pgQELogin.html`) e sua validação (`pgQELogin.java`) exigem os seguintes campos:
+- **Obrigatórios**: `fldNome`, `fldDataNasc`, `cbCursos`.
+- **Opcionais**: `fldCod_aluno`, `fldAno`, `chcSemeste`, `chcTurno`.
+A validação principal ocorre no backend (Java) após um submit do formulário.
 
-O formulário de login (`pgQELogin.html`) possui os seguintes campos e validações:
+## 3. Esboço da API (JSON-SERVER)
 
-| Campo             | Tipo Esperado (Implícito) | Obrigatório (Validação `validaEspaco`) | Validação Específica (`checadata`) | Observações                              |
-| :---------------- | :------------------------ | :------------------------------------- | :--------------------------------- | :--------------------------------------- |
-| `fldNome`         | Texto                     | Sim                                    | N/A                                | Nome do usuário                          |
-| `fldCod_aluno`    | Numérico                  | Não                                    | N/A                                | Número acadêmico (opcional)              |
-| `fldDataNasc`     | Data (dd/mm/aaaa)         | Sim                                    | Sim                                | Data de nascimento. Formato e validade.  |
-| `cbCursos`        | Dropdown                  | Sim (seleção diferente de 0)           | N/A                                | Curso do aluno.                          |
-| `fldAno`          | Numérico (4 dígitos)      | Não (comentado no legado)              | N/A                                | Ano da última matrícula (opcional)       |
-| `chcSemeste`      | Dropdown                  | Não (comentado no legado)              | N/A                                | Semestre da última matrícula (opcional)  |
-| `chcTurno`        | Dropdown                  | Não                                    | N/A                                | Turno (opcional)                         |
+Para simular o backend, o `json-server` servirá os seguintes endpoints a partir do `db.json`:
 
-### Funções de Validação JavaScript Legadas:
+- **Dropdowns**:
+  - `GET /cursos` -> Retorna a lista de cursos.
+  - `GET /semestres` -> Retorna a lista de semestres.
+  - `GET /turnos` -> Retorna a lista de turnos.
 
-*   **`validaEspaco(string)`**: Verifica se um campo contém apenas espaços em branco. Se sim, retorna `false` (inválido).
-*   **`checadata(nomeobjeto, meuvalor)`**: Valida o formato `dd/mm/aaaa` e a validade da data (dia, mês, ano bissexto).
-*   **`checaInt(Numero)`**: Verifica se uma string contém apenas números arábicos.
-*   **`ebissexto(ano)`**: Verifica se um ano é bissexto.
-*   **`validaCampos()`**: Função principal de validação que chama as outras funções e exibe `alert()` para o usuário.
+- **Autenticação**:
+  - `GET /users?nome=<nome>&dataNascimento=<data>&cursoId=<id>` -> Busca por um usuário que corresponda aos três campos obrigatórios. Um retorno com um ou mais resultados é considerado um login bem-sucedido.
 
-## Fluxo de Dados e Interação com o Backend
+## 4. Código Proposto (Angular)
 
-O formulário de login é enviado através do método `Page.submit(this.btnOK.name)` quando o botão `btnOK` é clicado e as validações `validaCampos()` passam. A lógica exata de autenticação e redirecionamento (`pgQELogin.java`) ocorre no servidor SilverStream. Em caso de sucesso, o servidor redireciona para o frameset `fsExAluno.html`.
-
-## Esboço da API Necessária (Backend C#)
-
-Será necessário um endpoint para autenticação que receba os dados do formulário de login e retorne um token de autenticação ou um status de sucesso/falha.
-
-*   **Endpoint:** `POST /api/auth/login` (exemplo)
-*   **Request Body:**
-    ```json
-    {
-      "nome": "string",
-      "numeroAcademico": "string", // Opcional
-      "dataNascimento": "string", // Formato dd/mm/aaaa
-      "cursoId": "string",        // ID ou código do curso selecionado
-      "anoUltimaMatricula": "string", // Opcional
-      "semestreUltimaMatriculaId": "string", // Opcional
-      "turnoId": "string"          // Opcional
-    }
-    ```
-*   **Response (Sucesso):**
-    ```json
-    {
-      "success": true,
-      "token": "string", // JWT ou similar
-      "message": "Login bem-sucedido"
-    }
-    ```
-*   **Response (Falha):**
-    ```json
-    {
-      "success": false,
-      "message": "Credenciais inválidas"
-    }
-    ```
-
-## Código Proposto (LoginComponent - Angular)
-
-### `login.component.ts` (Estrutura Corrigida com PrimeNG)
+### `auth.service.ts` (Novo)
 ```typescript
-import { Component, OnInit } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { API_URL } from '../api-url.token';
+
+// Interfaces para os dados
+export interface DropdownOption {
+  id: string;
+  nome: string;
+}
+
+export interface User {
+  id: number;
+  nome: string;
+  dataNascimento: string;
+  cursoId: string;
+  // Outros campos podem ser adicionados conforme necessário
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private http = inject(HttpClient);
+  private apiUrl = inject(API_URL);
+
+  getLoginDropdownData(): Observable<{cursos: DropdownOption[], semestres: DropdownOption[], turnos: DropdownOption[]}> {
+    return forkJoin({
+      cursos: this.http.get<DropdownOption[]>(`${this.apiUrl}/cursos`),
+      semestres: this.http.get<DropdownOption[]>(`${this.apiUrl}/semestres`),
+      turnos: this.http.get<DropdownOption[]>(`${this.apiUrl}/turnos`),
+    });
+  }
+
+  login(credentials: { nome: string; dataNascimento: string; cursoId: string }): Observable<boolean> {
+    const params = new HttpParams()
+      .set('nome', credentials.nome)
+      .set('dataNascimento', credentials.dataNascimento)
+      .set('cursoId', credentials.cursoId);
+
+    return this.http.get<User[]>(`${this.apiUrl}/users`, { params }).pipe(
+      map(users => users.length > 0) // Se encontrou algum usuário, o login é válido
+    );
+  }
+}
+```
+
+### `login.component.ts` (Atualizado)
+```typescript
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 // PrimeNG Modules
 import { CardModule } from 'primeng/card';
@@ -77,6 +86,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+
+import { AuthService, DropdownOption } from '../../core/services/auth.service';
 
 @Component({
   selector: 'smc-egr-login',
@@ -88,84 +101,90 @@ import { InputMaskModule } from 'primeng/inputmask';
     InputTextModule,
     DropdownModule,
     ButtonModule,
-    InputMaskModule
+    InputMaskModule,
+    ToastModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
+  providers: [MessageService]
 })
 export class LoginComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  private messageService = inject(MessageService);
+
   loginForm!: FormGroup;
   
-  // Mock data for dropdowns
-  cursos: { id: string; nome: string }[] = [];
-  semestres: { id: string; nome: string }[] = [];
-  turnos: { id: string; nome: string }[] = [];
-
-  constructor(private fb: FormBuilder, private router: Router) {}
+  cursos$!: Observable<DropdownOption[]>;
+  semestres$!: Observable<DropdownOption[]>;
+  turnos$!: Observable<DropdownOption[]>;
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      nome: ['', Validators.required],
-      numeroAcademico: [''],
-      dataNascimento: ['', [Validators.required, this.dateValidator]],
-      curso: [null, Validators.required], // Dropdown works better with null as initial value
+      nome: ['Tony Stark', Validators.required],
+      numeroAcademico: ['12345'],
+      dataNascimento: ['29/05/1970', [Validators.required, this.dateValidator]],
+      cursoId: ['1', Validators.required],
       anoUltimaMatricula: [''],
       semestreUltimaMatricula: [null],
       turno: [null],
     });
 
-    // Mock data would be loaded from a service
-    this.cursos = [
-      { id: '1', nome: 'Ciência da Computação' },
-      { id: '2', nome: 'Engenharia Civil' },
-    ];
-    this.semestres = [
-      { id: '1', nome: '1º Semestre' },
-      { id: '2', nome: '2º Semestre' },
-    ];
-    this.turnos = [
-      { id: 'M', nome: 'Manhã' },
-      { id: 'N', nome: 'Noite' },
-    ];
+    this.loadDropdownData();
+  }
+
+  loadDropdownData(): void {
+    const dropdownData$ = this.authService.getLoginDropdownData();
+    this.cursos$ = dropdownData$.pipe(map(data => data.cursos));
+    this.semestres$ = dropdownData$.pipe(map(data => data.semestres));
+    this.turnos$ = dropdownData$.pipe(map(data => data.turnos));
   }
 
   dateValidator(control: any): { [key: string]: any } | null {
-    if (control.value && control.value.includes('_')) { // InputMask incompleto
+    if (control.value && control.value.length === 10 && control.value.includes('_')) {
         return { 'invalidDate': true };
     }
-    // A validação de formato é parcialmente tratada pelo p-inputMask. 
-    // Lógica adicional pode ser necessária para dias/meses válidos.
     return null;
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      console.log('Formulário de Login Válido:', this.loginForm.value);
-      // TODO: Call authentication service
-      this.router.navigate(['/app/busca-aluno']);
-    } else {
-      console.log('Formulário de Login Inválido');
-      // Mark fields as touched to show errors
+    if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
+      this.messageService.add({ severity: 'warn', summary: 'Atenção', detail: 'Preencha todos os campos obrigatórios.' });
+      return;
     }
+
+    const credentials = {
+      nome: this.loginForm.value.nome,
+      dataNascimento: this.loginForm.value.dataNascimento,
+      cursoId: this.loginForm.value.cursoId
+    };
+
+    this.authService.login(credentials).subscribe(isValid => {
+      if (isValid) {
+        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Login realizado!' });
+        setTimeout(() => this.router.navigate(['/app/busca-aluno']), 1500);
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Credenciais inválidas. Verifique os dados.' });
+      }
+    });
   }
 }
 ```
 
-### `login.component.html` (Estrutura Corrigida com PrimeNG)
+### `login.component.html` (Atualizado para Observables)
 ```html
+<p-toast></p-toast>
 <p-card header="Questionário - Login" styleClass="smc-egr-card">
   <p class="smc-egr-text-sm smc-egr-mb-md">Preencha os campos abaixo e clique em OK para continuar.
     Os campos em <span class="smc-egr-text-danger">vermelho</span> são de preenchimento obrigatório.</p>
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <!-- Campos de Nome, Número Acadêmico e Data de Nascimento (sem alteração) -->
     <div class="smc-egr-form-group">
       <label for="nome" class="smc-egr-label smc-egr-label-required">Nome</label>
-      <input type="text" id="nome" pInputText formControlName="nome" 
-             [ngClass]="{'ng-invalid ng-dirty': loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched}" />
-      @if (loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched) {
-        <small class="smc-egr-form-error">Nome é obrigatório.</small>
-      }
+      <input type="text" id="nome" pInputText formControlName="nome" />
     </div>
 
     <div class="smc-egr-form-group">
@@ -175,55 +194,41 @@ export class LoginComponent implements OnInit {
 
     <div class="smc-egr-form-group">
       <label for="dataNascimento" class="smc-egr-label smc-egr-label-required">Data de Nascimento</label>
-      <p-inputMask id="dataNascimento" mask="99/99/9999" formControlName="dataNascimento" placeholder="dd/mm/aaaa"
-                   [ngClass]="{'ng-invalid ng-dirty': loginForm.get('dataNascimento')?.invalid && loginForm.get('dataNascimento')?.touched}"></p-inputMask>
-      @if (loginForm.get('dataNascimento')?.invalid && loginForm.get('dataNascimento')?.touched) {
-        <small class="smc-egr-form-error">Data de Nascimento é obrigatória.</small>
-      }
+      <p-inputMask id="dataNascimento" mask="99/99/9999" formControlName="dataNascimento" placeholder="dd/mm/aaaa"></p-inputMask>
     </div>
 
+    <!-- Dropdowns com async pipe -->
     <div class="smc-egr-form-group">
       <label for="curso" class="smc-egr-label smc-egr-label-required">Curso</label>
-      <p-dropdown id="curso" [options]="cursos" formControlName="curso" optionLabel="nome" optionValue="id" placeholder="Selecione um Curso"
-                  [ngClass]="{'ng-invalid ng-dirty': loginForm.get('curso')?.invalid && loginForm.get('curso')?.touched}"></p-dropdown>
-      @if (loginForm.get('curso')?.invalid && loginForm.get('curso')?.touched) {
-        <small class="smc-egr-form-error">Curso é obrigatório.</small>
-      }
-    </div>
-
-    <!-- Campos Opcionais -->
-    <div class="smc-egr-form-group">
-      <label for="anoUltimaMatricula" class="smc-egr-label">Ano da Última Matrícula</label>
-      <input type="text" id="anoUltimaMatricula" pInputText formControlName="anoUltimaMatricula" />
+      <p-dropdown id="curso" [options]="(cursos$ | async)!" formControlName="cursoId" optionLabel="nome" optionValue="id" placeholder="Selecione um Curso"></p-dropdown>
     </div>
 
     <div class="smc-egr-form-group">
       <label for="semestreUltimaMatricula" class="smc-egr-label">Semestre da Última Matrícula</label>
-      <p-dropdown id="semestreUltimaMatricula" [options]="semestres" formControlName="semestreUltimaMatricula" optionLabel="nome" optionValue="id" placeholder="Selecione um Semestre"></p-dropdown>
+      <p-dropdown id="semestreUltimaMatricula" [options]="(semestres$ | async)!" formControlName="semestreUltimaMatricula" optionLabel="nome" optionValue="id" placeholder="Selecione um Semestre"></p-dropdown>
     </div>
 
     <div class="smc-egr-form-group">
       <label for="turno" class="smc-egr-label">Turno</label>
-      <p-dropdown id="turno" [options]="turnos" formControlName="turno" optionLabel="nome" optionValue="id" placeholder="Selecione um Turno"></p-dropdown>
+      <p-dropdown id="turno" [options]="(turnos$ | async)!" formControlName="turno" optionLabel="nome" optionValue="id" placeholder="Selecione um Turno"></p-dropdown>
     </div>
 
     <div class="smc-egr-flex smc-egr-justify-center smc-egr-mt-lg">
-      <p-button label="OK" type="submit" [disabled]="loginForm.invalid"></p-button>
+      <p-button label="OK" type="submit"></p-button>
     </div>
   </form>
 </p-card>
 ```
 
+## 5. Checklist de Implementação
 
-## Checklist de Implementação (LoginComponent)
-
-*   [x] Implementar estrutura do `LoginComponent` (`.ts`, `.html`, `.scss`).
-*   [x] Integrar `ReactiveFormsModule` e módulos PrimeNG (`CardModule`, `InputTextModule`, `DropdownModule`, `ButtonModule`, `InputMaskModule`).
-*   [x] Adicionar campos de formulário e validações básicas conforme `pgQELogin.html`.
-*   [x] Desenvolver validador de data customizado (`dateValidator`) com a lógica do legado (`checadata`).
-*   [x] Criar e integrar serviço de autenticação (`AuthService`) para chamar a API de login.
-*   [x] Implementar lógica de submissão do formulário (`onSubmit`).
-*   [x] Adicionar o `LoginComponent` às rotas em `app.routes.ts`.
-*   [x] Estilizar o formulário utilizando as classes do `smc-egr-design-system.scss`.
-*   [x] Testar validações de formulário.
-*   [x] Testar chamada da API de login e redirecionamento.
+- [ ] Criar o arquivo `db.json` com dados mockados para `users`, `cursos`, `semestres` e `turnos`.
+- [ ] Criar o arquivo `auth.service.ts` em `src/app/core/services/`.
+- [ ] Implementar os métodos `getLoginDropdownData()` e `login()` no `AuthService`.
+- [ ] Atualizar `login.component.ts` para usar o `AuthService` para carregar dados e autenticar.
+- [ ] Atualizar `login.component.html` para usar o `async` pipe com os `Observables` dos dropdowns.
+- [ ] Adicionar `ToastModule` e `MessageService` para feedback visual ao usuário.
+- [ ] Instalar e iniciar o `json-server`.
+- [ ] Testar o fluxo completo: carregamento dos dados, submissão do formulário, autenticação (sucesso e falha) e redirecionamento.
+- [ ] Estilizar o componente e os feedbacks (mensagens de erro/sucesso) conforme o Design System.
+- [ ] Adicionar o `LoginComponent` às rotas em `app.routes.ts`.

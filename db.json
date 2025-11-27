@@ -1,0 +1,29 @@
+{
+  "cursos": [
+    { "id": "1", "nome": "Ciência da Computação" },
+    { "id": "2", "nome": "Engenharia Civil" },
+    { "id": "3", "nome": "Medicina" },
+    { "id": "4", "nome": "Direito" }
+  ],
+  "semestres": [
+    { "id": "1", "nome": "1º Semestre" },
+    { "id": "2", "nome": "2º Semestre" }
+  ],
+  "turnos": [
+    { "id": "M", "nome": "Manhã" },
+    { "id": "T", "nome": "Tarde" },
+    { "id": "N", "nome": "Noite" }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "nome": "Tony Stark",
+      "numeroAcademico": "12345",
+      "dataNascimento": "29/05/1970",
+      "cursoId": "1",
+      "anoUltimaMatricula": "2023",
+      "semestreUltimaMatriculaId": "2",
+      "turnoId": "N"
+    }
+  ]
+}
