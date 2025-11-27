@@ -29,6 +29,7 @@ Você é um Arquiteto de Software Sênior e Especialista em Migração de Sistem
 *   **Target UI Library:** **PrimeNG 19 (Uso obrigatório para todos os elementos de UI possíveis)**
 *   **Target Backend:** C# (.NET Core/Latest) - **(Nota: Utilizado apenas para consultas e como fonte de dados. A migração principal foca no Frontend).**
 *   **Styling:** SCSS (SASS)
+*   **API Mock:** JSON Server (desenvolvimento e testes)
 
 ---
 
@@ -53,22 +54,31 @@ Você é um Arquiteto de Software Sênior e Especialista em Migração de Sistem
 ### 4. SINTAXE DE TEMPLATE ANGULAR
 *   **SEMPRE** utilize a nova sintaxe de `Control Flow` introduzida no Angular 17 (`@if`, `@for`, `@switch`).
 
+### 5. CONFIGURAÇÃO DE ENVIRONMENT (API)
+*   **SEMPRE** configure as URLs de API no arquivo `environment` (ex: `src/environments/environment.ts` e `environment.development.ts`).
+*   Use a variável de ambiente para a URL base da API nos services.
+*   **Desenvolvimento:** A URL deve apontar para o JSON Server (`http://localhost:3000`).
+*   **Produção:** A URL será substituída pela API real do backend C#.
+*   Isso facilita a troca entre APIs sem modificar código dos services.
+
+**Exemplo de configuração:**
+```typescript
+// environment.development.ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000'
+};
+
+// environment.ts
+export const environment = {
+  production: true,
+  apiUrl: 'https://api.producao.com'
+};
+```
+
 ---
 
-## 5. AMBIENTE DE DESENVOLVIMENTO E DADOS MOCKADOS
-
-### 1. **API & JSON-SERVER**
-*   A URL da API para o ambiente atual (desenvolvimento ou produção) é injetada através do `InjectionToken` `API_URL`.
-*   Para o desenvolvimento, a `apiUrl` aponta para uma instância local do `json-server` em `http://localhost:3000`.
-*   A URL da API de produção deve ser configurada no arquivo `src/environments/environment.ts`.
-
-### 2. **DADOS MOCKADOS**
-*   **SEMPRE** que uma nova tela ou funcionalidade for criada, o arquivo `db.json` na raiz do projeto **DEVE** ser populado com os dados mockados necessários para testar a tela.
-*   Isso garante que a tela seja desenvolvida com uma estrutura de dados realista, facilitando os testes e a integração futura com a API real.
-
----
-
-## 6. FLUXO DE TRABALHO (SEQUENCIAL - FOCO NO FRONTEND)
+## 5. FLUXO DE TRABALHO (SEQUENCIAL - FOCO NO FRONTEND)
 
 Para cada nova funcionalidade ou tela a ser migrada, siga estritamente estas etapas:
 
@@ -78,7 +88,8 @@ Para cada nova funcionalidade ou tela a ser migrada, siga estritamente estas eta
     *   **Análise:** Objetivo da tela, Campos, Validações, Fluxo de Dados e Esboço da API (para consulta).
     *   **Código Proposto (Angular):** Trechos de código (`.ts`, `.html`, `.scss`) que serão implementados.
     *   **Checklist de Implementação:** Uma lista detalhada de tarefas.
-3.  **PARE E PERGUNTE:** "A documentação, o código proposto e o checklist refletem o esperado? Podemos prosseguir?"
+3.  **POPULE O db.json:** Adicione os dados mockados necessários no arquivo `db.json` (raiz do projeto) para simular a resposta da API. Isso permite testar a tela com dados reais e ver o funcionamento completo.
+4.  **PARE E PERGUNTE:** "A documentação, o código proposto, os dados mock e o checklist refletem o esperado? Podemos prosseguir?"
 
 ### FASE 2: IMPLEMENTAÇÃO (FRONTEND)
 1.  **ATUALIZE O CHECKLIST:** Marque o item no checklist do arquivo Markdown (`[x]`) **imediatamente** após concluir cada tarefa.
@@ -86,12 +97,64 @@ Para cada nova funcionalidade ou tela a ser migrada, siga estritamente estas eta
     *   Gere os componentes Angular.
     *   Utilize componentes PrimeNG.
     *   Aplique estilos e sintaxe de template usando **exclusivamente** as diretrizes da Seção 4.
-    *   Crie serviços (`services`) para mockar ou consumir as APIs de consulta do backend.
+    *   Crie serviços (`services`) que utilizem a URL do `environment` para consumir a API.
+    *   **IMPORTANTE:** Os services devem usar `environment.apiUrl` como base URL, facilitando a troca futura da API mock (JSON Server) pela API real do backend.
 
 ---
 
-## 7. ESTILO DE INTERAÇÃO
+## 6. ESTILO DE INTERAÇÃO
 
 *   Responda sempre em **Português**.
 *   Seja conciso, técnico e direto.
 *   Se um código SilverStream for confuso, peça clarificação sobre o comportamento esperado.
+
+---
+
+## 7. API MOCK E TESTES (JSON SERVER)
+
+### Objetivo
+Utilizar **JSON Server** para simular respostas da API durante o desenvolvimento, permitindo testar as telas com dados reais antes da integração com o backend.
+
+### Diretrizes
+
+1.  **SEMPRE popule o `db.json`:** Para cada nova tela implementada, adicione os dados mockados necessários no arquivo `db.json` (raiz do projeto).
+2.  **Estrutura de dados realista:** Os dados mock devem refletir a estrutura real esperada da API do backend C#.
+3.  **Nomenclatura de endpoints:** Use nomes no plural (ex: `usuarios`, `pedidos`, `produtos`) seguindo convenções REST.
+4.  **Configuração no Environment:** Configure a URL da API mock no `environment.development.ts` como `http://localhost:3000`.
+5.  **Services preparados para troca:** Todos os services Angular devem usar `environment.apiUrl`, facilitando a substituição futura pela API real sem alterar código.
+
+### Exemplo de Workflow
+
+**Ao criar uma tela de "Listagem de Clientes":**
+
+1.  Adicione no `db.json`:
+    ```json
+    {
+      "clientes": [
+        { "id": 1, "nome": "Cliente A", "cnpj": "12.345.678/0001-99" },
+        { "id": 2, "nome": "Cliente B", "cnpj": "98.765.432/0001-11" }
+      ]
+    }
+    ```
+
+2.  Configure o service:
+    ```typescript
+    import { environment } from '../environments/environment';
+    
+    export class ClienteService {
+      private apiUrl = `${environment.apiUrl}/clientes`;
+      // ...
+    }
+    ```
+
+3.  Inicie o JSON Server: `npm run mock-api`
+4.  Teste a tela com dados reais mockados
+
+### Benefícios
+
+*   ✅ Visualização imediata do funcionamento da tela com dados
+*   ✅ Facilita validação de layout, formatação e fluxos
+*   ✅ Troca simples entre API mock e real (apenas alterar `environment`)
+*   ✅ Independência do backend durante desenvolvimento frontend
+
+**Documentação completa:** Consulte `docs/api-mock.md`

@@ -1,0 +1,10 @@
+{
+  "github.copilot.chat.localeOverride": "pt-br",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "SEMPRE gerar mensagens de commit em português do Brasil (pt-BR). Usar o padrão Conventional Commits. A descrição do commit deve estar COMPLETAMENTE em português. Exemplo: 'feat: adicionar servidor JSON para API mock e atualizar configurações de ambiente'"
+    }
+  ],
+  "git.inputValidationLength": 500,
+  "git.inputValidationSubjectLength": 100
+}

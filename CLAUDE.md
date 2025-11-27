@@ -28,11 +28,56 @@ Você é um Arquiteto de Software Sênior e Especialista em Migração de Sistem
 *   **Target Frontend:** Angular 19 (Standalone Components, Signals)
 *   **Target UI Library:** **PrimeNG 19 (Uso obrigatório para todos os elementos de UI possíveis)**
 *   **Target Backend:** C# (.NET Core/Latest) - **(Nota: Utilizado apenas para consultas e como fonte de dados. A migração principal foca no Frontend).**
+*   **Mock Backend:** JSON Server - **(Nota: Utilizado para simular a API real durante o desenvolvimento e testes.)**
 *   **Styling:** SCSS (SASS)
 
 ---
 
-## 4. DIRETRIZES DE FRONTEND E ESTILO
+## 4. MOCK DE DADOS E JSON SERVER
+
+### 1. **USO OBRIGATÓRIO DO JSON SERVER**
+*   Todos os testes e desenvolvimento de telas devem utilizar o **JSON Server** como backend mockado.
+*   O arquivo `db.json` (na raiz do projeto) é a única fonte de dados mockados.
+
+### 2. **POPULAÇÃO DO DB.JSON**
+*   **SEMPRE** que criar uma nova tela/funcionalidade, você **DEVE** popular o `db.json` com dados mockados realistas para essa tela.
+*   Os dados devem simular cenários reais de uso, incluindo:
+    *   Casos de sucesso (dados válidos e completos)
+    *   Casos extremos (listas vazias, valores nulos quando aplicável)
+    *   Volume de dados suficiente para testar paginação, scroll, etc.
+
+### 3. **CONFIGURAÇÃO DE AMBIENTE (environment)**
+*   A URL da API **DEVE** ser configurada nos arquivos de `environment` (`src/environments/`).
+*   **NUNCA** coloque URLs hardcoded nos serviços.
+*   Estrutura obrigatória no `environment`:
+    ```typescript
+    export const environment = {
+      production: false,
+      apiUrl: 'http://localhost:3000' // JSON Server
+    };
+    ```
+*   Quando for trocar para a API real, basta alterar a `apiUrl` no environment correspondente.
+
+### 4. **ESTRUTURA DOS SERVIÇOS**
+*   Todos os serviços Angular devem injetar a URL da API a partir do `environment`:
+    ```typescript
+    import { environment } from '@environments/environment';
+
+    @Injectable({ providedIn: 'root' })
+    export class MeuService {
+      private apiUrl = environment.apiUrl;
+
+      constructor(private http: HttpClient) {}
+
+      getData() {
+        return this.http.get(`${this.apiUrl}/endpoint`);
+      }
+    }
+    ```
+
+---
+
+## 5. DIRETRIZES DE FRONTEND E ESTILO
 
 ### 1. **USO OBRIGATÓRIO DE COMPONENTES PRIMENG**
 *   **SEMPRE** utilize os componentes da biblioteca PrimeNG em vez de elementos HTML nativos para interações e exibições complexas.
@@ -55,19 +100,6 @@ Você é um Arquiteto de Software Sênior e Especialista em Migração de Sistem
 
 ---
 
-## 5. AMBIENTE DE DESENVOLVIMENTO E DADOS MOCKADOS
-
-### 1. **API & JSON-SERVER**
-*   A URL da API para o ambiente atual (desenvolvimento ou produção) é injetada através do `InjectionToken` `API_URL`.
-*   Para o desenvolvimento, a `apiUrl` aponta para uma instância local do `json-server` em `http://localhost:3000`.
-*   A URL da API de produção deve ser configurada no arquivo `src/environments/environment.ts`.
-
-### 2. **DADOS MOCKADOS**
-*   **SEMPRE** que uma nova tela ou funcionalidade for criada, o arquivo `db.json` na raiz do projeto **DEVE** ser populado com os dados mockados necessários para testar a tela.
-*   Isso garante que a tela seja desenvolvida com uma estrutura de dados realista, facilitando os testes e a integração futura com a API real.
-
----
-
 ## 6. FLUXO DE TRABALHO (SEQUENCIAL - FOCO NO FRONTEND)
 
 Para cada nova funcionalidade ou tela a ser migrada, siga estritamente estas etapas:
@@ -85,8 +117,9 @@ Para cada nova funcionalidade ou tela a ser migrada, siga estritamente estas eta
 2.  **IMPLEMENTE O CÓDIGO:** Implemente o código **exatamente como foi aprovado** na Fase 1.
     *   Gere os componentes Angular.
     *   Utilize componentes PrimeNG.
-    *   Aplique estilos e sintaxe de template usando **exclusivamente** as diretrizes da Seção 4.
-    *   Crie serviços (`services`) para mockar ou consumir as APIs de consulta do backend.
+    *   Aplique estilos e sintaxe de template usando **exclusivamente** as diretrizes da Seção 5.
+    *   Crie serviços (`services`) consumindo a API do JSON Server (Seção 4).
+    *   Popule o `db.json` com dados mockados realistas (Seção 4).
 
 ---
 

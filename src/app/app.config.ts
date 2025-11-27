@@ -4,7 +4,8 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http'; // Import provideHttpClient
 import Aura from '@primeng/themes/aura'; // 👈 Importe o tema Aura
 import { providePrimeNG } from 'primeng/config'; // 👈 Importe o provider
-
+import { environment } from '../environments/environment';
+import { API_URL } from './api-url.token';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -24,5 +25,6 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    { provide: API_URL, useValue: environment.apiUrl },
   ],
 };

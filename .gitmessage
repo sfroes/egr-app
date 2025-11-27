@@ -1,0 +1,18 @@
+# Tipo: (feat|fix|docs|style|refactor|test|chore) - Descrição curta
+
+# Corpo do commit (opcional):
+# - Explique o QUE e POR QUE foi mudado
+# - Não explique COMO (o código faz isso)
+
+# Rodapé (opcional):
+# - Issues relacionadas: Closes #123
+# - Breaking changes: BREAKING CHANGE: descrição
+
+# Tipos de commit:
+# feat:     Nova funcionalidade
+# fix:      Correção de bug
+# docs:     Documentação
+# style:    Formatação (sem mudança de código)
+# refactor: Refatoração de código
+# test:     Adição/modificação de testes
+# chore:    Tarefas de manutenção
