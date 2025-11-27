@@ -1,0 +1,41 @@
+// Adicionar estilos específicos do componente aqui.
+// As classes `smc-egr-*` devem ser usadas para consistência.
+
+:host {
+  display: block;
+  max-width: 800px;
+  margin: 2rem auto;
+}
+
+.smc-egr-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
+}
+
+.smc-egr-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  // Garante que os componentes da PrimeNG preencham o espaço
+  p-calendar,
+  p-dropdown,
+  input[pInputText] {
+    width: 100%;
+  }
+}
+
+.smc-egr-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.smc-egr-required-notice {
+  font-size: var(--smc-egr-font-size-sm);
+  color: var(--smc-egr-text-color-secondary);
+  margin-top: 1rem;
+  text-align: right;
+}

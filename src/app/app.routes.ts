@@ -8,7 +8,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'busca-aluno',
         pathMatch: 'full',
       },
       {
@@ -16,6 +16,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/auth/login/login.component').then(
             (m) => m.LoginComponent
+          ),
+      },
+      {
+        path: 'busca-aluno',
+        loadComponent: () =>
+          import('./features/aluno/busca/busca-aluno.component').then(
+            (m) => m.BuscaAlunoComponent
           ),
       },
     ],

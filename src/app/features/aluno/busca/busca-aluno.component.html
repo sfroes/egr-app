@@ -1,0 +1,76 @@
+<p-card header="Identificação do Ex-Aluno" styleClass="smc-egr-card">
+  <p>
+    Para começar, por favor, preencha os campos abaixo para que possamos localizar
+    seu cadastro.
+  </p>
+
+  <form #buscaForm="ngForm" class="smc-egr-form-grid">
+    <!-- Nome -->
+    <div class="smc-egr-form-field">
+      <label for="nome">Nome Completo *</label>
+      <input
+        id="nome"
+        pInputText
+        type="text"
+        [(ngModel)]="nome"
+        name="nome"
+        required
+      />
+    </div>
+
+    <!-- Data de Nascimento -->
+    <div class="smc-egr-form-field">
+      <label for="dataNascimento">Data de Nascimento *</label>
+      <p-calendar
+        id="dataNascimento"
+        [(ngModel)]="dataNascimento"
+        name="dataNascimento"
+        dateFormat="dd/mm/yy"
+        [showIcon]="true"
+        required
+      ></p-calendar>
+    </div>
+
+    <!-- Origem -->
+    <div class="smc-egr-form-field">
+      <label for="origem">Origem *</label>
+      <p-dropdown
+        id="origem"
+        [(ngModel)]="selectedOrigem"
+        name="origem"
+        [options]="origens()"
+        optionLabel="nome"
+        placeholder="Selecione sua origem"
+        (onChange)="onOrigemChange()"
+        required
+      ></p-dropdown>
+    </div>
+
+    <!-- Curso -->
+    <div class="smc-egr-form-field">
+      <label for="curso">Curso em que se formou *</label>
+      <p-dropdown
+        id="curso"
+        [(ngModel)]="selectedCurso"
+        name="curso"
+        [options]="cursos()"
+        optionLabel="nome"
+        placeholder="Selecione seu curso"
+        [disabled]="isCursoDisabled()"
+        required
+      ></p-dropdown>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <div class="smc-egr-form-actions">
+      <p-button
+        label="Buscar"
+        icon="pi pi-search"
+        (onClick)="buscarAluno()"
+        [disabled]="isFormInvalid()"
+      ></p-button>
+    </div>
+    <p class="smc-egr-required-notice">* Campos de preenchimento obrigatório.</p>
+  </ng-template>
+</p-card>
