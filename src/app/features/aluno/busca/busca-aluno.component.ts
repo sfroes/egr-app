@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
 
 // PrimeNG Modules
@@ -11,15 +11,14 @@ import { CalendarModule } from 'primeng/calendar';
 import { ButtonModule } from 'primeng/button';
 
 // App Services
-import { AlunoService } from '../../../core/services/aluno.service'; // Mock Service
-import { Origem, Curso } from '../../../core/models/aluno.model'; // Data Models
+import { AlunoService } from '../../../core/services/aluno.service';
+import { Origem, Curso } from '../../../core/models/aluno.model';
 
 @Component({
   selector: 'smc-egr-busca-aluno',
   standalone: true,
   imports: [
     FormsModule,
-    JsonPipe,
     CardModule,
     InputTextModule,
     DropdownModule,
@@ -58,16 +57,16 @@ export class BuscaAlunoComponent {
   }
 
   loadOrigens() {
-    this.origens.set(this.alunoService.getOrigens());
+    this.alunoService.getOrigens().subscribe((data) => this.origens.set(data));
   }
-
-
 
   onOrigemChange(): void {
     this.selectedCurso.set(null); // Reset curso selection
     const origem = this.selectedOrigem();
     if (origem) {
-      this.cursos.set(this.alunoService.getCursos(origem.id));
+      this.alunoService.getCursos(origem.id).subscribe((data) =>
+        this.cursos.set(data)
+      );
     } else {
       this.cursos.set([]); // Clear cursos if origem is cleared
     }
@@ -88,7 +87,7 @@ export class BuscaAlunoComponent {
     };
 
     console.log('Buscando aluno com os dados:', formValue);
-    
+
     // For now, just navigate to the next step as per legacy logic
     // The data will be passed via a service or state management in a real scenario
     this.router.navigate(['/cadastro-aluno']);

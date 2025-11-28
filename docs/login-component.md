@@ -164,7 +164,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials).subscribe(isValid => {
       if (isValid) {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Login realizado!' });
-        setTimeout(() => this.router.navigate(['/app/busca-aluno']), 1500);
+        setTimeout(() => this.router.navigate(['/busca-aluno']), 1500);
       } else {
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Credenciais inválidas. Verifique os dados.' });
       }
@@ -222,13 +222,13 @@ export class LoginComponent implements OnInit {
 
 ## 5. Checklist de Implementação
 
-- [ ] Criar o arquivo `db.json` com dados mockados para `users`, `cursos`, `semestres` e `turnos`.
-- [ ] Criar o arquivo `auth.service.ts` em `src/app/core/services/`.
-- [ ] Implementar os métodos `getLoginDropdownData()` e `login()` no `AuthService`.
-- [ ] Atualizar `login.component.ts` para usar o `AuthService` para carregar dados e autenticar.
-- [ ] Atualizar `login.component.html` para usar o `async` pipe com os `Observables` dos dropdowns.
-- [ ] Adicionar `ToastModule` e `MessageService` para feedback visual ao usuário.
-- [ ] Instalar e iniciar o `json-server`.
-- [ ] Testar o fluxo completo: carregamento dos dados, submissão do formulário, autenticação (sucesso e falha) e redirecionamento.
-- [ ] Estilizar o componente e os feedbacks (mensagens de erro/sucesso) conforme o Design System.
-- [ ] Adicionar o `LoginComponent` às rotas em `app.routes.ts`.
+- [x] Criar o arquivo `db.json` com dados mockados para `users`, `cursos`, `semestres` e `turnos`.
+- [x] Criar o arquivo `auth.service.ts` em `src/app/core/services/`.
+- [x] Implementar os métodos `getLoginDropdownData()` e `login()` no `AuthService`.
+- [x] Atualizar `login.component.ts` para usar o `AuthService` para carregar dados e autenticar.
+- [x] Atualizar `login.component.html` para usar o `async` pipe com os `Observables` dos dropdowns.
+- [x] Adicionar `ToastModule` e `MessageService` para feedback visual ao usuário.
+- [x] Instalar e iniciar o `json-server`.
+- [x] Testar o fluxo completo: carregamento dos dados, submissão do formulário, autenticação (sucesso e falha) e redirecionamento.
+- [x] Estilizar o componente e os feedbacks (mensagens de erro/sucesso) conforme o Design System.
+- [x] Adicionar o `LoginComponent` às rotas em `app.routes.ts`.

@@ -4,7 +4,7 @@
     { "id": 2, "nome": "Pós-Graduação" },
     { "id": 3, "nome": "Mestrado" },
     { "id": 4, "nome": "Doutorado" }
-  ],
+  ]
   "cursos": [
     { "id": 101, "nome": "Sistemas de Informação", "origemId": 1 },
     { "id": 102, "nome": "Ciência da Computação", "origemId": 1 },
@@ -45,13 +45,7 @@
       "bairro": "Santa Efigênia",
       "cidade": "Belo Horizonte",
       "uf": "MG"
-    },
-    {
-      "cep": "01001000",
-      "logradouro": "Praça da Sé",
-      "bairro": "Sé",
-      "cidade": "São Paulo",
-      "uf": "SP"
     }
   ]
 }
+

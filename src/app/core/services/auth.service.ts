@@ -1,94 +1,48 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
+import { API_URL } from '../../api-url.token';
 
-// Interface for the login request body based on docs/login-component.md
-export interface LoginRequest {
+// Interfaces para os dados
+export interface DropdownOption {
+  id: string;
   nome: string;
-  numeroAcademico?: string;
-  dataNascimento: string;
-  cursoId: string;
-  anoUltimaMatricula?: string;
-  semestreUltimaMatriculaId?: string;
-  turnoId?: string;
 }
 
-// Interface for the login response
-export interface LoginResponse {
-  success: boolean;
-  token?: string;
-  message: string;
+export interface User {
+  id: number;
+  nome: string;
+  dataNascimento: string;
+  cursoId: string;
+  // Outros campos podem ser adicionados conforme necessário
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  // Using a placeholder API URL. In a real app, this would be in environment.ts
-  private apiUrl = '/api/auth/login';
+  private http = inject(HttpClient);
+  private apiUrl = inject(API_URL);
 
-  constructor(private http: HttpClient) { }
-
-  /**
-   * Performs the login operation by sending user credentials to the backend.
-   * For now, it returns a mock success response.
-   * @param credentials The user's login data.
-   * @returns An Observable of the LoginResponse.
-   */
-  login(credentials: LoginRequest): Observable<LoginResponse> {
-    console.log('AuthService: Attempting to log in with:', credentials);
-    
-    // MOCK IMPLEMENTATION
-    // In a real scenario, we would make an HTTP POST request:
-    // return this.http.post<LoginResponse>(this.apiUrl, credentials).pipe(
-    //   tap(response => {
-    //     if (response.success && response.token) {
-    //       localStorage.setItem('authToken', response.token);
-    //     }
-    //   }),
-    //   catchError(this.handleError)
-    // );
-
-    // Returning a mock successful response for frontend development
-    const mockResponse: LoginResponse = {
-      success: true,
-      token: 'mock-jwt-token-for-development',
-      message: 'Login bem-sucedido (Mock)'
-    };
-
-    localStorage.setItem('authToken', mockResponse.token!);
-    
-    return of(mockResponse);
+  getLoginDropdownData(): Observable<{cursos: DropdownOption[], semestres: DropdownOption[], turnos: DropdownOption[]}> {
+    return forkJoin({
+      cursos: this.http.get<DropdownOption[]>(`${this.apiUrl}/cursos`),
+      semestres: this.http.get<DropdownOption[]>(`${this.apiUrl}/semestres`),
+      turnos: this.http.get<DropdownOption[]>(`${this.apiUrl}/turnos`),
+    });
   }
 
-  /**
-   * Handles HTTP errors.
-   * In a real app, you would have more robust error handling (e.g., logging to a remote service).
-   */
-  private handleError(error: any): Observable<any> {
-    console.error('An error occurred during login:', error);
-    
-    const mockErrorResponse: LoginResponse = {
-      success: false,
-      message: 'Credenciais inválidas (Mock)'
-    };
-    
-    return of(mockErrorResponse);
-  }
-
-  /**
-   * Checks if the user is authenticated.
-   * @returns True if an auth token exists, false otherwise.
-   */
-  isAuthenticated(): boolean {
-    return !!localStorage.getItem('authToken');
-  }
-
-  /**
-   * Logs the user out by removing the auth token.
-   */
-  logout(): void {
-    localStorage.removeItem('authToken');
+  login(credentials: { nome: string; dataNascimento: string; cursoId: string }): Observable<boolean> {
+    // Busca todos os usuários e filtra no client-side para fazer a comparação case-insensitive
+    return this.http.get<User[]>(`${this.apiUrl}/users`).pipe(
+      map(users => {
+        const foundUser = users.find(user =>
+          user.nome.toLowerCase() === credentials.nome.toLowerCase() &&
+          user.dataNascimento === credentials.dataNascimento &&
+          user.cursoId === credentials.cursoId
+        );
+        return !!foundUser; // Retorna true se encontrou, false caso contrário
+      })
+    );
   }
 }
