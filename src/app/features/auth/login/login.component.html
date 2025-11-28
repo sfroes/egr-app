@@ -1,55 +1,101 @@
-<p-card header="Questionário - Login" styleClass="smc-egr-card">
-  <p class="smc-egr-text-sm smc-egr-mb-md">Preencha os campos abaixo e clique em OK para continuar.
-    Os campos em <span class="smc-egr-text-danger">vermelho</span> são de preenchimento obrigatório.</p>
-
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="smc-egr-form-group">
-      <label for="nome" class="smc-egr-label smc-egr-label-required">Nome</label>
-      <input type="text" id="nome" pInputText formControlName="nome" [ngClass]="{'ng-invalid ng-dirty': loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched}" />
-      @if (loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched) {
-        <small class="smc-egr-form-error">Nome é obrigatório.</small>
-      }
+<div class="smc-egr-login-page">
+  <div class="smc-egr-login-card">
+    <div class="smc-egr-login-logo">
+      <img src="assets/images/brasao-pucminas-2025.svg" alt="Brasão PUC Minas" />
     </div>
 
-    <div class="smc-egr-form-group">
-      <label for="numeroAcademico" class="smc-egr-label">Nº Acadêmico (opcional)</label>
-      <input type="text" id="numeroAcademico" pInputText formControlName="numeroAcademico" />
+    <div class="smc-egr-login-card-header">
+      <h1>Bem-vindo ao EGR</h1>
+      <p>Preencha os campos abaixo para continuar</p>
     </div>
 
-    <div class="smc-egr-form-group">
-      <label for="dataNascimento" class="smc-egr-label smc-egr-label-required">Data de Nascimento</label>
-      <p-inputMask id="dataNascimento" mask="99/99/9999" formControlName="dataNascimento" placeholder="dd/mm/aaaa" [ngClass]="{'ng-invalid ng-dirty': loginForm.get('dataNascimento')?.invalid && loginForm.get('dataNascimento')?.touched}"></p-inputMask>
-      @if (loginForm.get('dataNascimento')?.errors && loginForm.get('dataNascimento')?.touched) {
-        <small class="smc-egr-form-error">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="smc-egr-form-field">
+        <label for="nome" class="smc-egr-label-required">Nome</label>
+        <input
+          type="text"
+          id="nome"
+          pInputText
+          formControlName="nome"
+          [ngClass]="{'ng-invalid ng-dirty': loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched}"
+        />
+        @if (loginForm.get('nome')?.invalid && loginForm.get('nome')?.touched) {
+          <small class="smc-egr-field-error">Nome é obrigatório.</small>
+        }
+      </div>
+
+      <div class="smc-egr-form-field">
+        <label for="numeroAcademico">Nº Acadêmico (opcional)</label>
+        <input type="text" id="numeroAcademico" pInputText formControlName="numeroAcademico" />
+      </div>
+
+      <div class="smc-egr-form-field">
+        <label for="dataNascimento" class="smc-egr-label-required">Data de Nascimento</label>
+        <p-inputMask
+          id="dataNascimento"
+          mask="99/99/9999"
+          formControlName="dataNascimento"
+          placeholder="dd/mm/aaaa"
+          [ngClass]="{'ng-invalid ng-dirty': loginForm.get('dataNascimento')?.invalid && loginForm.get('dataNascimento')?.touched}"
+        ></p-inputMask>
+        @if (loginForm.get('dataNascimento')?.errors && loginForm.get('dataNascimento')?.touched) {
+          <small class="smc-egr-field-error">
             @if (loginForm.get('dataNascimento')?.hasError('required')) {
-                Data de Nascimento é obrigatória.
+              Data de Nascimento é obrigatória.
             } @else {
-                Data inválida.
+              Data inválida.
             }
-        </small>
-      }
-    </div>
+          </small>
+        }
+      </div>
 
-    <div class="smc-egr-form-group">
-      <label for="curso" class="smc-egr-label smc-egr-label-required">Curso</label>
-      <p-dropdown id="curso" [options]="(cursos$ | async) || []" formControlName="cursoId" optionLabel="nome" optionValue="id" placeholder="Selecione um Curso" [ngClass]="{'ng-invalid ng-dirty': loginForm.get('cursoId')?.invalid && loginForm.get('cursoId')?.touched}"></p-dropdown>
-      @if (loginForm.get('cursoId')?.invalid && loginForm.get('cursoId')?.touched) {
-        <small class="smc-egr-form-error">Curso é obrigatório.</small>
-      }
-    </div>
+      <div class="smc-egr-form-field">
+        <label for="curso" class="smc-egr-label-required">Curso</label>
+        <p-dropdown
+          id="curso"
+          [options]="(cursos$ | async) || []"
+          formControlName="cursoId"
+          optionLabel="nome"
+          optionValue="id"
+          placeholder="Selecione um Curso"
+          [ngClass]="{'ng-invalid ng-dirty': loginForm.get('cursoId')?.invalid && loginForm.get('cursoId')?.touched}"
+        ></p-dropdown>
+        @if (loginForm.get('cursoId')?.invalid && loginForm.get('cursoId')?.touched) {
+          <small class="smc-egr-field-error">Curso é obrigatório.</small>
+        }
+      </div>
 
-    <div class="smc-egr-form-group">
-      <label for="semestreUltimaMatricula" class="smc-egr-label">Semestre da Última Matrícula</label>
-      <p-dropdown id="semestreUltimaMatricula" [options]="(semestres$ | async) || []" formControlName="semestreUltimaMatricula" optionLabel="nome" optionValue="id" placeholder="Selecione um Semestre"></p-dropdown>
-    </div>
+      <div class="smc-egr-form-field">
+        <label for="semestreUltimaMatricula">Semestre da Última Matrícula</label>
+        <p-dropdown
+          id="semestreUltimaMatricula"
+          [options]="(semestres$ | async) || []"
+          formControlName="semestreUltimaMatricula"
+          optionLabel="nome"
+          optionValue="id"
+          placeholder="Selecione um Semestre"
+        ></p-dropdown>
+      </div>
 
-    <div class="smc-egr-form-group">
-      <label for="turno" class="smc-egr-label">Turno</label>
-      <p-dropdown id="turno" [options]="(turnos$ | async) || []" formControlName="turno" optionLabel="nome" optionValue="id" placeholder="Selecione um Turno"></p-dropdown>
-    </div>
+      <div class="smc-egr-form-field">
+        <label for="turno">Turno</label>
+        <p-dropdown
+          id="turno"
+          [options]="(turnos$ | async) || []"
+          formControlName="turno"
+          optionLabel="nome"
+          optionValue="id"
+          placeholder="Selecione um Turno"
+        ></p-dropdown>
+      </div>
 
-    <div class="smc-egr-flex smc-egr-justify-center smc-egr-mt-lg">
-      <p-button label="OK" type="submit"></p-button>
-    </div>
-  </form>
-</p-card>
+      <div class="smc-egr-mt-6">
+        <p-button label="Entrar" type="submit" [style]="{'width': '100%'}"></p-button>
+      </div>
+
+      <p class="smc-egr-text-xs smc-egr-text-center smc-egr-text-muted smc-egr-mt-4">
+        <span class="smc-egr-text-danger">*</span> Campos obrigatórios
+      </p>
+    </form>
+  </div>
+</div>

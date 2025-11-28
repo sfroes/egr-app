@@ -1,102 +1,107 @@
-<form [formGroup]="alunoForm" (ngSubmit)="onSubmit()">
-  <p-card header="Cadastro de Ex-Aluno" styleClass="smc-egr-card">
-    <p class="smc-egr-text-sm smc-egr-mb-md">
-      Preencha os campos abaixo para completar seu cadastro. Os campos em
-      <span class="smc-egr-text-danger">vermelho</span> são de preenchimento obrigatório.
-    </p>
+<div class="smc-egr-page-container smc-egr-page-container--wide">
+  <div class="smc-egr-page-header" style="margin-bottom: var(--smc-egr-space-6); padding-bottom: var(--smc-egr-space-4); border-bottom: 2px solid var(--smc-egr-primary-200);">
+    <h1 style="display: flex; align-items: center; gap: var(--smc-egr-space-3); justify-content: center;">
+      {{ isEditMode ? 'Editar Cadastro' : 'Novo Cadastro' }}
+      <span class="smc-egr-badge smc-egr-badge-primary">{{ isEditMode ? 'Edição' : 'Novo' }}</span>
+    </h1>
+    <p>Preencha os campos abaixo. Os campos com <span class="smc-egr-text-danger">*</span> são obrigatórios</p>
+  </div>
 
-    <!-- Dados Pessoais -->
-    <div formGroupName="pessoal">
-      <h3 class="smc-egr-section-header">Dados Pessoais</h3>
-      <div class="smc-egr-form-grid">
-        <div class="smc-egr-form-group">
-          <label for="nome" class="smc-egr-label smc-egr-label-required">Nome Completo</label>
-          <input id="nome" type="text" pInputText formControlName="nome" />
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="dataNasc" class="smc-egr-label smc-egr-label-required">Data de Nascimento</label>
-          <p-inputMask id="dataNasc" mask="99/99/9999" formControlName="dataNasc" placeholder="dd/mm/aaaa"></p-inputMask>
-        </div>
-      </div>
-    </div>
-
-    <!-- Formação -->
-    <div formGroupName="formacao">
-      <h3 class="smc-egr-section-header">Formação</h3>
-      <div class="smc-egr-form-grid">
-        <div class="smc-egr-form-group">
-          <label for="origem" class="smc-egr-label smc-egr-label-required">Origem</label>
-          <p-dropdown id="origem" [options]="origens" formControlName="origem" optionLabel="nome" placeholder="Selecione a Origem"></p-dropdown>
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="curso" class="smc-egr-label smc-egr-label-required">Curso</label>
-          <p-dropdown id="curso" [options]="cursos" formControlName="curso" optionLabel="nome" placeholder="Selecione o Curso"></p-dropdown>
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="anoFormado" class="smc-egr-label smc-egr-label-required">Ano de Formatura</label>
-          <input id="anoFormado" type="text" pInputText formControlName="anoFormado" />
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="semestreFormado" class="smc-egr-label smc-egr-label-required">Semestre de Formatura</label>
-          <p-dropdown id="semestreFormado" [options]="semestres" formControlName="semestreFormado" optionLabel="nome" optionValue="id" placeholder="Selecione o Semestre"></p-dropdown>
-        </div>
-      </div>
-    </div>
-
-    <!-- Contato -->
-    <div formGroupName="contato">
-      <h3 class="smc-egr-section-header">Contato</h3>
-      <div class="smc-egr-form-grid">
-        <div class="smc-egr-form-group">
-          <label for="email" class="smc-egr-label smc-egr-label-required">E-mail</label>
-          <input id="email" type="email" pInputText formControlName="email" />
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="telCelular" class="smc-egr-label smc-egr-label-required">Celular</label>
-          <div class="smc-egr-input-group">
-            <input type="text" pInputText formControlName="dddCelular" placeholder="DDD" class="smc-egr-input-ddd" />
-            <input type="text" pInputText formControlName="telCelular" placeholder="Número" class="smc-egr-input-tel" />
+  <form [formGroup]="alunoForm" (ngSubmit)="onSubmit()">
+    <p-card styleClass="smc-egr-card">
+      <!-- Dados Pessoais -->
+      <div formGroupName="pessoal" class="smc-egr-form-section">
+        <h3 class="smc-egr-section-header">Dados Pessoais</h3>
+        <div class="smc-egr-form-grid smc-egr-form-grid--cols-2">
+          <div class="smc-egr-form-field">
+            <label for="nome" class="smc-egr-label-required">Nome Completo</label>
+            <input id="nome" type="text" pInputText formControlName="nome" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="dataNasc" class="smc-egr-label-required">Data de Nascimento</label>
+            <p-inputMask id="dataNasc" mask="99/99/9999" formControlName="dataNasc" placeholder="dd/mm/aaaa"></p-inputMask>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Endereço -->
-    <div formGroupName="endereco">
-      <h3 class="smc-egr-section-header">Endereço</h3>
-      <div class="smc-egr-form-grid">
-        <div class="smc-egr-form-group">
-          <label for="cep" class="smc-egr-label smc-egr-label-required">CEP</label>
-          <p-inputMask id="cep" mask="99999-999" formControlName="cep" (onComplete)="buscarCep()"></p-inputMask>
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="logradouro" class="smc-egr-label smc-egr-label-required">Logradouro</label>
-          <input id="logradouro" type="text" pInputText formControlName="logradouro" />
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="numero" class="smc-egr-label smc-egr-label-required">Número</label>
-          <input id="numero" type="text" pInputText formControlName="numero" />
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="bairro" class="smc-egr-label smc-egr-label-required">Bairro</label>
-          <input id="bairro" type="text" pInputText formControlName="bairro" />
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="cidade" class="smc-egr-label smc-egr-label-required">Cidade</label>
-          <input id="cidade" type="text" pInputText formControlName="cidade" />
-        </div>
-        <div class="smc-egr-form-group">
-          <label for="uf" class="smc-egr-label smc-egr-label-required">UF</label>
-          <input id="uf" type="text" pInputText formControlName="uf" />
+      <!-- Formação -->
+      <div formGroupName="formacao" class="smc-egr-form-section">
+        <h3 class="smc-egr-section-header">Formação</h3>
+        <div class="smc-egr-form-grid smc-egr-form-grid--cols-2">
+          <div class="smc-egr-form-field">
+            <label for="origem" class="smc-egr-label-required">Origem</label>
+            <p-dropdown id="origem" [options]="origens" formControlName="origem" optionLabel="nome" placeholder="Selecione a Origem"></p-dropdown>
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="curso" class="smc-egr-label-required">Curso</label>
+            <p-dropdown id="curso" [options]="cursos" formControlName="curso" optionLabel="nome" placeholder="Selecione o Curso"></p-dropdown>
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="anoFormado" class="smc-egr-label-required">Ano de Formatura</label>
+            <input id="anoFormado" type="text" pInputText formControlName="anoFormado" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="semestreFormado" class="smc-egr-label-required">Semestre de Formatura</label>
+            <p-dropdown id="semestreFormado" [options]="semestres" formControlName="semestreFormado" optionLabel="nome" optionValue="id" placeholder="Selecione o Semestre"></p-dropdown>
+          </div>
         </div>
       </div>
-    </div>
 
-    <ng-template pTemplate="footer">
-      <div class="smc-egr-form-actions">
-        <p-button label="Cancelar" styleClass="p-button-secondary" (onClick)="cancelar()"></p-button>
-        <p-button [label]="isEditMode ? 'Atualizar' : 'Salvar'" type="submit" [disabled]="alunoForm.invalid"></p-button>
+      <!-- Contato -->
+      <div formGroupName="contato" class="smc-egr-form-section">
+        <h3 class="smc-egr-section-header">Contato</h3>
+        <div class="smc-egr-form-grid smc-egr-form-grid--cols-2">
+          <div class="smc-egr-form-field">
+            <label for="email" class="smc-egr-label-required">E-mail</label>
+            <input id="email" type="email" pInputText formControlName="email" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="telCelular" class="smc-egr-label-required">Celular</label>
+            <div class="smc-egr-input-group">
+              <input type="text" pInputText formControlName="dddCelular" placeholder="DDD" class="smc-egr-input-ddd" />
+              <input type="text" pInputText formControlName="telCelular" placeholder="Número" class="smc-egr-input-tel" />
+            </div>
+          </div>
+        </div>
       </div>
-    </ng-template>
-  </p-card>
-</form>
+
+      <!-- Endereço -->
+      <div formGroupName="endereco" class="smc-egr-form-section">
+        <h3 class="smc-egr-section-header">Endereço</h3>
+        <div class="smc-egr-form-grid smc-egr-form-grid--cols-3">
+          <div class="smc-egr-form-field">
+            <label for="cep" class="smc-egr-label-required">CEP</label>
+            <p-inputMask id="cep" mask="99999-999" formControlName="cep" (onComplete)="buscarCep()"></p-inputMask>
+          </div>
+          <div class="smc-egr-form-field" style="grid-column: span 2;">
+            <label for="logradouro" class="smc-egr-label-required">Logradouro</label>
+            <input id="logradouro" type="text" pInputText formControlName="logradouro" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="numero" class="smc-egr-label-required">Número</label>
+            <input id="numero" type="text" pInputText formControlName="numero" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="bairro" class="smc-egr-label-required">Bairro</label>
+            <input id="bairro" type="text" pInputText formControlName="bairro" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="cidade" class="smc-egr-label-required">Cidade</label>
+            <input id="cidade" type="text" pInputText formControlName="cidade" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="uf" class="smc-egr-label-required">UF</label>
+            <input id="uf" type="text" pInputText formControlName="uf" maxlength="2" />
+          </div>
+        </div>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <div class="smc-egr-form-actions">
+          <p-button label="Cancelar" styleClass="p-button-secondary" (onClick)="cancelar()"></p-button>
+          <p-button [label]="isEditMode ? 'Atualizar' : 'Salvar'" type="submit" [disabled]="alunoForm.invalid"></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </form>
+</div>

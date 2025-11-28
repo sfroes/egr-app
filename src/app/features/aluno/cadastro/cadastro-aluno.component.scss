@@ -1,36 +1,6 @@
+// CadastroAlunoComponent utiliza as classes do Design System
+// Estilos mínimos e específicos apenas
+
 :host {
   display: block;
-  max-width: 900px;
-  margin: 2rem auto;
-}
-
-.smc-egr-section-header {
-  font-size: var(--smc-egr-font-size-lg);
-  font-weight: 600;
-  color: var(--smc-egr-primary-color);
-  border-bottom: 1px solid var(--smc-egr-border-color);
-  padding-bottom: 0.5rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.smc-egr-form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.smc-egr-form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.smc-egr-input-group {
-  display: flex;
-  gap: 0.5rem;
-
-  .smc-egr-input-ddd {
-    width: 80px;
-  }
 }
