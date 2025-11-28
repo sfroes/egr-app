@@ -1,9 +1,21 @@
 {
+  "origens": [
+    { "id": 1, "nome": "Graduação" },
+    { "id": 2, "nome": "Pós-Graduação" },
+    { "id": 3, "nome": "Mestrado" },
+    { "id": 4, "nome": "Doutorado" }
+  ],
   "cursos": [
-    { "id": "1", "nome": "Ciência da Computação" },
-    { "id": "2", "nome": "Engenharia Civil" },
-    { "id": "3", "nome": "Medicina" },
-    { "id": "4", "nome": "Direito" }
+    { "id": "1", "nome": "Ciência da Computação", "origemId": 1 },
+    { "id": "2", "nome": "Engenharia Civil", "origemId": 1 },
+    { "id": "3", "nome": "Medicina", "origemId": 1 },
+    { "id": "4", "nome": "Direito", "origemId": 1 },
+    { "id": "5", "nome": "MBA em Gestão de Projetos", "origemId": 2 },
+    { "id": "6", "nome": "Especialização em Arquitetura de Software", "origemId": 2 },
+    { "id": "7", "nome": "Mestrado em Engenharia de Software", "origemId": 3 },
+    { "id": "8", "nome": "Mestrado em Inteligência Artificial", "origemId": 3 },
+    { "id": "9", "nome": "Doutorado em Bioinformática", "origemId": 4 },
+    { "id": "10", "nome": "Doutorado em Física Quântica", "origemId": 4 }
   ],
   "semestres": [
     { "id": "1", "nome": "1º Semestre" },
@@ -24,6 +36,16 @@
       "anoUltimaMatricula": "2023",
       "semestreUltimaMatriculaId": "2",
       "turnoId": "N"
+    },
+    {
+      "id": 2,
+      "nome": "Peter Parker",
+      "numeroAcademico": "67890",
+      "dataNascimento": "10/08/2001",
+      "cursoId": "2",
+      "anoUltimaMatricula": "2024",
+      "semestreUltimaMatriculaId": "1",
+      "turnoId": "M"
     }
   ]
 }

@@ -8,7 +8,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'busca-aluno',
+        redirectTo: 'login',
         pathMatch: 'full',
       },
       {

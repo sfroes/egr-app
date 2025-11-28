@@ -295,17 +295,11 @@ export class BuscaAlunoComponent {
 
 ## 3. Checklist de Implementação
 
-- [ ] Criar a pasta `features/aluno/busca` para o novo componente.
-- [ ] Criar o arquivo `busca-aluno.component.ts`.
-- [ ] Criar o arquivo `busca-aluno.component.html`.
-- [ ] Criar o arquivo `busca-aluno.component.scss`.
-- [ ] Criar a pasta `core/models` e definir os modelos `aluno.model.ts` (para `Origem` e `Curso`).
-- [ ] Criar a pasta `core/services` e implementar o `aluno.service.ts` com os dados mockados.
 - [x] Criar a pasta `features/aluno/busca` para o novo componente.
 - [x] Criar o arquivo `busca-aluno.component.ts`.
 - [x] Criar o arquivo `busca-aluno.component.html`.
 - [x] Criar o arquivo `busca-aluno.component.scss`.
 - [x] Criar a pasta `core/models` e definir os modelos `aluno.model.ts` (para `Origem` e `Curso`).
 - [x] Criar a pasta `core/services` e implementar o `aluno.service.ts` com os dados mockados.
-- [ ] Adicionar a nova rota `/busca-aluno` em `app.routes.ts`, apontando para `BuscaAlunoComponent`.
-- [ ] Testar o fluxo de preenchimento do formulário e a navegação para a próxima rota.
+- [x] Adicionar a nova rota `/busca-aluno` em `app.routes.ts`, apontando para `BuscaAlunoComponent`.
+- [x] Testar o fluxo de preenchimento do formulário e a navegação para a próxima rota.
