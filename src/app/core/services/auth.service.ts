@@ -33,13 +33,16 @@ export class AuthService {
   }
 
   login(credentials: { nome: string; dataNascimento: string; cursoId: string }): Observable<boolean> {
-    const params = new HttpParams()
-      .set('nome', credentials.nome)
-      .set('dataNascimento', credentials.dataNascimento)
-      .set('cursoId', credentials.cursoId);
-
-    return this.http.get<User[]>(`${this.apiUrl}/users`, { params }).pipe(
-      map(users => users.length > 0) // Se encontrou algum usuário, o login é válido
+    // Busca todos os usuários e filtra no client-side para fazer a comparação case-insensitive
+    return this.http.get<User[]>(`${this.apiUrl}/users`).pipe(
+      map(users => {
+        const foundUser = users.find(user =>
+          user.nome.toLowerCase() === credentials.nome.toLowerCase() &&
+          user.dataNascimento === credentials.dataNascimento &&
+          user.cursoId === credentials.cursoId
+        );
+        return !!foundUser; // Retorna true se encontrou, false caso contrário
+      })
     );
   }
 }

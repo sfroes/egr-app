@@ -19,7 +19,6 @@ import { Origem, Curso } from '../../../core/models/aluno.model';
   standalone: true,
   imports: [
     FormsModule,
-    JsonPipe,
     CardModule,
     InputTextModule,
     DropdownModule,

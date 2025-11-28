@@ -164,7 +164,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials).subscribe(isValid => {
       if (isValid) {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Login realizado!' });
-        setTimeout(() => this.router.navigate(['/app/busca-aluno']), 1500);
+        setTimeout(() => this.router.navigate(['/busca-aluno']), 1500);
       } else {
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Credenciais inválidas. Verifique os dados.' });
       }

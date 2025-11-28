@@ -10,7 +10,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputMaskModule } from 'primeng/inputmask';
-import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 import { AuthService, DropdownOption } from '../../../core/services/auth.service';
@@ -63,11 +62,9 @@ export const dateValidator: ValidatorFn = (control: AbstractControl): Validation
     DropdownModule,
     ButtonModule,
     InputMaskModule,
-    ToastModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [MessageService]
 })
 export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -76,7 +73,7 @@ export class LoginComponent implements OnInit {
   private messageService = inject(MessageService);
 
   loginForm!: FormGroup;
-  
+
   cursos$!: Observable<DropdownOption[]>;
   semestres$!: Observable<DropdownOption[]>;
   turnos$!: Observable<DropdownOption[]>;
@@ -118,7 +115,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials).subscribe(isValid => {
       if (isValid) {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Login realizado!' });
-        setTimeout(() => this.router.navigate(['/app/busca-aluno']), 1500);
+        this.router.navigate(['/busca-aluno']);
       } else {
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Credenciais inválidas. Verifique os dados.' });
       }
