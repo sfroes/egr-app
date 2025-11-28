@@ -1,30 +1,14 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Origem, Curso } from '../models/aluno.model';
-import { API_URL } from '../../api-url.token';
 import { Inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { Aluno, Curso, Endereco, Origem } from '../models/aluno.model';
-import { API_URL } from 'src/app/api-url.token';
+import { API_URL } from '../../api-url.token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlunoService {
-  private http = inject(HttpClient);
-  private apiUrl = inject(API_URL);
-
-  getOrigens(): Observable<Origem[]> {
-    return this.http.get<Origem[]>(`${this.apiUrl}/origens`);
-  }
-
-  getCursos(origemId: number): Observable<Curso[]> {
-    const params = new HttpParams().set('origemId', origemId.toString());
-    return this.http.get<Curso[]>(`${this.apiUrl}/cursos`, { params });
-  }
   constructor(
     private http: HttpClient,
     @Inject(API_URL) private apiUrl: string
@@ -35,9 +19,8 @@ export class AlunoService {
   }
 
   getCursos(origemId: number): Observable<Curso[]> {
-    return this.http.get<Curso[]>(
-      `${this.apiUrl}/cursos?origemId=${origemId}`
-    );
+    const params = new HttpParams().set('origemId', origemId.toString());
+    return this.http.get<Curso[]>(`${this.apiUrl}/cursos`, { params });
   }
 
   getAlunoById(id: number): Observable<Aluno | null> {

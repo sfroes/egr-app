@@ -4,7 +4,7 @@
     { "id": 2, "nome": "Pós-Graduação" },
     { "id": 3, "nome": "Mestrado" },
     { "id": 4, "nome": "Doutorado" }
-  ]
+  ],
   "cursos": [
     { "id": 101, "nome": "Sistemas de Informação", "origemId": 1 },
     { "id": 102, "nome": "Ciência da Computação", "origemId": 1 },
@@ -45,6 +45,28 @@
       "bairro": "Santa Efigênia",
       "cidade": "Belo Horizonte",
       "uf": "MG"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "nome": "Tony Stark",
+      "numeroAcademico": "12345",
+      "dataNascimento": "29/05/1970",
+      "cursoId": "1",
+      "anoUltimaMatricula": "2023",
+      "semestreUltimaMatriculaId": "2",
+      "turnoId": "N"
+    },
+    {
+      "id": 2,
+      "nome": "Peter Parker",
+      "numeroAcademico": "67890",
+      "dataNascimento": "10/08/2001",
+      "cursoId": "2",
+      "anoUltimaMatricula": "2024",
+      "semestreUltimaMatriculaId": "1",
+      "turnoId": "M"
     }
   ]
 }

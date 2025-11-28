@@ -84,9 +84,7 @@ export const routes: Routes = [
 *   [x] Criar componente `LoginComponent` para `pgQELogin.html`.
 *   [x] Criar componente `LayoutComponent` para ser o shell principal da aplicação.
 *   [x] Criar componente `BuscaAlunoComponent` para `pgExBuscaAluno.html`.
-*   [ ] Criar componente `CadastroAlunoComponent` para `pgExCadastroAluno.html`.
-*   [ ] Criar componente `BuscaAlunoComponent` para `pgExBuscaAluno.html`.
-*   [x] Criar componente CadastroAlunoComponent para `pgExCadastroAluno.html`.
+*   [x] Criar componente `CadastroAlunoComponent` para `pgExCadastroAluno.html`.
 *   [ ] Criar componente `ResultadosBuscaComponent` (se distinto de BuscaAlunoComponent).
 *   [ ] Criar componente `LogoutComponent`.
 *   [x] Configurar as rotas iniciais em `app.routes.ts` conforme proposto.
