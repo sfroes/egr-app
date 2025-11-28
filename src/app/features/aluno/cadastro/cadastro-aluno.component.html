@@ -1,472 +1,102 @@
-<p-card class="smc-egr-card">
-  <ng-template pTemplate="header">
-    <div class="smc-egr-card-header">
-      <h2 class="smc-egr-card-title">
-        {{ editMode ? 'Editar Cadastro de Aluno' : 'Cadastro de Aluno' }}
-      </h2>
-      <p-messages [(value)]="messages" [enableService]="false"></p-messages>
-    </div>
-  </ng-template>
-  <div class="smc-egr-form-container">
-    <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
-      <p-card class="smc-egr-subsection-card">
-        <ng-template pTemplate="header">
-          <h3 class="smc-egr-subsection-title">Dados Pessoais e Acadêmicos</h3>
-        </ng-template>
-        <div class="p-fluid p-formgrid p-grid">
-          <div class="p-field p-col-12 p-md-6">
-            <label for="nome" class="smc-egr-form-label">* Nome</label>
-            <input
-              id="nome"
-              type="text"
-              pInputText
-              formControlName="nome"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('nome')?.invalid &&
-                  cadastroForm.get('nome')?.touched
-              }"
-            />
-            @if (cadastroForm.get('nome')?.hasError('required') && cadastroForm.get('nome')?.touched) {
-              <small class="p-error">Nome é obrigatório.</small>
-            }
-            @if (cadastroForm.get('nome')?.hasError('invalidNome') && cadastroForm.get('nome')?.touched) {
-              <small class="p-error">Nome contém caracteres inválidos.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="dataNasc" class="smc-egr-form-label"
-              >* Data de Nascimento</label
-            >
-            <p-calendar
-              id="dataNasc"
-              formControlName="dataNasc"
-              dateFormat="dd/mm/yy"
-              [showIcon]="true"
-              class="smc-egr-calendar"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('dataNasc')?.invalid &&
-                  cadastroForm.get('dataNasc')?.touched
-              }"
-            ></p-calendar>
-            @if (cadastroForm.get('dataNasc')?.hasError('required') && cadastroForm.get('dataNasc')?.touched) {
-              <small class="p-error">Data de Nascimento é obrigatória.</small>
-            }
-            @if (cadastroForm.get('dataNasc')?.hasError('invalidDate') && cadastroForm.get('dataNasc')?.touched) {
-              <small class="p-error">Data de Nascimento inválida.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="origem" class="smc-egr-form-label">* Origem</label>
-            <p-dropdown
-              id="origem"
-              [options]="origens"
-              formControlName="origem"
-              optionLabel="nome"
-              placeholder="Selecione uma Origem"
-              class="smc-egr-dropdown"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('origem')?.invalid &&
-                  cadastroForm.get('origem')?.touched
-              }"
-            ></p-dropdown>
-            @if (cadastroForm.get('origem')?.hasError('required') && cadastroForm.get('origem')?.touched) {
-              <small class="p-error">Origem é obrigatória.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="curso" class="smc-egr-form-label">* Curso</label>
-            <p-dropdown
-              id="curso"
-              [options]="cursos"
-              formControlName="curso"
-              optionLabel="nome"
-              placeholder="Selecione um Curso"
-              class="smc-egr-dropdown"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('curso')?.invalid &&
-                  cadastroForm.get('curso')?.touched
-              }"
-            ></p-dropdown>
-            @if (cadastroForm.get('curso')?.hasError('required') && cadastroForm.get('curso')?.touched) {
-              <small class="p-error">Curso é obrigatório.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="anoFormado" class="smc-egr-form-label"
-              >* Ano de Formatura</label
-            >
-            <input
-              id="anoFormado"
-              type="text"
-              pInputText
-              formControlName="anoFormado"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('anoFormado')?.invalid &&
-                  cadastroForm.get('anoFormado')?.touched
-              }"
-            />
-            @if (cadastroForm.get('anoFormado')?.hasError('required') && cadastroForm.get('anoFormado')?.touched) {
-              <small class="p-error">Ano de Formatura é obrigatório.</small>
-            }
-            @if (cadastroForm.get('anoFormado')?.hasError('pattern') && cadastroForm.get('anoFormado')?.touched) {
-              <small class="p-error">Ano de Formatura deve ter 4 dígitos numéricos.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="semestreFormado" class="smc-egr-form-label"
-              >Semestre de Formatura</label
-            >
-            <p-dropdown
-              id="semestreFormado"
-              [options]="semestres"
-              formControlName="semestreFormado"
-              optionLabel="label"
-              placeholder="Selecione um Semestre"
-              class="smc-egr-dropdown"
-            ></p-dropdown>
-          </div>
-        </div>
-      </p-card>
+<form [formGroup]="alunoForm" (ngSubmit)="onSubmit()">
+  <p-card header="Cadastro de Ex-Aluno" styleClass="smc-egr-card">
+    <p class="smc-egr-text-sm smc-egr-mb-md">
+      Preencha os campos abaixo para completar seu cadastro. Os campos em
+      <span class="smc-egr-text-danger">vermelho</span> são de preenchimento obrigatório.
+    </p>
 
-      <p-card class="smc-egr-subsection-card smc-egr-mt-3">
-        <ng-template pTemplate="header">
-          <h3 class="smc-egr-subsection-title">Dados de Contato</h3>
-        </ng-template>
-        <div class="p-fluid p-formgrid p-grid">
-          <div class="p-field p-col-12">
-            <label for="email" class="smc-egr-form-label">* E-mail</label>
-            <input
-              id="email"
-              type="email"
-              pInputText
-              formControlName="email"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('email')?.invalid &&
-                  cadastroForm.get('email')?.touched
-              }"
-            />
-            @if (cadastroForm.get('email')?.hasError('required') && cadastroForm.get('email')?.touched) {
-              <small class="p-error">E-mail é obrigatório.</small>
-            }
-            @if (cadastroForm.get('email')?.hasError('email') && cadastroForm.get('email')?.touched) {
-              <small class="p-error">E-mail inválido.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="dddContato" class="smc-egr-form-label"
-              >* Telefone Contato (DDD)</label
-            >
-            <input
-              id="dddContato"
-              type="text"
-              pInputText
-              formControlName="dddContato"
-              maxlength="2"
-              class="smc-egr-input smc-egr-input-ddd"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('dddContato')?.invalid &&
-                  cadastroForm.get('dddContato')?.touched
-              }"
-            />
-            @if (cadastroForm.get('dddContato')?.hasError('required') && cadastroForm.get('dddContato')?.touched) {
-              <small class="p-error">DDD é obrigatório.</small>
-            }
-            @if (cadastroForm.get('dddContato')?.hasError('pattern') && cadastroForm.get('dddContato')?.touched) {
-              <small class="p-error">DDD inválido (apenas 2 dígitos numéricos).</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="telContato" class="smc-egr-form-label"
-              >* Telefone Contato (Número)</label
-            >
-            <p-inputMask
-              id="telContato"
-              formControlName="telContato"
-              mask="99999-9999"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('telContato')?.invalid &&
-                  cadastroForm.get('telContato')?.touched
-              }"
-            ></p-inputMask>
-            @if (cadastroForm.get('telContato')?.hasError('required') && cadastroForm.get('telContato')?.touched) {
-              <small class="p-error">Número de telefone é obrigatório.</small>
-            }
-            @if (cadastroForm.get('telContato')?.hasError('pattern') && cadastroForm.get('telContato')?.touched) {
-              <small class="p-error">Número de telefone inválido (8 ou 9 dígitos).</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="dddCelular" class="smc-egr-form-label"
-              >Telefone Celular (DDD)</label
-            >
-            <input
-              id="dddCelular"
-              type="text"
-              pInputText
-              formControlName="dddCelular"
-              maxlength="2"
-              class="smc-egr-input smc-egr-input-ddd"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('dddCelular')?.invalid &&
-                  cadastroForm.get('dddCelular')?.touched
-              }"
-            />
-            @if (cadastroForm.get('dddCelular')?.hasError('pattern') && cadastroForm.get('dddCelular')?.touched) {
-              <small class="p-error">DDD inválido (apenas 2 dígitos numéricos).</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="telCelular" class="smc-egr-form-label"
-              >Telefone Celular (Número)</label
-            >
-            <p-inputMask
-              id="telCelular"
-              formControlName="telCelular"
-              mask="99999-9999"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('telCelular')?.invalid &&
-                  cadastroForm.get('telCelular')?.touched
-              }"
-            ></p-inputMask>
-            @if (cadastroForm.get('telCelular')?.hasError('pattern') && cadastroForm.get('telCelular')?.touched) {
-              <small class="p-error">Número de celular inválido (8 ou 9 dígitos).</small>
-            }
-          </div>
+    <!-- Dados Pessoais -->
+    <div formGroupName="pessoal">
+      <h3 class="smc-egr-section-header">Dados Pessoais</h3>
+      <div class="smc-egr-form-grid">
+        <div class="smc-egr-form-group">
+          <label for="nome" class="smc-egr-label smc-egr-label-required">Nome Completo</label>
+          <input id="nome" type="text" pInputText formControlName="nome" />
         </div>
-      </p-card>
-
-      <p-card class="smc-egr-subsection-card smc-egr-mt-3">
-        <ng-template pTemplate="header">
-          <h3 class="smc-egr-subsection-title">Endereço</h3>
-        </ng-template>
-        <div class="p-fluid p-formgrid p-grid">
-          <div class="p-field p-col-12 p-md-4">
-            <label for="cep" class="smc-egr-form-label">* CEP</label>
-            <div class="p-inputgroup">
-              <p-inputMask
-                id="cep"
-                formControlName="cep"
-                mask="99999-999"
-                class="smc-egr-input"
-                [ngClass]="{
-                  'ng-invalid ng-dirty':
-                    cadastroForm.get('cep')?.invalid &&
-                    cadastroForm.get('cep')?.touched
-                }"
-              ></p-inputMask>
-              <button
-                type="button"
-                pButton
-                pRipple
-                label="Buscar Endereço"
-                (click)="buscarEnderecoPorCep()"
-                class="p-button-secondary smc-egr-btn"
-              ></button>
-            </div>
-            @if (cadastroForm.get('cep')?.hasError('required') && cadastroForm.get('cep')?.touched) {
-              <small class="p-error">CEP é obrigatório.</small>
-            }
-            @if (cadastroForm.get('cep')?.hasError('pattern') && cadastroForm.get('cep')?.touched) {
-              <small class="p-error">CEP inválido (formato 99999-999).</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-8">
-            <label for="logradouro" class="smc-egr-form-label"
-              >* Rua / Avenida</label
-            >
-            <input
-              id="logradouro"
-              type="text"
-              pInputText
-              formControlName="logradouro"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('logradouro')?.invalid &&
-                  cadastroForm.get('logradouro')?.touched
-              }"
-            />
-            @if (cadastroForm.get('logradouro')?.hasError('required') && cadastroForm.get('logradouro')?.touched) {
-              <small class="p-error">Rua / Avenida é obrigatório.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-4">
-            <label for="numero" class="smc-egr-form-label">* Número</label>
-            <input
-              id="numero"
-              type="text"
-              pInputText
-              formControlName="numero"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('numero')?.invalid &&
-                  cadastroForm.get('numero')?.touched
-              }"
-            />
-            @if (cadastroForm.get('numero')?.hasError('required') && cadastroForm.get('numero')?.touched) {
-              <small class="p-error">Número é obrigatório.</small>
-            }
-            @if (cadastroForm.get('numero')?.hasError('pattern') && cadastroForm.get('numero')?.touched) {
-              <small class="p-error">Número inválido (apenas dígitos numéricos).</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-8">
-            <label for="bairro" class="smc-egr-form-label">* Bairro</label>
-            <input
-              id="bairro"
-              type="text"
-              pInputText
-              formControlName="bairro"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('bairro')?.invalid &&
-                  cadastroForm.get('bairro')?.touched
-              }"
-            />
-            @if (cadastroForm.get('bairro')?.hasError('required') && cadastroForm.get('bairro')?.touched) {
-              <small class="p-error">Bairro é obrigatório.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="complemento" class="smc-egr-form-label"
-              >Complemento</label
-            >
-            <input
-              id="complemento"
-              type="text"
-              pInputText
-              formControlName="complemento"
-              class="smc-egr-input"
-            />
-          </div>
-          <div class="p-field p-col-12 p-md-3">
-            <label for="uf" class="smc-egr-form-label">* Estado (UF)</label>
-            <input
-              id="uf"
-              type="text"
-              pInputText
-              formControlName="uf"
-              maxlength="2"
-              class="smc-egr-input smc-egr-input-uf"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('uf')?.invalid &&
-                  cadastroForm.get('uf')?.touched
-              }"
-            />
-            @if (cadastroForm.get('uf')?.hasError('required') && cadastroForm.get('uf')?.touched) {
-              <small class="p-error">Estado é obrigatório.</small>
-            }
-          </div>
-          <div class="p-field p-col-12 p-md-3">
-            <label for="cidade" class="smc-egr-form-label">* Cidade</label>
-            <input
-              id="cidade"
-              type="text"
-              pInputText
-              formControlName="cidade"
-              class="smc-egr-input"
-              [ngClass]="{
-                'ng-invalid ng-dirty':
-                  cadastroForm.get('cidade')?.invalid &&
-                  cadastroForm.get('cidade')?.touched
-              }"
-            />
-            @if (cadastroForm.get('cidade')?.hasError('required') && cadastroForm.get('cidade')?.touched) {
-              <small class="p-error">Cidade é obrigatória.</small>
-            }
-          </div>
+        <div class="smc-egr-form-group">
+          <label for="dataNasc" class="smc-egr-label smc-egr-label-required">Data de Nascimento</label>
+          <p-inputMask id="dataNasc" mask="99/99/9999" formControlName="dataNasc" placeholder="dd/mm/aaaa"></p-inputMask>
         </div>
-      </p-card>
-
-      <p-card class="smc-egr-subsection-card smc-egr-mt-3">
-        <ng-template pTemplate="header">
-          <h3 class="smc-egr-subsection-title">Informações Profissionais</h3>
-        </ng-template>
-        <div class="p-fluid p-formgrid p-grid">
-          <div class="p-field p-col-12">
-            <label for="ocupacao" class="smc-egr-form-label"
-              >Ocupação Atual</label
-            >
-            <input
-              id="ocupacao"
-              type="text"
-              pInputText
-              formControlName="ocupacao"
-              class="smc-egr-input"
-            />
-          </div>
-          <div class="p-field p-col-12">
-            <label for="empresa" class="smc-egr-form-label"
-              >Nome da Empresa</label
-            >
-            <input
-              id="empresa"
-              type="text"
-              pInputText
-              formControlName="empresa"
-              class="smc-egr-input"
-            />
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="dddComercial" class="smc-egr-form-label"
-              >Telefone Comercial (DDD)</label
-            >
-            <input
-              id="dddComercial"
-              type="text"
-              pInputText
-              formControlName="dddComercial"
-              maxlength="2"
-              class="smc-egr-input smc-egr-input-ddd"
-            />
-          </div>
-          <div class="p-field p-col-12 p-md-6">
-            <label for="telComercial" class="smc-egr-form-label"
-              >Telefone Comercial (Número)</label
-            >
-            <p-inputMask
-              id="telComercial"
-              formControlName="telComercial"
-              mask="9999-9999"
-              class="smc-egr-input"
-            ></p-inputMask>
-          </div>
-        </div>
-      </p-card>
-
-      <div class="smc-egr-form-actions smc-egr-mt-4">
-        <p-button
-          label="Cancelar"
-          icon="pi pi-times"
-          styleClass="p-button-secondary smc-egr-btn smc-egr-btn-cancel"
-          (onClick)="onCancel()"
-        ></p-button>
-        <p-button
-          label="{{ editMode ? 'Atualizar' : 'Cadastrar' }}"
-          icon="pi pi-save"
-          type="submit"
-          styleClass="p-button-primary smc-egr-btn smc-egr-btn-submit"
-          [disabled]="cadastroForm.invalid"
-        ></p-button>
       </div>
-    </form>
-  </div>
-</p-card>
+    </div>
+
+    <!-- Formação -->
+    <div formGroupName="formacao">
+      <h3 class="smc-egr-section-header">Formação</h3>
+      <div class="smc-egr-form-grid">
+        <div class="smc-egr-form-group">
+          <label for="origem" class="smc-egr-label smc-egr-label-required">Origem</label>
+          <p-dropdown id="origem" [options]="origens" formControlName="origem" optionLabel="nome" placeholder="Selecione a Origem"></p-dropdown>
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="curso" class="smc-egr-label smc-egr-label-required">Curso</label>
+          <p-dropdown id="curso" [options]="cursos" formControlName="curso" optionLabel="nome" placeholder="Selecione o Curso"></p-dropdown>
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="anoFormado" class="smc-egr-label smc-egr-label-required">Ano de Formatura</label>
+          <input id="anoFormado" type="text" pInputText formControlName="anoFormado" />
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="semestreFormado" class="smc-egr-label smc-egr-label-required">Semestre de Formatura</label>
+          <p-dropdown id="semestreFormado" [options]="semestres" formControlName="semestreFormado" optionLabel="nome" optionValue="id" placeholder="Selecione o Semestre"></p-dropdown>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contato -->
+    <div formGroupName="contato">
+      <h3 class="smc-egr-section-header">Contato</h3>
+      <div class="smc-egr-form-grid">
+        <div class="smc-egr-form-group">
+          <label for="email" class="smc-egr-label smc-egr-label-required">E-mail</label>
+          <input id="email" type="email" pInputText formControlName="email" />
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="telCelular" class="smc-egr-label smc-egr-label-required">Celular</label>
+          <div class="smc-egr-input-group">
+            <input type="text" pInputText formControlName="dddCelular" placeholder="DDD" class="smc-egr-input-ddd" />
+            <input type="text" pInputText formControlName="telCelular" placeholder="Número" class="smc-egr-input-tel" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Endereço -->
+    <div formGroupName="endereco">
+      <h3 class="smc-egr-section-header">Endereço</h3>
+      <div class="smc-egr-form-grid">
+        <div class="smc-egr-form-group">
+          <label for="cep" class="smc-egr-label smc-egr-label-required">CEP</label>
+          <p-inputMask id="cep" mask="99999-999" formControlName="cep" (onComplete)="buscarCep()"></p-inputMask>
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="logradouro" class="smc-egr-label smc-egr-label-required">Logradouro</label>
+          <input id="logradouro" type="text" pInputText formControlName="logradouro" />
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="numero" class="smc-egr-label smc-egr-label-required">Número</label>
+          <input id="numero" type="text" pInputText formControlName="numero" />
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="bairro" class="smc-egr-label smc-egr-label-required">Bairro</label>
+          <input id="bairro" type="text" pInputText formControlName="bairro" />
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="cidade" class="smc-egr-label smc-egr-label-required">Cidade</label>
+          <input id="cidade" type="text" pInputText formControlName="cidade" />
+        </div>
+        <div class="smc-egr-form-group">
+          <label for="uf" class="smc-egr-label smc-egr-label-required">UF</label>
+          <input id="uf" type="text" pInputText formControlName="uf" />
+        </div>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <div class="smc-egr-form-actions">
+        <p-button label="Cancelar" styleClass="p-button-secondary" (onClick)="cancelar()"></p-button>
+        <p-button [label]="isEditMode ? 'Atualizar' : 'Salvar'" type="submit" [disabled]="alunoForm.invalid"></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</form>

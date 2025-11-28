@@ -1,22 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlunoService } from '../../../core/services/aluno.service';
-import { Aluno, Curso, Endereco, Origem } from '../../../core/models/aluno.model';
-import { catchError, switchMap, tap } from 'rxjs/operators';
 import { EMPTY, of } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 
-interface Semestre {
-  label: string;
-  value: number;
-}
+// PrimeNG Modules
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
+import { InputMaskModule } from 'primeng/inputmask';
+import { StepsModule } from 'primeng/steps';
+
+// App Services and Models
+import { AlunoService } from '../../../core/services/aluno.service';
+import { Aluno, Curso, Endereco, Origem } from '../../../core/models/aluno.model';
+import { DropdownOption } from '../../../core/services/auth.service';
 
 @Component({
-  selector: 'app-cadastro-aluno',
-  template: `<!-- O HTML do seu componente vai aqui -->`,
+  selector: 'smc-egr-cadastro-aluno',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    CardModule,
+    InputTextModule,
+    DropdownModule,
+    ButtonModule,
+    InputMaskModule,
+    StepsModule,
+  ],
+  templateUrl: './cadastro-aluno.component.html',
   styleUrls: ['./cadastro-aluno.component.scss'],
-  providers: [MessageService] // Adicionado para o serviço de mensagens do PrimeNG
 })
 export class CadastroAlunoComponent implements OnInit {
   alunoForm!: FormGroup;
@@ -25,22 +42,18 @@ export class CadastroAlunoComponent implements OnInit {
 
   origens: Origem[] = [];
   cursos: Curso[] = [];
-  semestres: Semestre[] = [
-    { label: '1º Semestre', value: 1 },
-    { label: '2º Semestre', value: 2 }
-  ];
+  semestres: DropdownOption[] = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private alunoService: AlunoService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private messageService: MessageService
-  ) {}
+  private fb = inject(FormBuilder);
+  private alunoService = inject(AlunoService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private messageService = inject(MessageService);
 
   ngOnInit(): void {
     this.initForm();
     this.loadOrigens();
+    this.loadSemestres();
     this.checkRouteForEditMode();
 
     // Observa mudanças no campo 'origem' para carregar os cursos
@@ -120,6 +133,12 @@ export class CadastroAlunoComponent implements OnInit {
     });
   }
 
+  private loadSemestres(): void {
+    this.alunoService.getSemestres().subscribe(data => {
+      this.semestres = data;
+    });
+  }
+
   private loadCursos(origemId: number): void {
     this.alunoService.getCursos(origemId).subscribe(data => {
       this.cursos = data;
@@ -151,12 +170,12 @@ export class CadastroAlunoComponent implements OnInit {
     if (this.isEditMode && this.alunoId) {
       this.alunoService.updateAluno(this.alunoId, alunoData).subscribe(() => {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Aluno atualizado com sucesso!' });
-        this.router.navigate(['/alunos']); // Navegar para a lista
+        this.router.navigate(['/busca-aluno']); // Navegar para a busca
       });
     } else {
       this.alunoService.createAluno(alunoData).subscribe(() => {
         this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Aluno cadastrado com sucesso!' });
-        this.router.navigate(['/alunos']); // Navegar para a lista
+        this.router.navigate(['/busca-aluno']); // Navegar para a busca
       });
     }
   }
@@ -170,7 +189,7 @@ export class CadastroAlunoComponent implements OnInit {
       origemId: formValue.formacao.origem.id,
       cursoId: formValue.formacao.curso.id,
       anoFormado: formValue.formacao.anoFormado,
-      semestreFormado: formValue.formacao.semestreFormado.value,
+      semestreFormado: formValue.formacao.semestreFormado.id,
       email: formValue.contato.email,
       dddContato: formValue.contato.dddContato,
       telContato: formValue.contato.telContato,
@@ -203,10 +222,10 @@ export class CadastroAlunoComponent implements OnInit {
           },
           formacao: {
             origem: this.origens.find((o) => o.id === aluno.origemId),
-            curso: this.cursos.find((c) => c.id === aluno.cursoId),
+            curso: this.cursos.find((c) => c.id == aluno.cursoId), // Use '==' para comparação de tipo flexível
             anoFormado: aluno.anoFormado,
             semestreFormado: this.semestres.find(
-              (s) => s.value === +aluno.semestreFormado
+              (s) => s.id === aluno.semestreFormado
             ),
           },
           contato: {
@@ -246,6 +265,6 @@ export class CadastroAlunoComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/alunos']); // Ou para a rota que fizer mais sentido
+    this.router.navigate(['/busca-aluno']);
   }
 }

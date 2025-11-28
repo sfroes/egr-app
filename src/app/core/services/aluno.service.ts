@@ -23,6 +23,10 @@ export class AlunoService {
     return this.http.get<Curso[]>(`${this.apiUrl}/cursos`, { params });
   }
 
+  getSemestres(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/semestres`);
+  }
+
   getAlunoById(id: number): Observable<Aluno | null> {
     return this.http.get<Aluno>(`${this.apiUrl}/alunos/${id}`).pipe(
       catchError(() => of(null)) // Retorna nulo se o aluno não for encontrado
