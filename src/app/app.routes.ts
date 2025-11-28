@@ -25,6 +25,20 @@ export const routes: Routes = [
             (m) => m.BuscaAlunoComponent
           ),
       },
+      {
+        path: 'cadastro-aluno',
+        loadComponent: () =>
+          import('./features/aluno/cadastro/cadastro-aluno.component').then(
+            (m) => m.CadastroAlunoComponent
+          ),
+      },
+      {
+        path: 'cadastro-aluno/:id',
+        loadComponent: () =>
+          import('./features/aluno/cadastro/cadastro-aluno.component').then(
+            (m) => m.CadastroAlunoComponent
+          ),
+      },
     ],
   },
   {

@@ -1,29 +1,57 @@
 {
+  "origens": [
+    { "id": 1, "nome": "Graduação" },
+    { "id": 2, "nome": "Pós-Graduação" },
+    { "id": 3, "nome": "Mestrado" },
+    { "id": 4, "nome": "Doutorado" }
+  ],
   "cursos": [
-    { "id": "1", "nome": "Ciência da Computação" },
-    { "id": "2", "nome": "Engenharia Civil" },
-    { "id": "3", "nome": "Medicina" },
-    { "id": "4", "nome": "Direito" }
+    { "id": 101, "nome": "Sistemas de Informação", "origemId": 1 },
+    { "id": 102, "nome": "Ciência da Computação", "origemId": 1 },
+    { "id": 103, "nome": "Direito", "origemId": 1 },
+    { "id": 104, "nome": "Engenharia de Software", "origemId": 1 },
+    { "id": 201, "nome": "Especialização em Arquitetura de Software", "origemId": 2 },
+    { "id": 202, "nome": "MBA em Gestão de Projetos", "origemId": 2 },
+    { "id": 301, "nome": "Mestrado em Informática", "origemId": 3 },
+    { "id": 401, "nome": "Doutorado em Bioinformática", "origemId": 4 }
   ],
-  "semestres": [
-    { "id": "1", "nome": "1º Semestre" },
-    { "id": "2", "nome": "2º Semestre" }
-  ],
-  "turnos": [
-    { "id": "M", "nome": "Manhã" },
-    { "id": "T", "nome": "Tarde" },
-    { "id": "N", "nome": "Noite" }
-  ],
-  "users": [
+  "alunos": [
     {
       "id": 1,
-      "nome": "Tony Stark",
-      "numeroAcademico": "12345",
-      "dataNascimento": "29/05/1970",
-      "cursoId": "1",
-      "anoUltimaMatricula": "2023",
-      "semestreUltimaMatriculaId": "2",
-      "turnoId": "N"
+      "nome": "Bruce Wayne",
+      "dataNasc": "1972-02-19",
+      "origemId": 1,
+      "cursoId": 103,
+      "anoFormado": 1995,
+      "semestreFormado": "1",
+      "email": "bruce.wayne@wayne-enterprises.com",
+      "dddContato": "11",
+      "telContato": "987654321",
+      "cep": "30140071",
+      "logradouro": "Avenida Brasil",
+      "numero": "123",
+      "bairro": "Santa Efigênia",
+      "complemento": "Apto 101",
+      "uf": "MG",
+      "cidade": "Belo Horizonte",
+      "ocupacao": "CEO",
+      "empresa": "Wayne Enterprises"
+    }
+  ],
+  "enderecos": [
+    {
+      "cep": "30140071",
+      "logradouro": "Avenida Brasil",
+      "bairro": "Santa Efigênia",
+      "cidade": "Belo Horizonte",
+      "uf": "MG"
+    },
+    {
+      "cep": "01001000",
+      "logradouro": "Praça da Sé",
+      "bairro": "Sé",
+      "cidade": "São Paulo",
+      "uf": "SP"
     }
   ]
 }

@@ -1,0 +1,165 @@
+@import 'src/assets/styles/smc-egr-design-system.scss';
+
+:host {
+  display: block;
+  padding: var(--smc-egr-spacing-4); // Exemplo de uso de token
+}
+
+.smc-egr-card {
+  width: 100%;
+  max-width: 900px;
+  margin: var(--smc-egr-spacing-auto);
+  box-shadow: var(--smc-egr-shadow-md);
+  border-radius: var(--smc-egr-border-radius-lg);
+
+  .smc-egr-card-header {
+    padding: var(--smc-egr-spacing-3);
+    background-color: var(--smc-egr-color-primary-dark);
+    color: var(--smc-egr-color-white);
+    border-top-left-radius: var(--smc-egr-border-radius-lg);
+    border-top-right-radius: var(--smc-egr-border-radius-lg);
+    text-align: center;
+  }
+
+  .smc-egr-card-title {
+    font-size: var(--smc-egr-font-size-2xl);
+    margin: var(--smc-egr-spacing-0);
+  }
+
+  .smc-egr-form-container {
+    padding: var(--smc-egr-spacing-4);
+  }
+
+  .smc-egr-subsection-card {
+    border: var(--smc-egr-border-width-xs) solid var(--smc-egr-color-gray-300);
+    margin-bottom: var(--smc-egr-spacing-3);
+    border-radius: var(--smc-egr-border-radius-md);
+
+    .smc-egr-subsection-title {
+      font-size: var(--smc-egr-font-size-xl);
+      color: var(--smc-egr-color-primary);
+      margin: var(--smc-egr-spacing-0);
+      padding: var(--smc-egr-spacing-2) var(--smc-egr-spacing-3);
+      background-color: var(--smc-egr-color-gray-100);
+      border-bottom: var(--smc-egr-border-width-xs) solid var(--smc-egr-color-gray-300);
+      border-top-left-radius: var(--smc-egr-border-radius-md);
+      border-top-right-radius: var(--smc-egr-border-radius-md);
+    }
+
+    .p-card-content {
+      padding: var(--smc-egr-spacing-3);
+    }
+  }
+
+  .smc-egr-form-label {
+    font-weight: var(--smc-egr-font-weight-medium);
+    margin-bottom: var(--smc-egr-spacing-1);
+    display: block;
+    color: var(--smc-egr-color-text-dark);
+  }
+
+  .smc-egr-input {
+    width: 100%;
+    padding: var(--smc-egr-spacing-2);
+    border: var(--smc-egr-border-width-xs) solid var(--smc-egr-color-gray-300);
+    border-radius: var(--smc-egr-border-radius-sm);
+    font-size: var(--smc-egr-font-size-base);
+    transition: var(--smc-egr-transition-duration) ease-in-out;
+
+    &:focus {
+      border-color: var(--smc-egr-color-primary);
+      box-shadow: var(--smc-egr-shadow-focus);
+    }
+  }
+
+  .smc-egr-input-ddd,
+  .smc-egr-input-uf {
+    width: 60px; // Largura menor para DDD e UF
+    flex-shrink: 0;
+  }
+
+  p-calendar,
+  p-dropdown,
+  p-inputmask {
+    width: 100%;
+    .p-calendar,
+    .p-dropdown,
+    .p-inputmask {
+      width: 100%;
+    }
+  }
+
+  .p-inputgroup {
+    display: flex;
+    .smc-egr-input {
+      flex-grow: 1;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    .p-button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      flex-shrink: 0;
+    }
+  }
+
+  .smc-egr-btn {
+    padding: var(--smc-egr-spacing-2) var(--smc-egr-spacing-3);
+    border-radius: var(--smc-egr-border-radius-sm);
+    font-size: var(--smc-egr-font-size-base);
+    cursor: pointer;
+    transition: var(--smc-egr-transition-duration) ease-in-out;
+
+    &.p-button-primary {
+      background-color: var(--smc-egr-color-primary);
+      color: var(--smc-egr-color-white);
+      border: var(--smc-egr-border-width-xs) solid var(--smc-egr-color-primary);
+
+      &:hover {
+        background-color: var(--smc-egr-color-primary-dark);
+        border-color: var(--smc-egr-color-primary-dark);
+      }
+    }
+
+    &.p-button-secondary {
+      background-color: var(--smc-egr-color-gray-200);
+      color: var(--smc-egr-color-text-dark);
+      border: var(--smc-egr-border-width-xs) solid var(--smc-egr-color-gray-300);
+
+      &:hover {
+        background-color: var(--smc-egr-color-gray-300);
+      }
+    }
+
+    &.smc-egr-btn-cancel {
+      margin-right: var(--smc-egr-spacing-2);
+    }
+  }
+
+  .smc-egr-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: var(--smc-egr-spacing-3);
+    border-top: var(--smc-egr-border-width-xs) solid var(--smc-egr-color-gray-200);
+    margin-top: var(--smc-egr-spacing-4);
+  }
+
+  .smc-egr-mt-3 {
+    margin-top: var(--smc-egr-spacing-3);
+  }
+
+  .smc-egr-mt-4 {
+    margin-top: var(--smc-egr-spacing-4);
+  }
+
+  .p-error {
+    color: var(--smc-egr-color-danger);
+    font-size: var(--smc-egr-font-size-sm);
+    margin-top: var(--smc-egr-spacing-1);
+    display: block;
+  }
+
+  .ng-invalid.ng-dirty {
+    border-color: var(--smc-egr-color-danger);
+  }
+}
