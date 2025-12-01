@@ -1,0 +1,43 @@
+graph TD
+    A[Início] --> B{Escolher Acesso}
+    B -->|Primeiro Acesso| C[busca-aluno]
+    B -->|Já Cadastrado| D[login]
+
+    %% FLUXO DE BUSCA DE ALUNO
+    C --> E{Buscar na tabela alunos}
+
+    E -->|Aluno NÃO existe| F[Exibir Mensagem de Erro]
+    F --> C
+
+    E -->|Aluno existe| G{Verificar User na tabela users}
+
+    G -->|User existe| H[Redirecionar para Login]
+    H --> D
+
+    G -->|User NÃO existe| I[Redirecionar para Cadastro]
+    I --> J[cadastro-aluno]
+    J -->|Dados preenchidos automaticamente| K[Preencher Formulário]
+
+    %% FLUXO DE CADASTRO
+    K --> L[Usuário completa cadastro]
+    L --> M[Salvar dados na tabela alunos]
+    M --> N[Criar User na tabela users]
+    N --> O[Exibir Mensagem de Sucesso]
+    O --> D
+
+    %% FLUXO DE LOGIN
+    D --> P{Buscar na tabela users}
+
+    P -->|User NÃO existe| Q[Exibir Mensagem de Erro]
+    Q --> D
+
+    P -->|User existe| R[Autenticação OK]
+    R --> S[questionario]
+
+    %% ESTILOS
+    style F fill:#ffcccc
+    style Q fill:#ffcccc
+    style O fill:#ccffcc
+    style S fill:#ccffcc
+    style J fill:#ffffcc
+    style D fill:#e6f3ff
