@@ -183,7 +183,7 @@ export class CadastroAlunoComponent implements OnInit {
         this.alunoForm.patchValue({
           pessoal: {
             nome: aluno.nome,
-            dataNasc: aluno.dataNasc,
+            dataNasc: this.converterDataParaDDMMYYYY(aluno.dataNasc),
           },
           formacao: {
             origem: origemEncontrada,
@@ -392,20 +392,14 @@ export class CadastroAlunoComponent implements OnInit {
    * @returns Telefone formatado (ex: "(21) 98765-4321")
    */
   private formatarTelefone(ddd?: string, telefone?: string): string {
-    console.log('formatarTelefone chamado com:', { ddd, telefone });
-
     if (!ddd && !telefone) {
-      console.log('Retornando vazio: sem ddd e sem telefone');
       return '';
     }
 
     const dddLimpo = (ddd || '').replace(/\D/g, '');
     const telLimpo = (telefone || '').replace(/\D/g, '');
 
-    console.log('Valores limpos:', { dddLimpo, telLimpo, telLimpoLength: telLimpo.length });
-
     if (!telLimpo) {
-      console.log('Retornando vazio: telLimpo está vazio');
       return '';
     }
 
@@ -438,7 +432,6 @@ export class CadastroAlunoComponent implements OnInit {
       }
     }
 
-    console.log('Resultado formatado:', resultado);
     return resultado;
   }
 
@@ -468,7 +461,7 @@ export class CadastroAlunoComponent implements OnInit {
     const formValue = this.alunoForm.getRawValue();
     return {
       nome: formValue.pessoal.nome,
-      dataNasc: formValue.pessoal.dataNasc,
+      dataNasc: this.converterDataParaYYYYMMDD(formValue.pessoal.dataNasc),
       origemId: formValue.formacao.origem.id,
       cursoId: formValue.formacao.curso.id,
       anoFormado: formValue.formacao.anoFormado,
@@ -502,7 +495,7 @@ export class CadastroAlunoComponent implements OnInit {
         this.alunoForm.patchValue({
           pessoal: {
             nome: aluno.nome,
-            dataNasc: new Date(aluno.dataNasc), // Converter string para Date
+            dataNasc: this.converterDataParaDDMMYYYY(aluno.dataNasc),
           },
           formacao: {
             origem: this.origens.find((o) => o.id === aluno.origemId),
@@ -543,6 +536,44 @@ export class CadastroAlunoComponent implements OnInit {
       uf: endereco.uf,
       cidade: endereco.cidade,
     });
+  }
+
+  /**
+   * Converte data de YYYY-MM-DD para DD/MM/YYYY
+   */
+  private converterDataParaDDMMYYYY(dataString: string): string {
+    if (!dataString) {
+      return '';
+    }
+
+    // Formato: YYYY-MM-DD (ex: "1972-02-19")
+    const [ano, mes, dia] = dataString.split('-');
+
+    if (!ano || !mes || !dia) {
+      return '';
+    }
+
+    // Retorna no formato DD/MM/YYYY
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  /**
+   * Converte data de DD/MM/YYYY para YYYY-MM-DD
+   */
+  private converterDataParaYYYYMMDD(dataString: string): string {
+    if (!dataString) {
+      return '';
+    }
+
+    // Formato: DD/MM/YYYY (ex: "19/02/1972")
+    const [dia, mes, ano] = dataString.split('/');
+
+    if (!dia || !mes || !ano) {
+      return '';
+    }
+
+    // Retorna no formato YYYY-MM-DD
+    return `${ano}-${mes}-${dia}`;
   }
 
   cancelar(): void {

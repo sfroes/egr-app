@@ -38,14 +38,10 @@ export class AlunoService {
   }
 
   buscarAluno(criterios: any): Observable<Aluno[]> {
-    console.log('Critérios de busca recebidos:', criterios);
-
     // Busca todos os alunos e filtra no lado do cliente
     // pois o JSON Server não suporta busca parcial (like)
     return this.http.get<Aluno[]>(`${this.apiUrl}/alunos`).pipe(
       map(alunos => {
-        console.log('Total de alunos no banco:', alunos.length);
-        console.log('RAW API Response - Primeiro aluno completo:', JSON.stringify(alunos[0], null, 2));
 
         const resultado = alunos.filter(aluno => {
           // Filtro por nome (case-insensitive, busca parcial)
@@ -68,27 +64,9 @@ export class AlunoService {
             ? this.comparaDatas(aluno.dataNasc, criterios.dataNascimento)
             : true;
 
-          // Debug logs
-          if (aluno.nome.toLowerCase().includes((criterios.nome || '').toLowerCase())) {
-            console.log(`Aluno: ${aluno.nome}`, {
-              'aluno.origemId': aluno.origemId,
-              'criterios.origem.id': criterios.origem?.id,
-              'tipos': {
-                alunoOrigemIdType: typeof aluno.origemId,
-                criteriosOrigemIdType: typeof criterios.origem?.id
-              },
-              nomeMatch,
-              origemMatch,
-              cursoMatch,
-              dataNascMatch,
-              passa: nomeMatch && origemMatch && cursoMatch && dataNascMatch
-            });
-          }
-
           return nomeMatch && origemMatch && cursoMatch && dataNascMatch;
         });
 
-        console.log('Alunos encontrados após filtro:', resultado.length);
         return resultado;
       })
     );
@@ -104,13 +82,6 @@ export class AlunoService {
     dataBDObj.setHours(0, 0, 0, 0);
     const dataFormNorm = new Date(dataForm);
     dataFormNorm.setHours(0, 0, 0, 0);
-
-    console.log('Comparando datas:', {
-      dataBD,
-      dataBDObj: dataBDObj.toISOString(),
-      dataForm: dataFormNorm.toISOString(),
-      iguais: dataBDObj.getTime() === dataFormNorm.getTime()
-    });
 
     return dataBDObj.getFullYear() === dataFormNorm.getFullYear() &&
            dataBDObj.getMonth() === dataFormNorm.getMonth() &&
