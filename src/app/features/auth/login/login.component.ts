@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators, AbstractControl, ValidatorFn, ValidationErrors } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, map } from 'rxjs';
 
 // PrimeNG Modules
@@ -69,16 +69,22 @@ export const dateValidator: ValidatorFn = (control: AbstractControl): Validation
 export class LoginComponent implements OnInit {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private authService = inject(AuthService);
   private messageService = inject(MessageService);
 
   loginForm!: FormGroup;
+  isLoading = false;
+  contextMessage: string | null = null;
 
   cursos$!: Observable<DropdownOption[]>;
   semestres$!: Observable<DropdownOption[]>;
   turnos$!: Observable<DropdownOption[]>;
 
   ngOnInit(): void {
+    // Verificar se há mensagem vindo da navegação
+    this.checkNavigationState();
+
     this.loginForm = this.fb.group({
       nome: ['', Validators.required],
       numeroAcademico: [''],
@@ -92,6 +98,26 @@ export class LoginComponent implements OnInit {
     this.loadDropdownData();
   }
 
+  /**
+   * Verifica se há mensagem de contexto vinda da navegação
+   */
+  private checkNavigationState(): void {
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state;
+
+    if (state) {
+      if (state['mensagem']) {
+        this.contextMessage = state['mensagem'];
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Informação',
+          detail: state['mensagem'],
+          life: 5000
+        });
+      }
+    }
+  }
+
   loadDropdownData(): void {
     const dropdownData$ = this.authService.getLoginDropdownData();
     this.cursos$ = dropdownData$.pipe(map(data => data.cursos));
@@ -102,9 +128,15 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
-      this.messageService.add({ severity: 'warn', summary: 'Atenção', detail: 'Preencha todos os campos obrigatórios.' });
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Atenção',
+        detail: 'Preencha todos os campos obrigatórios.'
+      });
       return;
     }
+
+    this.isLoading = true;
 
     const credentials = {
       nome: this.loginForm.value.nome,
@@ -112,12 +144,43 @@ export class LoginComponent implements OnInit {
       cursoId: this.loginForm.value.cursoId
     };
 
-    this.authService.login(credentials).subscribe(isValid => {
-      if (isValid) {
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Login realizado!' });
-        this.router.navigate(['/busca-aluno']);
-      } else {
-        this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Credenciais inválidas. Verifique os dados.' });
+    // NOVO FLUXO: login retorna User | null
+    this.authService.login(credentials).subscribe({
+      next: (user) => {
+        this.isLoading = false;
+
+        if (user) {
+          // Cenário 2B: User encontrado - autenticado com sucesso
+          console.log('Login realizado com sucesso:', user);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sucesso',
+            detail: 'Login realizado com sucesso!'
+          });
+
+          // Redirecionar para questionário (ou returnUrl se existir)
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/questionario';
+          setTimeout(() => {
+            this.router.navigate([returnUrl]);
+          }, 1000);
+        } else {
+          // Cenário 2A: User NÃO encontrado
+          console.log('Usuário não encontrado');
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erro',
+            detail: 'Usuário não encontrado no sistema. Verifique os dados informados.'
+          });
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Erro ao fazer login:', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erro',
+          detail: 'Erro ao fazer login. Tente novamente.'
+        });
       }
     });
   }

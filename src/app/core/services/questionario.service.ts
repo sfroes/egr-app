@@ -59,4 +59,25 @@ export class QuestionarioService {
       `${this.apiUrl}/questionario-respostas/${respostaId}`
     );
   }
+
+  /**
+   * Alias para obterQuestionario (para manter compatibilidade)
+   */
+  obterQuestionario(): Observable<Questionario> {
+    return this.getQuestionario();
+  }
+
+  /**
+   * Salva respostas associadas ao usuário autenticado
+   * @param userId ID do usuário
+   * @param respostas Objeto com as respostas
+   */
+  salvarRespostas(userId: number, respostas: any): Observable<any> {
+    const payload = {
+      userId,
+      respostas,
+      dataResposta: new Date().toISOString()
+    };
+    return this.http.post<any>(`${this.apiUrl}/respostas`, payload);
+  }
 }

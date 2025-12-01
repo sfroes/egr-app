@@ -103,17 +103,8 @@
   ],
   "users": [
     {
-      "id": 1,
-      "nome": "Tony Stark",
-      "numeroAcademico": "12345",
-      "dataNascimento": "29/05/1970",
-      "cursoId": "1",
-      "anoUltimaMatricula": "2023",
-      "semestreUltimaMatriculaId": "2",
-      "turnoId": "N"
-    },
-    {
       "id": 2,
+      "alunoId": 3,
       "nome": "Peter Parker",
       "numeroAcademico": "67890",
       "dataNascimento": "10/08/2001",
@@ -291,6 +282,6 @@
       }
     ]
   },
-  "questionario-respostas": []
+  "questionario-respostas": [],
+  "respostas": []
 }
-

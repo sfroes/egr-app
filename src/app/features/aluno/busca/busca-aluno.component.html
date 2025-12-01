@@ -4,6 +4,14 @@
     <p>Para começar, preencha os campos abaixo para localizar seu cadastro</p>
   </div>
 
+  <!-- Mensagem de Erro -->
+  @if (errorMessage()) {
+    <div class="smc-egr-alert smc-egr-alert--error" role="alert">
+      <i class="pi pi-exclamation-circle"></i>
+      <span>{{ errorMessage() }}</span>
+    </div>
+  }
+
   <p-card styleClass="smc-egr-card">
     <form #buscaForm="ngForm" class="smc-egr-form-grid smc-egr-form-grid--cols-2">
       <!-- Nome -->
@@ -69,7 +77,8 @@
           label="Buscar"
           icon="pi pi-search"
           (onClick)="buscarAluno()"
-          [disabled]="isFormInvalid()"
+          [disabled]="isFormInvalid() || isLoading()"
+          [loading]="isLoading()"
         ></p-button>
       </div>
       <p class="smc-egr-required-notice">* Campos de preenchimento obrigatório</p>

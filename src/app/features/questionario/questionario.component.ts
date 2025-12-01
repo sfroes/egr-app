@@ -11,6 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { QuestionarioService } from '../../core/services/questionario.service';
 import { AlunoService } from '../../core/services/aluno.service';
+import { AuthService, User } from '../../core/services/auth.service';
 import {
   Questionario,
   Questao,
@@ -40,6 +41,7 @@ export class QuestionarioComponent implements OnInit {
   private router = inject(Router);
   private questionarioService = inject(QuestionarioService);
   private alunoService = inject(AlunoService);
+  private authService = inject(AuthService);
   private messageService = inject(MessageService);
 
   // Signals para gerenciar estado
@@ -50,10 +52,24 @@ export class QuestionarioComponent implements OnInit {
 
   questionarioForm!: FormGroup;
   alunoId: string = '';
+  usuarioAtual: User | null = null; // NOVO: usuário autenticado
 
   ngOnInit(): void {
-    // Buscar ID do aluno da rota
-    this.alunoId = this.route.snapshot.queryParams['alunoId'];
+    // NOVO: Verificar autenticação
+    this.usuarioAtual = this.authService.getCurrentUser();
+
+    if (!this.usuarioAtual) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Atenção',
+        detail: 'Você precisa fazer login para acessar o questionário.'
+      });
+      this.router.navigate(['/login']);
+      return;
+    }
+
+    // Buscar ID do aluno da rota (mantendo compatibilidade)
+    this.alunoId = this.route.snapshot.queryParams['alunoId'] || this.usuarioAtual.alunoId?.toString() || '';
 
     if (!this.alunoId) {
       this.messageService.add({
@@ -140,32 +156,42 @@ export class QuestionarioComponent implements OnInit {
         summary: 'Atenção',
         detail: 'Por favor, preencha todos os campos obrigatórios'
       });
+      this.questionarioForm.markAllAsTouched();
+      return;
+    }
+
+    if (!this.usuarioAtual?.id) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erro',
+        detail: 'Usuário não autenticado. Faça login novamente.'
+      });
+      this.router.navigate(['/login']);
       return;
     }
 
     this.salvando.set(true);
 
-    const respostas: Resposta[] = this.construirRespostas();
+    // NOVO: Usar novo método de salvar respostas
+    const respostasFormulario = this.questionarioForm.value;
 
-    const questionarioResposta: QuestionarioResposta = {
-      alunoId: this.alunoId,
-      alunoNome: this.alunoNome(),
-      dataPreenchimento: new Date(),
-      respostas: respostas
-    };
-
-    this.questionarioService.salvarResposta(questionarioResposta).subscribe({
+    this.questionarioService.salvarRespostas(this.usuarioAtual.id, respostasFormulario).subscribe({
       next: (resposta) => {
+        this.salvando.set(false);
         this.messageService.add({
           severity: 'success',
           summary: 'Sucesso',
           detail: 'Questionário enviado com sucesso!'
         });
-        this.salvando.set(false);
-        // Redirecionar para página de confirmação ou busca
+
+        // Redirecionar ou mostrar mensagem de agradecimento
         setTimeout(() => {
-          this.router.navigate(['/aluno/busca']);
-        }, 2000);
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Obrigado!',
+            detail: 'Suas respostas foram registradas com sucesso.'
+          });
+        }, 1500);
       },
       error: (error) => {
         console.error('Erro ao salvar questionário:', error);
@@ -228,7 +254,22 @@ export class QuestionarioComponent implements OnInit {
   }
 
   cancelar(): void {
-    this.router.navigate(['/aluno/busca']);
+    this.router.navigate(['/busca-aluno']);
+  }
+
+  /**
+   * NOVO: Método de logout
+   */
+  onLogout(): void {
+    this.authService.logout();
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Logout',
+      detail: 'Você foi desconectado com sucesso.'
+    });
+    setTimeout(() => {
+      this.router.navigate(['/login']);
+    }, 1000);
   }
 
   /**

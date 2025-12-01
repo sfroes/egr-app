@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -8,7 +9,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'login',
+        redirectTo: 'busca-aluno',
         pathMatch: 'full',
       },
       {
@@ -45,11 +46,12 @@ export const routes: Routes = [
           import('./features/questionario/questionario.component').then(
             (m) => m.QuestionarioComponent
           ),
+        canActivate: [authGuard],
       },
     ],
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'busca-aluno',
   },
 ];

@@ -12,7 +12,7 @@ import { ButtonModule } from 'primeng/button';
 
 // App Services
 import { AlunoService } from '../../../core/services/aluno.service';
-import { Origem, Curso } from '../../../core/models/aluno.model';
+import { Origem, Curso, Aluno } from '../../../core/models/aluno.model';
 
 @Component({
   selector: 'smc-egr-busca-aluno',
@@ -52,6 +52,10 @@ export class BuscaAlunoComponent {
       !this.selectedCurso()
   );
 
+  // Loading and Error States
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
+
   constructor() {
     this.loadOrigens();
   }
@@ -74,10 +78,12 @@ export class BuscaAlunoComponent {
 
   buscarAluno(): void {
     if (this.isFormInvalid()) {
-      // PrimeNG MessageService could be used here for a toast notification
-      console.error('Formulário inválido!');
+      this.errorMessage.set('Por favor, preencha todos os campos obrigatórios');
       return;
     }
+
+    this.errorMessage.set(null);
+    this.isLoading.set(true);
 
     const formValue = {
       nome: this.nome(),
@@ -88,25 +94,58 @@ export class BuscaAlunoComponent {
 
     console.log('Buscando aluno com os dados:', formValue);
 
-    // Buscar aluno no backend mockado
+    // NOVO FLUXO: Buscar aluno no backend
     this.alunoService.buscarAluno(formValue).subscribe({
       next: (alunos) => {
+        this.isLoading.set(false);
+
         if (alunos && alunos.length > 0) {
-          // Aluno encontrado - navegar para o questionário
+          // Cenário: Aluno encontrado
           const aluno = alunos[0];
-          this.router.navigate(['/questionario'], {
-            queryParams: { alunoId: aluno.id }
-          });
+          console.log('Aluno encontrado:', aluno);
+
+          // Verificar se existe user relacionado
+          this.verificarUserERedireionar(aluno);
         } else {
-          // Aluno não encontrado - navegar para cadastro
-          console.log('Aluno não encontrado. Redirecionando para cadastro...');
-          this.router.navigate(['/cadastro-aluno']);
+          // Cenário 1A: Aluno NÃO encontrado
+          console.log('Aluno não encontrado no sistema');
+          this.errorMessage.set('Aluno não encontrado no sistema. Verifique os dados e tente novamente.');
         }
       },
       error: (error) => {
+        this.isLoading.set(false);
         console.error('Erro ao buscar aluno:', error);
-        // Em caso de erro, navegar para cadastro
-        this.router.navigate(['/cadastro-aluno']);
+        this.errorMessage.set('Erro ao buscar aluno. Tente novamente.');
+      }
+    });
+  }
+
+  /**
+   * Verifica se o aluno tem user cadastrado e redireciona para o destino apropriado
+   */
+  private verificarUserERedireionar(aluno: Aluno): void {
+    this.alunoService.verificarUserExiste(aluno.id).subscribe({
+      next: (userExiste) => {
+        if (userExiste) {
+          // Cenário 1B: User existe - redirecionar para login
+          console.log('User já cadastrado. Redirecionando para login...');
+          this.router.navigate(['/login'], {
+            state: {
+              mensagem: 'Por favor, faça login para continuar',
+              alunoNome: aluno.nome
+            }
+          });
+        } else {
+          // Cenário 1C: User não existe - redirecionar para cadastro
+          console.log('User não cadastrado. Redirecionando para cadastro...');
+          this.router.navigate(['/cadastro-aluno'], {
+            state: { aluno }
+          });
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao verificar user:', error);
+        this.errorMessage.set('Erro ao verificar cadastro. Tente novamente.');
       }
     });
   }
