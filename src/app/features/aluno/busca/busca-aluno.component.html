@@ -30,14 +30,14 @@
       <!-- Data de Nascimento -->
       <div class="smc-egr-form-field">
         <label for="dataNascimento" class="smc-egr-label-required">Data de Nascimento</label>
-        <p-calendar
+        <p-inputMask
           id="dataNascimento"
           [(ngModel)]="dataNascimento"
           name="dataNascimento"
-          dateFormat="dd/mm/yy"
-          [showIcon]="true"
+          mask="99/99/9999"
+          placeholder="dd/mm/aaaa"
           required
-        ></p-calendar>
+        ></p-inputMask>
       </div>
 
       <!-- Origem -->

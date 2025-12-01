@@ -7,7 +7,7 @@ import { JsonPipe } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
-import { CalendarModule } from 'primeng/calendar';
+import { InputMaskModule } from 'primeng/inputmask';
 import { ButtonModule } from 'primeng/button';
 
 // App Services
@@ -22,7 +22,7 @@ import { Origem, Curso, Aluno } from '../../../core/models/aluno.model';
     CardModule,
     InputTextModule,
     DropdownModule,
-    CalendarModule,
+    InputMaskModule,
     ButtonModule,
   ],
   templateUrl: './busca-aluno.component.html',
@@ -34,7 +34,7 @@ export class BuscaAlunoComponent {
 
   // Form Signals
   nome = signal('');
-  dataNascimento = signal<Date | null>(null);
+  dataNascimento = signal<string>('');
   selectedOrigem = signal<Origem | null>(null);
   selectedCurso = signal<Curso | null>(null);
 
@@ -85,9 +85,12 @@ export class BuscaAlunoComponent {
     this.errorMessage.set(null);
     this.isLoading.set(true);
 
+    // Converter data de dd/mm/aaaa para Date
+    const dataNascimentoDate = this.converterDataParaDate(this.dataNascimento());
+
     const formValue = {
       nome: this.nome(),
-      dataNascimento: this.dataNascimento(),
+      dataNascimento: dataNascimentoDate,
       origem: this.selectedOrigem(),
       curso: this.selectedCurso(),
     };
@@ -148,5 +151,22 @@ export class BuscaAlunoComponent {
         this.errorMessage.set('Erro ao verificar cadastro. Tente novamente.');
       }
     });
+  }
+
+  /**
+   * Converte data de dd/mm/aaaa para Date
+   */
+  private converterDataParaDate(dataString: string): Date | null {
+    if (!dataString || dataString.length !== 10) {
+      return null;
+    }
+
+    const [dia, mes, ano] = dataString.split('/').map(Number);
+
+    if (!dia || !mes || !ano) {
+      return null;
+    }
+
+    return new Date(ano, mes - 1, dia);
   }
 }
