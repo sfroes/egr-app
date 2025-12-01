@@ -1,0 +1,137 @@
+// QuestionarioComponent utiliza as classes do Design System
+// Estilos específicos para o questionário
+
+:host {
+  display: block;
+}
+
+.smc-egr-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: var(--smc-egr-space-4);
+
+  p {
+    color: var(--smc-egr-neutral-600);
+    font-size: var(--smc-egr-text-lg);
+  }
+}
+
+.smc-egr-questionario-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--smc-egr-space-8);
+}
+
+.smc-egr-questao-item {
+  padding: var(--smc-egr-space-4);
+  border-radius: var(--smc-egr-radius-md);
+  background-color: var(--smc-egr-neutral-50);
+  border-left: 4px solid var(--smc-egr-primary-400);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--smc-egr-neutral-100);
+    box-shadow: var(--smc-egr-shadow-sm);
+  }
+}
+
+.smc-egr-questao-label {
+  display: block;
+  font-size: var(--smc-egr-text-base);
+  font-weight: 600;
+  color: var(--smc-egr-neutral-800);
+  margin-bottom: var(--smc-egr-space-3);
+  line-height: 1.6;
+}
+
+.smc-egr-questao-opcoes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--smc-egr-space-4);
+  margin-top: var(--smc-egr-space-3);
+}
+
+.smc-egr-questao-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--smc-egr-space-3);
+  margin-top: var(--smc-egr-space-3);
+}
+
+.smc-egr-radio-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--smc-egr-space-2);
+  padding: var(--smc-egr-space-3);
+  border-radius: var(--smc-egr-radius-sm);
+  transition: background-color 0.2s ease;
+  min-width: 120px;
+
+  &:hover {
+    background-color: var(--smc-egr-neutral-100);
+  }
+
+  label {
+    font-size: var(--smc-egr-text-base);
+    color: var(--smc-egr-neutral-700);
+    user-select: none;
+    cursor: pointer;
+  }
+}
+
+.smc-egr-checkbox-option {
+  display: flex;
+  flex-direction: column;
+  padding: var(--smc-egr-space-3);
+  border-radius: var(--smc-egr-radius-sm);
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: var(--smc-egr-neutral-100);
+  }
+
+  label {
+    font-size: var(--smc-egr-text-base);
+    color: var(--smc-egr-neutral-700);
+    user-select: none;
+  }
+}
+
+.smc-egr-questao-textarea {
+  margin-top: var(--smc-egr-space-3);
+
+  textarea {
+    font-family: inherit;
+    font-size: var(--smc-egr-text-base);
+  }
+}
+
+// Responsividade
+@media (max-width: 768px) {
+  .smc-egr-questao-item {
+    padding: var(--smc-egr-space-3);
+  }
+
+  .smc-egr-questao-label {
+    font-size: var(--smc-egr-text-sm);
+  }
+
+  .smc-egr-questao-opcoes {
+    flex-direction: column;
+  }
+
+  .smc-egr-radio-option {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .smc-egr-radio-option label,
+  .smc-egr-checkbox-option label {
+    font-size: var(--smc-egr-text-sm);
+  }
+}

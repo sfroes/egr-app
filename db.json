@@ -3,7 +3,8 @@
     { "id": 1, "nome": "Graduação" },
     { "id": 2, "nome": "Pós-Graduação" },
     { "id": 3, "nome": "Mestrado" },
-    { "id": 4, "nome": "Doutorado" }
+    { "id": 4, "nome": "Doutorado" },
+    { "id": 5, "nome": "PDoutorado" }
   ],
   "cursos": [
     { "id": "1", "nome": "Ciência da Computação", "origemId": 1 },
@@ -32,7 +33,7 @@
       "nome": "Bruce Wayne",
       "dataNasc": "1972-02-19",
       "origemId": 1,
-      "cursoId": 103,
+      "cursoId": 1,
       "anoFormado": 1995,
       "semestreFormado": "1",
       "email": "bruce.wayne@wayne-enterprises.com",
@@ -47,6 +48,48 @@
       "cidade": "Belo Horizonte",
       "ocupacao": "CEO",
       "empresa": "Wayne Enterprises"
+    },
+    {
+      "id": 2,
+      "nome": "Diana Prince",
+      "dataNasc": "1985-03-15",
+      "origemId": 1,
+      "cursoId": 4,
+      "anoFormado": 2008,
+      "semestreFormado": "2",
+      "email": "diana.prince@themyscira.com",
+      "dddContato": "31",
+      "telContato": "912345678",
+      "cep": "30140071",
+      "logradouro": "Rua da Paz",
+      "numero": "456",
+      "bairro": "Centro",
+      "complemento": "",
+      "uf": "MG",
+      "cidade": "Belo Horizonte",
+      "ocupacao": "Advogada",
+      "empresa": "Prince & Associados"
+    },
+    {
+      "id": 3,
+      "nome": "Clark Kent",
+      "dataNasc": "1980-06-18",
+      "origemId": 2,
+      "cursoId": 5,
+      "anoFormado": 2010,
+      "semestreFormado": "1",
+      "email": "clark.kent@dailyplanet.com",
+      "dddContato": "31",
+      "telContato": "987654321",
+      "cep": "30140071",
+      "logradouro": "Avenida Afonso Pena",
+      "numero": "789",
+      "bairro": "Centro",
+      "complemento": "Sala 102",
+      "uf": "MG",
+      "cidade": "Belo Horizonte",
+      "ocupacao": "Jornalista",
+      "empresa": "Daily Planet"
     }
   ],
   "enderecos": [
@@ -79,6 +122,175 @@
       "semestreUltimaMatriculaId": "1",
       "turnoId": "M"
     }
-  ]
+  ],
+  "questionario": {
+    "id": "1",
+    "titulo": "Questionário de Ex-Alunos PUC Minas",
+    "descricao": "Pesquisa para conhecer melhor a trajetória profissional dos ex-alunos",
+    "questoes": [
+      {
+        "id": "1",
+        "numero": 1,
+        "texto": "Atualmente, você está trabalhando?",
+        "tipo": "radio",
+        "obrigatoria": true,
+        "opcoes": [
+          { "id": "sim", "texto": "Sim" },
+          { "id": "nao", "texto": "Não" }
+        ]
+      },
+      {
+        "id": "2",
+        "numero": 2,
+        "texto": "Se não, qual o motivo?",
+        "tipo": "textarea",
+        "obrigatoria": false
+      },
+      {
+        "id": "3",
+        "numero": 3,
+        "texto": "Trabalha na área em que se formou?",
+        "tipo": "radio",
+        "obrigatoria": true,
+        "opcoes": [
+          { "id": "sim", "texto": "Sim" },
+          { "id": "nao", "texto": "Não" }
+        ]
+      },
+      {
+        "id": "4",
+        "numero": 4,
+        "texto": "Se não, qual o motivo?",
+        "tipo": "textarea",
+        "obrigatoria": false
+      },
+      {
+        "id": "5",
+        "numero": 5,
+        "texto": "Qual o nome da empresa em que trabalha?",
+        "tipo": "textarea",
+        "obrigatoria": false
+      },
+      {
+        "id": "6",
+        "numero": 6,
+        "texto": "Qual o cargo que exerce?",
+        "tipo": "textarea",
+        "obrigatoria": false
+      },
+      {
+        "id": "7",
+        "numero": 7,
+        "texto": "Qual o ramo de atividade da empresa?",
+        "tipo": "textarea",
+        "obrigatoria": false
+      },
+      {
+        "id": "8",
+        "numero": 8,
+        "texto": "Quanto tempo depois de formado conseguiu seu primeiro emprego?",
+        "tipo": "radio",
+        "obrigatoria": true,
+        "opcoes": [
+          { "id": "antes", "texto": "Já trabalhava antes de se formar" },
+          { "id": "0-6", "texto": "De 0 a 6 meses" },
+          { "id": "6-12", "texto": "De 6 a 12 meses" },
+          { "id": "12-24", "texto": "De 1 a 2 anos" },
+          { "id": "mais24", "texto": "Mais de 2 anos" }
+        ]
+      },
+      {
+        "id": "9",
+        "numero": 9,
+        "texto": "Já fez algum curso de Pós-Graduação?",
+        "tipo": "radio",
+        "obrigatoria": true,
+        "opcoes": [
+          { "id": "sim", "texto": "Sim" },
+          { "id": "nao", "texto": "Não" }
+        ]
+      },
+      {
+        "id": "10",
+        "numero": 10,
+        "texto": "Se sim, em qual nível?",
+        "tipo": "checkbox-with-text",
+        "obrigatoria": false,
+        "opcoes": [
+          { "id": "especializacao", "texto": "Especialização", "permiteCampoTexto": true },
+          { "id": "mestrado", "texto": "Mestrado", "permiteCampoTexto": true },
+          { "id": "doutorado", "texto": "Doutorado", "permiteCampoTexto": true }
+        ]
+      },
+      {
+        "id": "11",
+        "numero": 11,
+        "texto": "A formação na PUC Minas contribuiu para sua inserção no mercado de trabalho?",
+        "tipo": "radio",
+        "obrigatoria": true,
+        "opcoes": [
+          { "id": "sim", "texto": "Sim" },
+          { "id": "nao", "texto": "Não" }
+        ]
+      },
+      {
+        "id": "12",
+        "numero": 12,
+        "texto": "Como você avalia o curso que frequentou na PUC Minas?",
+        "tipo": "radio",
+        "obrigatoria": true,
+        "opcoes": [
+          { "id": "excelente", "texto": "Excelente" },
+          { "id": "bom", "texto": "Bom" },
+          { "id": "regular", "texto": "Regular" },
+          { "id": "ruim", "texto": "Ruim" }
+        ]
+      },
+      {
+        "id": "13",
+        "numero": 13,
+        "texto": "Você recomendaria a PUC Minas para outras pessoas?",
+        "tipo": "radio",
+        "obrigatoria": true,
+        "opcoes": [
+          { "id": "sim", "texto": "Sim" },
+          { "id": "nao", "texto": "Não" }
+        ]
+      },
+      {
+        "id": "14",
+        "numero": 14,
+        "texto": "Quais aspectos do curso você considera positivos?",
+        "tipo": "textarea",
+        "obrigatoria": false
+      },
+      {
+        "id": "15",
+        "numero": 15,
+        "texto": "Quais aspectos do curso você considera que poderiam ser melhorados?",
+        "tipo": "textarea",
+        "obrigatoria": false
+      },
+      {
+        "id": "16",
+        "numero": 16,
+        "texto": "Você tem interesse em participar de eventos promovidos pela PUC Minas para ex-alunos?",
+        "tipo": "radio",
+        "obrigatoria": true,
+        "opcoes": [
+          { "id": "sim", "texto": "Sim" },
+          { "id": "nao", "texto": "Não" }
+        ]
+      },
+      {
+        "id": "17",
+        "numero": 17,
+        "texto": "Comentários adicionais ou sugestões:",
+        "tipo": "textarea",
+        "obrigatoria": false
+      }
+    ]
+  },
+  "questionario-respostas": []
 }
 

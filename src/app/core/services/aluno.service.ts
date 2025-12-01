@@ -33,6 +33,53 @@ export class AlunoService {
     );
   }
 
+  getAlunoPorId(id: string): Observable<Aluno> {
+    return this.http.get<Aluno>(`${this.apiUrl}/alunos/${id}`);
+  }
+
+  buscarAluno(criterios: any): Observable<Aluno[]> {
+    // Busca todos os alunos e filtra no lado do cliente
+    // pois o JSON Server não suporta busca parcial (like)
+    return this.http.get<Aluno[]>(`${this.apiUrl}/alunos`).pipe(
+      map(alunos => {
+        return alunos.filter(aluno => {
+          // Filtro por nome (case-insensitive, busca parcial)
+          const nomeMatch = criterios.nome
+            ? aluno.nome.toLowerCase().includes(criterios.nome.toLowerCase())
+            : true;
+
+          // Filtro por origem
+          const origemMatch = criterios.origem?.id
+            ? aluno.origemId === criterios.origem.id
+            : true;
+
+          // Filtro por curso
+          const cursoMatch = criterios.curso?.id
+            ? aluno.cursoId.toString() === criterios.curso.id.toString()
+            : true;
+
+          // Filtro por data de nascimento (se fornecida)
+          const dataNascMatch = criterios.dataNascimento
+            ? this.comparaDatas(aluno.dataNasc, criterios.dataNascimento)
+            : true;
+
+          return nomeMatch && origemMatch && cursoMatch && dataNascMatch;
+        });
+      })
+    );
+  }
+
+  private comparaDatas(dataBD: string, dataForm: Date): boolean {
+    // dataBD vem no formato YYYY-MM-DD
+    // dataForm é um objeto Date
+    const [ano, mes, dia] = dataBD.split('-').map(Number);
+    const dataBDObj = new Date(ano, mes - 1, dia);
+
+    return dataBDObj.getFullYear() === dataForm.getFullYear() &&
+           dataBDObj.getMonth() === dataForm.getMonth() &&
+           dataBDObj.getDate() === dataForm.getDate();
+  }
+
   createAluno(aluno: Omit<Aluno, 'id'>): Observable<Aluno> {
     return this.http.post<Aluno>(`${this.apiUrl}/alunos`, aluno);
   }

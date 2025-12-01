@@ -39,6 +39,13 @@ export const routes: Routes = [
             (m) => m.CadastroAlunoComponent
           ),
       },
+      {
+        path: 'questionario',
+        loadComponent: () =>
+          import('./features/questionario/questionario.component').then(
+            (m) => m.QuestionarioComponent
+          ),
+      },
     ],
   },
   {

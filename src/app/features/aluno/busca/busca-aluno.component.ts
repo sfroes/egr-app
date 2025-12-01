@@ -88,8 +88,26 @@ export class BuscaAlunoComponent {
 
     console.log('Buscando aluno com os dados:', formValue);
 
-    // For now, just navigate to the next step as per legacy logic
-    // The data will be passed via a service or state management in a real scenario
-    this.router.navigate(['/cadastro-aluno']);
+    // Buscar aluno no backend mockado
+    this.alunoService.buscarAluno(formValue).subscribe({
+      next: (alunos) => {
+        if (alunos && alunos.length > 0) {
+          // Aluno encontrado - navegar para o questionário
+          const aluno = alunos[0];
+          this.router.navigate(['/questionario'], {
+            queryParams: { alunoId: aluno.id }
+          });
+        } else {
+          // Aluno não encontrado - navegar para cadastro
+          console.log('Aluno não encontrado. Redirecionando para cadastro...');
+          this.router.navigate(['/cadastro-aluno']);
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao buscar aluno:', error);
+        // Em caso de erro, navegar para cadastro
+        this.router.navigate(['/cadastro-aluno']);
+      }
+    });
   }
 }

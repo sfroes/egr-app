@@ -1,0 +1,116 @@
+<div class="smc-egr-page-container smc-egr-page-container--wide">
+  @if (carregando()) {
+    <div class="smc-egr-loading-container">
+      <p-progressSpinner></p-progressSpinner>
+      <p>Carregando questionário...</p>
+    </div>
+  } @else {
+    <div class="smc-egr-page-header" style="margin-bottom: var(--smc-egr-space-6); padding-bottom: var(--smc-egr-space-4); border-bottom: 2px solid var(--smc-egr-primary-200);">
+      <h1 style="display: flex; align-items: center; gap: var(--smc-egr-space-3); justify-content: center;">
+        Questionário de Ex-Aluno
+        <span class="smc-egr-badge smc-egr-badge-primary">Pesquisa</span>
+      </h1>
+      <p style="text-align: center; font-size: var(--smc-egr-text-lg); margin-top: var(--smc-egr-space-2);">
+        <strong>{{ alunoNome() }}</strong>
+      </p>
+      <p style="text-align: center;">Por favor, responda às questões abaixo. Os campos com <span class="smc-egr-text-danger">*</span> são obrigatórios</p>
+    </div>
+
+    <form [formGroup]="questionarioForm" (ngSubmit)="onSubmit()">
+      <p-card styleClass="smc-egr-card">
+        @if (questionario(); as quest) {
+          <div class="smc-egr-questionario-content">
+            @for (questao of quest.questoes; track questao.id) {
+              <div class="smc-egr-questao-item">
+                <label class="smc-egr-questao-label" [class.smc-egr-label-required]="questao.obrigatoria">
+                  {{ questao.numero }}. {{ questao.texto }}
+                </label>
+
+                <!-- Questão tipo Radio -->
+                @if (questao.tipo === 'radio') {
+                  <div class="smc-egr-questao-opcoes">
+                    @for (opcao of questao.opcoes; track opcao.id) {
+                      <div class="smc-egr-radio-option">
+                        <p-radioButton
+                          [inputId]="'q' + questao.id + '_' + opcao.id"
+                          [value]="opcao.id"
+                          [formControlName]="'q' + questao.id"
+                        ></p-radioButton>
+                        <label [for]="'q' + questao.id + '_' + opcao.id">
+                          {{ opcao.texto }}
+                        </label>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Questão tipo Textarea -->
+                @if (questao.tipo === 'textarea') {
+                  <div class="smc-egr-questao-textarea">
+                    <textarea
+                      [id]="'q' + questao.id"
+                      pInputTextarea
+                      [formControlName]="'q' + questao.id"
+                      rows="4"
+                      style="width: 100%;"
+                    ></textarea>
+                  </div>
+                }
+
+                <!-- Questão tipo Checkbox com texto -->
+                @if (questao.tipo === 'checkbox-with-text') {
+                  <div class="smc-egr-questao-checkboxes">
+                    @for (opcao of questao.opcoes; track opcao.id) {
+                      <div class="smc-egr-checkbox-option">
+                        <div style="display: flex; align-items: center; gap: var(--smc-egr-space-2);">
+                          <p-checkbox
+                            [inputId]="'q' + questao.id + '_' + opcao.id"
+                            [formControlName]="'q' + questao.id + '_' + opcao.id"
+                            [binary]="true"
+                            (onChange)="onCheckboxChange(questao.id, opcao.id, !!opcao.permiteCampoTexto)"
+                          ></p-checkbox>
+                          <label [for]="'q' + questao.id + '_' + opcao.id" style="cursor: pointer;">
+                            {{ opcao.texto }}
+                          </label>
+                        </div>
+
+                        @if (opcao.permiteCampoTexto && isCheckboxChecked(questao.id, opcao.id)) {
+                          <div style="margin-top: var(--smc-egr-space-2); margin-left: var(--smc-egr-space-8);">
+                            <input
+                              type="text"
+                              pInputText
+                              [formControlName]="'q' + questao.id + '_' + opcao.id + '_texto'"
+                              placeholder="Especifique"
+                              style="width: 100%;"
+                            />
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <ng-template pTemplate="footer">
+          <div class="smc-egr-form-actions">
+            <p-button
+              label="Cancelar"
+              styleClass="p-button-secondary"
+              (onClick)="cancelar()"
+              [disabled]="salvando()"
+            ></p-button>
+            <p-button
+              label="Enviar Questionário"
+              type="submit"
+              [disabled]="questionarioForm.invalid || salvando()"
+              [loading]="salvando()"
+            ></p-button>
+          </div>
+        </ng-template>
+      </p-card>
+    </form>
+  }
+</div>
