@@ -106,8 +106,8 @@
       "anoFormado": 1995,
       "semestreFormado": "1",
       "email": "bruce.wayne@wayne-enterprises.com",
-      "telContato": "(21) 9876-5432",
-      "telCelular": "(21) 98888-7777",
+      "telContato": "(21) 2198765432",
+      "telCelular": "(21) 21988887777",
       "cep": "22050002",
       "logradouro": "Avenida Atlântica",
       "numero": "1702",
@@ -117,7 +117,7 @@
       "complemento": "Apto 101",
       "ocupacao": "CEO",
       "empresa": "Wayne Enterprises",
-      "telComercial": "(21) 3333-4444",
+      "telComercial": "(21) 2133334444",
       "dddContato": "21",
       "dddCelular": "21",
       "dddComercial": "21",
@@ -185,6 +185,17 @@
       "anoUltimaMatricula": "2024",
       "semestreUltimaMatriculaId": "1",
       "turnoId": "M"
+    },
+    {
+      "id": "b987",
+      "alunoId": "1",
+      "nome": "Bruce Wayne",
+      "numeroAcademico": "1764617490995",
+      "dataNascimento": "19/02/1972",
+      "cursoId": "1",
+      "anoUltimaMatricula": "1995",
+      "semestreUltimaMatriculaId": "1",
+      "turnoId": "N"
     }
   ],
   "questionario": {
