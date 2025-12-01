@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EMPTY, of } from 'rxjs';
+import { EMPTY, forkJoin, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 
@@ -59,10 +59,7 @@ export class CadastroAlunoComponent implements OnInit {
     this.loadOrigens();
     this.loadSemestres();
 
-    // NOVO FLUXO: Verificar se há aluno vindo da navegação
-    this.checkNavigationState();
-
-    this.checkRouteForEditMode();
+    this.initializeComponentData();
 
     // Observa mudanças no campo 'origem' para carregar os cursos
     this.alunoForm.get('formacao.origem')?.valueChanges.subscribe((origem: Origem) => {
@@ -92,10 +89,8 @@ export class CadastroAlunoComponent implements OnInit {
       // Contato
       contato: this.fb.group({
         email: ['', [Validators.required, Validators.email]],
-        dddContato: [''],
-        telContato: [''],
-        dddCelular: ['', Validators.required],
-        telCelular: ['', Validators.required]
+        telContato: [''], // Campo unificado
+        telCelular: ['', Validators.required] // Campo unificado
       }),
       // Endereço
       endereco: this.fb.group({
@@ -111,33 +106,37 @@ export class CadastroAlunoComponent implements OnInit {
       profissional: this.fb.group({
         ocupacao: [''],
         empresa: [''],
-        dddComercial: [''],
-        telComercial: ['']
+        telComercial: [''] // Campo unificado
       })
     });
   }
 
   /**
-   * NOVO: Verificar se há aluno vindo da navegação (da busca)
+   * NOVO: Verifica o modo de operação (edição ou novo cadastro vindo da busca)
+   * e carrega os dados necessários de forma segura.
    */
-  private checkNavigationState(): void {
-    // Usar history.state ao invés de getCurrentNavigation()
-    const state = history.state;
+  private initializeComponentData(): void {
+    const state = history.state; // Captura o estado da navegação
 
-    console.log('Estado da navegação:', state);
-
-    if (state && state['aluno']) {
-      this.alunoPreenchido = state['aluno'];
+    // Verifica se estamos no fluxo de cadastro vindo da busca (Cenário 1C)
+    if (state && state.aluno) {
+      this.alunoPreenchido = state.aluno;
       console.log('Aluno recebido da busca:', this.alunoPreenchido);
 
-      // Aguardar carregamento dos dropdowns antes de preencher
-      setTimeout(() => {
+      // Garante que origens e semestres estejam carregados antes de popular o form
+      forkJoin({
+        origens: this.alunoService.getOrigens(),
+        semestres: this.alunoService.getSemestres()
+      }).subscribe(({ origens, semestres }) => {
+        this.origens = origens;
+        this.semestres = semestres;
         if (this.alunoPreenchido) {
           this.populateFormFromAluno(this.alunoPreenchido);
         }
-      }, 1000); // Aumentar tempo para garantir que dropdowns estejam carregados
+      });
     } else {
-      console.log('Nenhum aluno recebido da navegação');
+      // Se não veio da busca, verifica se é modo de edição pela URL
+      this.checkRouteForEditMode();
     }
   }
 
@@ -146,6 +145,14 @@ export class CadastroAlunoComponent implements OnInit {
    */
   private populateFormFromAluno(aluno: Aluno): void {
     console.log('Iniciando preenchimento do formulário com aluno:', aluno);
+    console.log('Telefones do aluno:', {
+      'dddContato': aluno.dddContato,
+      'telContato': aluno.telContato,
+      'dddCelular': aluno.dddCelular,
+      'telCelular': aluno.telCelular,
+      'dddComercial': aluno.dddComercial,
+      'telComercial': aluno.telComercial
+    });
     console.log('Origens disponíveis:', this.origens);
     console.log('Semestres disponíveis:', this.semestres);
 
@@ -186,10 +193,8 @@ export class CadastroAlunoComponent implements OnInit {
           },
           contato: {
             email: aluno.email,
-            dddContato: aluno.dddContato || '',
-            telContato: aluno.telContato || '',
-            dddCelular: aluno.dddCelular || '',
-            telCelular: aluno.telCelular || '',
+            telContato: this.formatarTelefone(aluno.dddContato, aluno.telContato),
+            telCelular: this.formatarTelefone(aluno.dddCelular, aluno.telCelular),
           },
           endereco: {
             cep: aluno.cep,
@@ -203,8 +208,7 @@ export class CadastroAlunoComponent implements OnInit {
           profissional: {
             ocupacao: aluno.ocupacao || '',
             empresa: aluno.empresa || '',
-            dddComercial: aluno.dddComercial || '',
-            telComercial: aluno.telComercial || '',
+            telComercial: this.formatarTelefone(aluno.dddComercial, aluno.telComercial),
           }
         });
 
@@ -318,7 +322,7 @@ export class CadastroAlunoComponent implements OnInit {
         const userData = {
           alunoId: aluno.id,
           nome: aluno.nome,
-          numeroAcademico: this.gerarNumeroAcademico(),
+          numeroAcademico: this.gerarNumeroAcademico(), // Corrigido: chamada de método
           dataNascimento: this.formatarDataParaUser(aluno.dataNasc),
           cursoId: aluno.cursoId.toString(),
           anoUltimaMatricula: aluno.anoFormado.toString(),
@@ -381,6 +385,63 @@ export class CadastroAlunoComponent implements OnInit {
   /**
    * Formata data para o formato esperado pela tabela users
    */
+  /**
+   * Formata telefone no formato (99) 9999-9999 ou (99) 99999-9999
+   * @param ddd DDD do telefone (ex: "21")
+   * @param telefone Número do telefone (ex: "987654321")
+   * @returns Telefone formatado (ex: "(21) 98765-4321")
+   */
+  private formatarTelefone(ddd?: string, telefone?: string): string {
+    console.log('formatarTelefone chamado com:', { ddd, telefone });
+
+    if (!ddd && !telefone) {
+      console.log('Retornando vazio: sem ddd e sem telefone');
+      return '';
+    }
+
+    const dddLimpo = (ddd || '').replace(/\D/g, '');
+    const telLimpo = (telefone || '').replace(/\D/g, '');
+
+    console.log('Valores limpos:', { dddLimpo, telLimpo, telLimpoLength: telLimpo.length });
+
+    if (!telLimpo) {
+      console.log('Retornando vazio: telLimpo está vazio');
+      return '';
+    }
+
+    let resultado = '';
+
+    // Se o telefone tiver 9 dígitos, é celular: (99) 99999-9999
+    if (telLimpo.length === 9) {
+      if (dddLimpo) {
+        resultado = `(${dddLimpo}) ${telLimpo.substring(0, 5)}-${telLimpo.substring(5)}`;
+      } else {
+        // Sem DDD, retorna apenas o número formatado
+        resultado = `${telLimpo.substring(0, 5)}-${telLimpo.substring(5)}`;
+      }
+    }
+    // Se tiver 8 dígitos, é fixo: (99) 9999-9999
+    else if (telLimpo.length === 8) {
+      if (dddLimpo) {
+        resultado = `(${dddLimpo}) ${telLimpo.substring(0, 4)}-${telLimpo.substring(4)}`;
+      } else {
+        // Sem DDD, retorna apenas o número formatado
+        resultado = `${telLimpo.substring(0, 4)}-${telLimpo.substring(4)}`;
+      }
+    }
+    // Caso contrário, retorna como está
+    else {
+      if (dddLimpo) {
+        resultado = `(${dddLimpo}) ${telLimpo}`;
+      } else {
+        resultado = telLimpo;
+      }
+    }
+
+    console.log('Resultado formatado:', resultado);
+    return resultado;
+  }
+
   private formatarDataParaUser(data: any): string {
     if (typeof data === 'string') {
       // Se já está em formato string (YYYY-MM-DD), converter para DD/MM/YYYY
@@ -413,21 +474,22 @@ export class CadastroAlunoComponent implements OnInit {
       anoFormado: formValue.formacao.anoFormado,
       semestreFormado: formValue.formacao.semestreFormado.id,
       email: formValue.contato.email,
-      dddContato: formValue.contato.dddContato,
       telContato: formValue.contato.telContato,
-      dddCelular: formValue.contato.dddCelular,
       telCelular: formValue.contato.telCelular,
       cep: formValue.endereco.cep,
       logradouro: formValue.endereco.logradouro,
       numero: formValue.endereco.numero,
       bairro: formValue.endereco.bairro,
-      complemento: formValue.endereco.complemento,
-      uf: formValue.endereco.uf,
       cidade: formValue.endereco.cidade,
+      uf: formValue.endereco.uf,
+      complemento: formValue.endereco.complemento,
       ocupacao: formValue.profissional.ocupacao,
       empresa: formValue.profissional.empresa,
-      dddComercial: formValue.profissional.dddComercial,
       telComercial: formValue.profissional.telComercial,
+      // Manter a estrutura original com ddd/telefone separado para a API mock
+      dddContato: formValue.contato.telContato.substring(1, 3),
+      dddCelular: formValue.contato.telCelular.substring(1, 3),
+      dddComercial: formValue.profissional.telComercial.substring(1, 3)
     };
   }
 
@@ -452,10 +514,8 @@ export class CadastroAlunoComponent implements OnInit {
           },
           contato: {
             email: aluno.email,
-            dddContato: aluno.dddContato,
-            telContato: aluno.telContato,
-            dddCelular: aluno.dddCelular,
-            telCelular: aluno.telCelular,
+            telContato: this.formatarTelefone(aluno.dddContato, aluno.telContato),
+            telCelular: this.formatarTelefone(aluno.dddCelular, aluno.telCelular),
           },
           endereco: {
             cep: aluno.cep,
@@ -469,8 +529,7 @@ export class CadastroAlunoComponent implements OnInit {
           profissional: {
             ocupacao: aluno.ocupacao,
             empresa: aluno.empresa,
-            dddComercial: aluno.dddComercial,
-            telComercial: aluno.telComercial,
+            telComercial: this.formatarTelefone(aluno.dddComercial, aluno.telComercial),
           }
         });
       });

@@ -45,6 +45,7 @@ export class AlunoService {
     return this.http.get<Aluno[]>(`${this.apiUrl}/alunos`).pipe(
       map(alunos => {
         console.log('Total de alunos no banco:', alunos.length);
+        console.log('RAW API Response - Primeiro aluno completo:', JSON.stringify(alunos[0], null, 2));
 
         const resultado = alunos.filter(aluno => {
           // Filtro por nome (case-insensitive, busca parcial)

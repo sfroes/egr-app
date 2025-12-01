@@ -56,30 +56,35 @@
             <input id="email" type="email" pInputText formControlName="email" />
           </div>
           <div class="smc-egr-form-field">
+            <label for="telContato">Telefone de Contato</label>
+            <p-inputMask id="telContato" mask="(99) 9999-9999" formControlName="telContato" placeholder="(99) 9999-9999"></p-inputMask>
+          </div>
+          <div class="smc-egr-form-field">
             <label for="telCelular" class="smc-egr-label-required">Celular</label>
-            <div class="smc-egr-input-group">
-              <input type="text" pInputText formControlName="dddCelular" placeholder="DDD" class="smc-egr-input-ddd" />
-              <input type="text" pInputText formControlName="telCelular" placeholder="Número" class="smc-egr-input-tel" />
-            </div>
+            <p-inputMask id="telCelular" mask="(99) 99999-9999" formControlName="telCelular" placeholder="(99) 99999-9999"></p-inputMask>
           </div>
         </div>
       </div>
 
       <!-- Endereço -->
-      <div formGroupName="endereco" class="smc-egr-form-section">
+      <div formGroupName="endereco" class="smc-egr-form-section smc-egr-mt-6">
         <h3 class="smc-egr-section-header">Endereço</h3>
-        <div class="smc-egr-form-grid smc-egr-form-grid--cols-3">
+        <div class="smc-egr-form-grid smc-egr-form-grid--cols-2">
           <div class="smc-egr-form-field">
             <label for="cep" class="smc-egr-label-required">CEP</label>
             <p-inputMask id="cep" mask="99999-999" formControlName="cep" (onComplete)="buscarCep()"></p-inputMask>
           </div>
-          <div class="smc-egr-form-field" style="grid-column: span 2;">
+          <div class="smc-egr-form-field">
             <label for="logradouro" class="smc-egr-label-required">Logradouro</label>
             <input id="logradouro" type="text" pInputText formControlName="logradouro" />
           </div>
           <div class="smc-egr-form-field">
             <label for="numero" class="smc-egr-label-required">Número</label>
             <input id="numero" type="text" pInputText formControlName="numero" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="complemento">Complemento</label>
+            <input id="complemento" type="text" pInputText formControlName="complemento" />
           </div>
           <div class="smc-egr-form-field">
             <label for="bairro" class="smc-egr-label-required">Bairro</label>
@@ -96,10 +101,29 @@
         </div>
       </div>
 
+      <!-- Informações Profissionais -->
+      <div formGroupName="profissional" class="smc-egr-form-section smc-egr-mt-6">
+        <h3 class="smc-egr-section-header">Informações Profissionais</h3>
+        <div class="smc-egr-form-grid smc-egr-form-grid--cols-2">
+          <div class="smc-egr-form-field">
+            <label for="ocupacao">Ocupação</label>
+            <input id="ocupacao" type="text" pInputText formControlName="ocupacao" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" type="text" pInputText formControlName="empresa" />
+          </div>
+          <div class="smc-egr-form-field">
+            <label for="telComercial">Telefone Comercial</label>
+            <p-inputMask id="telComercial" mask="(99) 9999-9999" formControlName="telComercial" placeholder="(99) 9999-9999"></p-inputMask>
+          </div>
+        </div>
+      </div>
+
       <ng-template pTemplate="footer">
         <div class="smc-egr-form-actions">
           <p-button label="Cancelar" styleClass="p-button-secondary" (onClick)="cancelar()"></p-button>
-          <p-button [label]="isEditMode ? 'Atualizar' : 'Salvar'" type="submit" [disabled]="alunoForm.invalid"></p-button>
+          <p-button [label]="isEditMode || alunoPreenchido ? 'Atualizar Cadastro' : 'Salvar e Criar Acesso'" type="submit" [disabled]="alunoForm.invalid || isLoading" [loading]="isLoading"></p-button>
         </div>
       </ng-template>
     </p-card>
