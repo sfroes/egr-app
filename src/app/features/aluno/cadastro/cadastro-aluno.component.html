@@ -1,8 +1,7 @@
 <div class="smc-egr-page-container smc-egr-page-container--wide">
-  <div class="smc-egr-page-header" style="margin-bottom: var(--smc-egr-space-6); padding-bottom: var(--smc-egr-space-4); border-bottom: 2px solid var(--smc-egr-primary-200);">
+  <div class="smc-egr-login-card-header" >
     <h1 style="display: flex; align-items: center; gap: var(--smc-egr-space-3); justify-content: center;">
       {{ isEditMode ? 'Editar Cadastro' : 'Novo Cadastro' }}
-      <span class="smc-egr-badge smc-egr-badge-primary">{{ isEditMode ? 'Edição' : 'Novo' }}</span>
     </h1>
     <p>Preencha os campos abaixo. Os campos com <span class="smc-egr-text-danger">*</span> são obrigatórios</p>
   </div>
@@ -121,10 +120,8 @@
       </div>
 
       <ng-template pTemplate="footer">
-        <div class="smc-egr-form-actions">
           <p-button label="Cancelar" styleClass="p-button-secondary" (onClick)="cancelar()"></p-button>
           <p-button [label]="isEditMode || alunoPreenchido ? 'Atualizar Cadastro' : 'Salvar e Criar Acesso'" type="submit" [disabled]="alunoForm.invalid || isLoading" [loading]="isLoading"></p-button>
-        </div>
       </ng-template>
     </p-card>
   </form>

@@ -5,10 +5,9 @@
       <p>Carregando questionário...</p>
     </div>
   } @else {
-    <div class="smc-egr-page-header" style="margin-bottom: var(--smc-egr-space-6); padding-bottom: var(--smc-egr-space-4); border-bottom: 2px solid var(--smc-egr-primary-200);">
-      <h1 style="display: flex; align-items: center; gap: var(--smc-egr-space-3); justify-content: center;">
+    <div class="smc-egr-login-card-header">
+      <h1>
         Questionário de Ex-Aluno
-        <span class="smc-egr-badge smc-egr-badge-primary">Pesquisa</span>
       </h1>
       <p style="text-align: center; font-size: var(--smc-egr-text-lg); margin-top: var(--smc-egr-space-2);">
         <strong>{{ alunoNome() }}</strong>
@@ -95,7 +94,6 @@
         }
 
         <ng-template pTemplate="footer">
-          <div class="smc-egr-form-actions">
             <p-button
               label="Cancelar"
               styleClass="p-button-secondary"
@@ -108,7 +106,6 @@
               [disabled]="questionarioForm.invalid || salvando()"
               [loading]="salvando()"
             ></p-button>
-          </div>
         </ng-template>
       </p-card>
     </form>

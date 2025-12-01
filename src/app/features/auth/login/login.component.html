@@ -1,15 +1,12 @@
-<div class="smc-egr-login-page">
-  <div class="smc-egr-login-card">
-    <div class="smc-egr-login-logo">
-      <img src="assets/images/brasao-pucminas-2025.svg" alt="Brasão PUC Minas" />
-    </div>
-
+<div class="smc-egr-page-container">
+  <div>
     <div class="smc-egr-login-card-header">
       <h1>Bem-vindo ao EGR</h1>
       <p>Preencha os campos abaixo para continuar</p>
     </div>
+   <p-card styleClass="smc-egr-card">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="smc-egr-form-grid smc-egr-form-grid--cols-2">
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <div class="smc-egr-form-field">
         <label for="nome" class="smc-egr-label-required">Nome</label>
         <input
@@ -88,14 +85,12 @@
           placeholder="Selecione um Turno"
         ></p-dropdown>
       </div>
-
-      <div class="smc-egr-mt-6">
-        <p-button label="Entrar" type="submit" [style]="{'width': '100%'}"></p-button>
-      </div>
-
-      <p class="smc-egr-text-xs smc-egr-text-center smc-egr-text-muted smc-egr-mt-4">
-        <span class="smc-egr-text-danger">*</span> Campos obrigatórios
-      </p>
     </form>
+    <ng-template pTemplate="footer">
+          <p-button label="Entrar" type="button" [style]="{'width': '100%'}" (click)="onSubmit()" [disabled]="loginForm.invalid || isLoading"></p-button>
+    </ng-template>
+
+    </p-card>
   </div>
+
 </div>
