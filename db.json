@@ -1,60 +1,130 @@
 {
- "origens": [
-    { "id": 1, "nome": "Graduação" },
-    { "id": 2, "nome": "Pós-Graduação" },
-    { "id": 3, "nome": "Mestrado" },
-    { "id": 4, "nome": "Doutorado" },
-    { "id": 5, "nome": "PDoutorado" }
+  "origens": [
+    {
+      "id": "1",
+      "nome": "Graduação"
+    },
+    {
+      "id": "2",
+      "nome": "Pós-Graduação"
+    },
+    {
+      "id": "3",
+      "nome": "Mestrado"
+    },
+    {
+      "id": "4",
+      "nome": "Doutorado"
+    },
+    {
+      "id": "5",
+      "nome": "PDoutorado"
+    }
   ],
   "cursos": [
-    { "id": "1", "nome": "Ciência da Computação", "origemId": 1 },
-    { "id": "2", "nome": "Engenharia Civil", "origemId": 1 },
-    { "id": "3", "nome": "Medicina", "origemId": 1 },
-    { "id": "4", "nome": "Direito", "origemId": 1 },
-    { "id": "5", "nome": "MBA em Gestão de Projetos", "origemId": 2 },
-    { "id": "6", "nome": "Especialização em Arquitetura de Software", "origemId": 2 },
-    { "id": "7", "nome": "Mestrado em Engenharia de Software", "origemId": 3 },
-    { "id": "8", "nome": "Mestrado em Inteligência Artificial", "origemId": 3 },
-    { "id": "9", "nome": "Doutorado em Bioinformática", "origemId": 4 },
-    { "id": "10", "nome": "Doutorado em Física Quântica", "origemId": 4 }
+    {
+      "id": "1",
+      "nome": "Ciência da Computação",
+      "origemId": 1
+    },
+    {
+      "id": "2",
+      "nome": "Engenharia Civil",
+      "origemId": 1
+    },
+    {
+      "id": "3",
+      "nome": "Medicina",
+      "origemId": 1
+    },
+    {
+      "id": "4",
+      "nome": "Direito",
+      "origemId": 1
+    },
+    {
+      "id": "5",
+      "nome": "MBA em Gestão de Projetos",
+      "origemId": 2
+    },
+    {
+      "id": "6",
+      "nome": "Especialização em Arquitetura de Software",
+      "origemId": 2
+    },
+    {
+      "id": "7",
+      "nome": "Mestrado em Engenharia de Software",
+      "origemId": 3
+    },
+    {
+      "id": "8",
+      "nome": "Mestrado em Inteligência Artificial",
+      "origemId": 3
+    },
+    {
+      "id": "9",
+      "nome": "Doutorado em Bioinformática",
+      "origemId": 4
+    },
+    {
+      "id": "10",
+      "nome": "Doutorado em Física Quântica",
+      "origemId": 4
+    }
   ],
   "semestres": [
-    { "id": "1", "nome": "1º Semestre" },
-    { "id": "2", "nome": "2º Semestre" }
+    {
+      "id": "1",
+      "nome": "1º Semestre"
+    },
+    {
+      "id": "2",
+      "nome": "2º Semestre"
+    }
   ],
   "turnos": [
-    { "id": "M", "nome": "Manhã" },
-    { "id": "T", "nome": "Tarde" },
-    { "id": "N", "nome": "Noite" }
+    {
+      "id": "M",
+      "nome": "Manhã"
+    },
+    {
+      "id": "T",
+      "nome": "Tarde"
+    },
+    {
+      "id": "N",
+      "nome": "Noite"
+    }
   ],
   "alunos": [
     {
-      "id": 1,
       "nome": "Bruce Wayne",
       "dataNasc": "1972-02-19",
-      "origemId": 1,
-      "cursoId": 1,
+      "origemId": "1",
+      "cursoId": "1",
       "anoFormado": 1995,
       "semestreFormado": "1",
       "email": "bruce.wayne@wayne-enterprises.com",
-      "dddContato": "21",
-      "telContato": "987654321",
-      "dddCelular": "21",
-      "telCelular": "988887777",
+      "telContato": "(21) 9876-5432",
+      "telCelular": "(21) 98888-7777",
       "cep": "22050002",
       "logradouro": "Avenida Atlântica",
       "numero": "1702",
       "bairro": "Copacabana",
-      "complemento": "Apto 101",
-      "uf": "RJ",
       "cidade": "Rio de Janeiro",
+      "uf": "RJ",
+      "complemento": "Apto 101",
       "ocupacao": "CEO",
       "empresa": "Wayne Enterprises",
+      "telComercial": "(21) 3333-4444",
+      "dddContato": "21",
+      "dddCelular": "21",
       "dddComercial": "21",
-      "telComercial": "33334444"
+      "id": "1"
     },
     {
-      "id": 2,
+      "id": "2",
       "nome": "Diana Prince",
       "dataNasc": "1985-03-15",
       "origemId": 1,
@@ -79,7 +149,7 @@
       "telComercial": "6132189000"
     },
     {
-      "id": 3,
+      "id": "3",
       "nome": "Clark Kent",
       "dataNasc": "1980-06-18",
       "origemId": 2,
@@ -106,7 +176,7 @@
   ],
   "users": [
     {
-      "id": 2,
+      "id": "2",
       "alunoId": 3,
       "nome": "Peter Parker",
       "numeroAcademico": "67890",
@@ -129,8 +199,14 @@
         "tipo": "radio",
         "obrigatoria": true,
         "opcoes": [
-          { "id": "sim", "texto": "Sim" },
-          { "id": "nao", "texto": "Não" }
+          {
+            "id": "sim",
+            "texto": "Sim"
+          },
+          {
+            "id": "nao",
+            "texto": "Não"
+          }
         ]
       },
       {
@@ -147,8 +223,14 @@
         "tipo": "radio",
         "obrigatoria": true,
         "opcoes": [
-          { "id": "sim", "texto": "Sim" },
-          { "id": "nao", "texto": "Não" }
+          {
+            "id": "sim",
+            "texto": "Sim"
+          },
+          {
+            "id": "nao",
+            "texto": "Não"
+          }
         ]
       },
       {
@@ -186,11 +268,26 @@
         "tipo": "radio",
         "obrigatoria": true,
         "opcoes": [
-          { "id": "antes", "texto": "Já trabalhava antes de se formar" },
-          { "id": "0-6", "texto": "De 0 a 6 meses" },
-          { "id": "6-12", "texto": "De 6 a 12 meses" },
-          { "id": "12-24", "texto": "De 1 a 2 anos" },
-          { "id": "mais24", "texto": "Mais de 2 anos" }
+          {
+            "id": "antes",
+            "texto": "Já trabalhava antes de se formar"
+          },
+          {
+            "id": "0-6",
+            "texto": "De 0 a 6 meses"
+          },
+          {
+            "id": "6-12",
+            "texto": "De 6 a 12 meses"
+          },
+          {
+            "id": "12-24",
+            "texto": "De 1 a 2 anos"
+          },
+          {
+            "id": "mais24",
+            "texto": "Mais de 2 anos"
+          }
         ]
       },
       {
@@ -200,8 +297,14 @@
         "tipo": "radio",
         "obrigatoria": true,
         "opcoes": [
-          { "id": "sim", "texto": "Sim" },
-          { "id": "nao", "texto": "Não" }
+          {
+            "id": "sim",
+            "texto": "Sim"
+          },
+          {
+            "id": "nao",
+            "texto": "Não"
+          }
         ]
       },
       {
@@ -211,9 +314,21 @@
         "tipo": "checkbox-with-text",
         "obrigatoria": false,
         "opcoes": [
-          { "id": "especializacao", "texto": "Especialização", "permiteCampoTexto": true },
-          { "id": "mestrado", "texto": "Mestrado", "permiteCampoTexto": true },
-          { "id": "doutorado", "texto": "Doutorado", "permiteCampoTexto": true }
+          {
+            "id": "especializacao",
+            "texto": "Especialização",
+            "permiteCampoTexto": true
+          },
+          {
+            "id": "mestrado",
+            "texto": "Mestrado",
+            "permiteCampoTexto": true
+          },
+          {
+            "id": "doutorado",
+            "texto": "Doutorado",
+            "permiteCampoTexto": true
+          }
         ]
       },
       {
@@ -223,8 +338,14 @@
         "tipo": "radio",
         "obrigatoria": true,
         "opcoes": [
-          { "id": "sim", "texto": "Sim" },
-          { "id": "nao", "texto": "Não" }
+          {
+            "id": "sim",
+            "texto": "Sim"
+          },
+          {
+            "id": "nao",
+            "texto": "Não"
+          }
         ]
       },
       {
@@ -234,10 +355,22 @@
         "tipo": "radio",
         "obrigatoria": true,
         "opcoes": [
-          { "id": "excelente", "texto": "Excelente" },
-          { "id": "bom", "texto": "Bom" },
-          { "id": "regular", "texto": "Regular" },
-          { "id": "ruim", "texto": "Ruim" }
+          {
+            "id": "excelente",
+            "texto": "Excelente"
+          },
+          {
+            "id": "bom",
+            "texto": "Bom"
+          },
+          {
+            "id": "regular",
+            "texto": "Regular"
+          },
+          {
+            "id": "ruim",
+            "texto": "Ruim"
+          }
         ]
       },
       {
@@ -247,8 +380,14 @@
         "tipo": "radio",
         "obrigatoria": true,
         "opcoes": [
-          { "id": "sim", "texto": "Sim" },
-          { "id": "nao", "texto": "Não" }
+          {
+            "id": "sim",
+            "texto": "Sim"
+          },
+          {
+            "id": "nao",
+            "texto": "Não"
+          }
         ]
       },
       {
@@ -272,8 +411,14 @@
         "tipo": "radio",
         "obrigatoria": true,
         "opcoes": [
-          { "id": "sim", "texto": "Sim" },
-          { "id": "nao", "texto": "Não" }
+          {
+            "id": "sim",
+            "texto": "Sim"
+          },
+          {
+            "id": "nao",
+            "texto": "Não"
+          }
         ]
       },
       {

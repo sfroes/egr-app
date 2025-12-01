@@ -11,28 +11,28 @@
      =================================== */
 
   /* Verde PUC (Identidade Institucional) */
-  --smc-egr-primary-50: #e8f5e9;
-  --smc-egr-primary-100: #c8e6c9;
-  --smc-egr-primary-200: #a5d6a7;
-  --smc-egr-primary-300: #81c784;
-  --smc-egr-primary-400: #66bb6a;
-  --smc-egr-primary-500: #4caf50;
-  --smc-egr-primary-600: #43a047;
-  --smc-egr-primary-700: #388e3c;
-  --smc-egr-primary-800: #2e7d32;
-  --smc-egr-primary-900: #1b5e20;
+  --smc-egr-primary-50: #FFFFFF;
+  --smc-egr-primary-100: #E3ECF1;
+  --smc-egr-primary-200: #C6D9E3;
+  --smc-egr-primary-300: #AAC6D4;
+  --smc-egr-primary-400: #8EB3C6;
+  --smc-egr-primary-500: #719FB8;
+  --smc-egr-primary-600: #558CAA;
+  --smc-egr-primary-700: #39799B;
+  --smc-egr-primary-800: #1C668D;
+  --smc-egr-primary-900: #00537F;
 
   /* Azul Institucional (Acento) */
-  --smc-egr-secondary-50: #e3f2fd;
-  --smc-egr-secondary-100: #bbdefb;
-  --smc-egr-secondary-200: #90caf9;
-  --smc-egr-secondary-300: #64b5f6;
-  --smc-egr-secondary-400: #42a5f5;
-  --smc-egr-secondary-500: #2196f3;
-  --smc-egr-secondary-600: #1e88e5;
-  --smc-egr-secondary-700: #1976d2;
-  --smc-egr-secondary-800: #1565c0;
-  --smc-egr-secondary-900: #0d47a1;
+  --smc-egr-secondary-50: #FFFFFF;
+  --smc-egr-secondary-100: #E3ECF1;
+  --smc-egr-secondary-200: #C6D9E3;
+  --smc-egr-secondary-300: #AAC6D4;
+  --smc-egr-secondary-400: #8EB3C6;
+  --smc-egr-secondary-500: #719FB8;
+  --smc-egr-secondary-600: #558CAA;
+  --smc-egr-secondary-700: #39799B;
+  --smc-egr-secondary-800: #1C668D;
+  --smc-egr-secondary-900: #00537F;
 
   /* ===================================
      CORES SEMÂNTICAS
@@ -83,7 +83,7 @@
   --smc-egr-surface-200: #eeeeee;
   --smc-egr-surface-300: #e0e0e0;
 
-  --smc-egr-background: #f9fafb;
+  --smc-egr-background: #f5f5f5;
   --smc-egr-surface: #ffffff;
 
   /* ===================================
@@ -907,7 +907,7 @@ html {
    =================================== */
 
 .smc-egr-header {
-  background: linear-gradient(135deg, var(--smc-egr-primary-600), var(--smc-egr-primary-700));
+  background: var(--smc-egr-surface-0);
   color: var(--smc-egr-text-on-primary);
   box-shadow: var(--smc-egr-shadow-md);
   padding: var(--smc-egr-space-4) var(--smc-egr-space-6);
@@ -939,7 +939,7 @@ html {
 .smc-egr-header-logo-text {
   font-size: var(--smc-egr-text-xl);
   font-weight: var(--smc-egr-font-bold);
-  color: var(--smc-egr-text-on-primary);
+  color: var(--smc-egr-gray-500);
 }
 
 .smc-egr-header-nav {
@@ -969,11 +969,11 @@ html {
    =================================== */
 
 .smc-egr-footer {
-  background: var(--smc-egr-gray-900);
+  background: var(--smc-egr-surface-0);
   color: var(--smc-egr-gray-300);
   padding: var(--smc-egr-space-8) var(--smc-egr-space-6);
   margin-top: auto;
-  border-top: 4px solid var(--smc-egr-primary-500);
+  border-top: 1px solid var(--smc-egr-secondary-500);
 }
 
 .smc-egr-footer-inner {
@@ -1020,7 +1020,7 @@ html {
 .smc-egr-footer-bottom {
   margin-top: var(--smc-egr-space-6);
   padding-top: var(--smc-egr-space-6);
-  border-top: 1px solid var(--smc-egr-gray-800);
+  border-top: 1px solid var(--smc-egr-gray-400);
   text-align: center;
   font-size: var(--smc-egr-text-xs);
   color: var(--smc-egr-gray-500);
@@ -1162,11 +1162,11 @@ html {
   }
 
   &:not(.p-button-outlined):not(.p-button-text) {
-    background: linear-gradient(135deg, var(--smc-egr-primary-500), var(--smc-egr-primary-600));
+    background-color: var(--smc-egr-primary-900);
     color: var(--smc-egr-text-on-primary);
 
     &:hover:not(:disabled) {
-      background: linear-gradient(135deg, var(--smc-egr-primary-600), var(--smc-egr-primary-700));
+      background-color: var(--smc-egr-primary-700);
     }
   }
 
@@ -1644,4 +1644,8 @@ p-inputmask {
   color: var(--smc-egr-text-secondary);
   margin-top: var(--smc-egr-space-4);
   text-align: right;
+}
+
+.p-button {
+  border: none !important;
 }
